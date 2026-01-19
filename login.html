@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - أتقن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- الأساسيات --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; }
+        
+        /* خلفية اللابتوب (المكتب) */
+        body { 
+            background-color: #e0e5ec; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+        }
+
+        /* --- حاوية الجوال --- */
+        .mobile-container {
+            width: 375px; /* عرض قياسي */
+            height: 700px; /* تم تقصير الطول حسب طلبك */
+            
+            /* الخلفية: تدرج ناعم يشبه تصميم Figma تماماً */
+            background: linear-gradient(180deg, #FFFFFF 60%, #E9F7EF 100%);
+            
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
+            overflow: hidden; position: relative;
+            display: flex; flex-direction: column; padding: 20px 25px;
+        }
+
+        @media (max-width: 480px) {
+            body { background-color: #ffffff; align-items: flex-start; }
+            .mobile-container { width: 100%; height: 100vh; border-radius: 0; box-shadow: none; }
+        }
+
+        /* --- القائمة واللغة --- */
+        .lang-wrapper { position: absolute; top: 25px; left: 25px; z-index: 10; }
+        html[dir="ltr"] .lang-wrapper { left: auto; right: 25px; }
+        
+        .lang-select {
+            padding: 5px 10px; border: none; border-radius: 15px; background-color: transparent;
+            color: #2ECC71; font-weight: bold; font-size: 14px; outline: none; cursor: pointer;
+            text-align: center; width: auto; appearance: none; -webkit-appearance: none;
+        }
+
+        /* --- الهيدر والشعار --- */
+        .header-section { margin-top: 50px; text-align: center; margin-bottom: 30px; }
+        .logo-placeholder {
+            width: 90px; height: 90px; 
+            background-color: #8CC63F; /* أخضر الشعار */
+            border-radius: 22px;
+            margin: 0 auto 20px; 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            box-shadow: 0 10px 20px rgba(140, 198, 63, 0.2);
+        }
+        .logo-placeholder img { width: 100%; height: 100%; object-fit: contain; }
+        
+        h1 { font-size: 22px; color: #2c3e50; margin-bottom: 8px; font-weight: 700; }
+        p.subtitle { font-size: 13px; color: #95a5a6; max-width: 90%; margin: 0 auto; line-height: 1.6; }
+
+        /* --- الحقول --- */
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 14px; color: #34495e; font-weight: 600; }
+        .input-wrapper { position: relative; }
+        
+        .input-wrapper input {
+            width: 100%; padding: 16px 16px 16px 45px; 
+            border: 1px solid #f0f0f0; /* حدود ناعمة جداً */
+            background-color: #FFFFFF; 
+            border-radius: 12px; font-size: 14px; outline: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); /* ظل خفيف جداً للحقل */
+            direction: ltr; text-align: left;
+        }
+        
+        html[dir="ltr"] .input-wrapper input { padding: 16px 45px 16px 16px; }
+        .input-wrapper input:focus { border-color: #2ECC71; }
+        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #bdc3c7; }
+        html[dir="ltr"] .input-wrapper i { left: auto; right: 15px; }
+
+        /* --- رابط نسيت كلمة المرور --- */
+        .forgot-pass { 
+            display: block; text-align: left; font-size: 13px; color: #2ECC71; 
+            text-decoration: none; margin-bottom: 25px; margin-top: 10px; cursor: pointer; font-weight: 600;
+        }
+        html[dir="ltr"] .forgot-pass { text-align: right; }
+
+        /* --- الأزرار --- */
+        .btn-login {
+            width: 100%; padding: 16px; 
+            background-color: #2ECC71; /* اللون الأخضر الأساسي */
+            color: white; border: none;
+            border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.25); /* ظل أخضر ناعم للزر */
+        }
+        .btn-login:hover { background-color: #27ae60; }
+        html[dir="ltr"] .btn-login { flex-direction: row-reverse; }
+        html[dir="ltr"] .btn-login i { transform: rotate(180deg); }
+
+        .signup-area { text-align: center; margin-top: auto; padding-bottom: 10px; font-size: 14px; color: #95a5a6; }
+        .signup-area a { color: #2ECC71; text-decoration: none; font-weight: bold; display: block; margin-top: 8px; }
+
+        /* === Modal استعادة كلمة المرور === */
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 20;
+            display: none; justify-content: center; align-items: flex-end;
+        }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
+        
+        .modal-box {
+            background: white; width: 100%; border-radius: 30px 30px 0 0;
+            padding: 30px 25px; position: relative; animation: slideUp 0.3s;
+        }
+
+        .modal-close { position: absolute; top: 20px; left: 20px; font-size: 20px; color: #aaa; cursor: pointer; }
+        html[dir="ltr"] .modal-close { left: auto; right: 20px; }
+        .modal-step { display: none; }
+        .modal-step.active { display: block; }
+        .modal-title { font-size: 18px; color: #333; margin-bottom: 20px; text-align: center; font-weight: bold; }
+        
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div class="lang-wrapper">
+            <select id="languageSelector" class="lang-select">
+                <option value="ar">EN</option> <option value="ar">AR</option>
+                <option value="en">EN</option>
+                <option value="ur">UR</option>
+            </select>
+        </div>
+
+        <div class="header-section">
+            <div class="logo-placeholder">
+                </div>
+            <h1 data-i18n="welcome_title">مرحبا بك في منصة أتقن القرآن</h1>
+            <p class="subtitle" data-i18n="welcome_subtitle">رحلتك لإتقان تلاوة وحفظ القرآن تبدأ هنا</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label data-i18n="label_username">اسم المستخدم</label>
+                <div class="input-wrapper">
+                    <input type="text" value="Sophia.Jacob" required>
+                    <i class="fa-regular fa-user"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label data-i18n="label_password">رمز الدخول</label>
+                <div class="input-wrapper">
+                    <input type="password" value="UK_London_2026" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+            </div>
+
+            <a href="#" class="forgot-pass" id="forgotBtn" data-i18n="forgot_pass">نسيت كلمة السر؟</a>
+
+            <button type="submit" class="btn-login">
+                <span data-i18n="btn_login">تسجيل الدخول</span>
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+        </form>
+
+        <div class="signup-area">
+            <span data-i18n="no_account">ليس لديك حساب؟</span>
+            <a href="signup.html" data-i18n="create_account">إنشاء حساب جديد</a>
+        </div>
+
+        <div class="modal-overlay" id="forgotModal">
+            <div class="modal-box">
+                <i class="fa-solid fa-xmark modal-close" id="closeModal"></i>
+                
+                <div class="modal-step active" id="step1">
+                    <div class="modal-title" data-i18n="modal_title_1">استعادة كلمة المرور</div>
+                    <div class="input-group">
+                        <label data-i18n="label_email">البريد الإلكتروني أو الجوال</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="example@email.com">
+                            <i class="fa-regular fa-envelope"></i>
+                        </div>
+                    </div>
+                    <button class="btn-login" id="sendCodeBtn">
+                        <span data-i18n="btn_send_code">إرسال رمز التحقق</span>
+                    </button>
+                </div>
+
+                <div class="modal-step" id="step2">
+                    <div class="modal-title" data-i18n="modal_title_2">تحقق من الرمز</div>
+                    <p style="text-align: center; font-size: 12px; margin-bottom: 10px; color: #777;">تم إرسال الرمز: <b style="color:#2ECC71">1234</b></p>
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <input type="text" id="codeSimInput" placeholder="1234" style="text-align: center; letter-spacing: 5px; font-weight: bold;">
+                        </div>
+                    </div>
+                    <button class="btn-login" id="verifyCodeBtn">
+                        <span data-i18n="btn_verify">تحقق</span>
+                    </button>
+                </div>
+
+                <div class="modal-step" id="step3">
+                    <div class="modal-title" data-i18n="modal_title_3">كلمة المرور الجديدة</div>
+                    <div class="input-group">
+                        <label data-i18n="label_new_pass">كلمة المرور الجديدة</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="Sophia99" style="color: #333;">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="label_confirm_pass">تأكيد كلمة المرور</label>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="Sophia99">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                    </div>
+                    <button class="btn-login" id="savePassBtn">
+                        <span data-i18n="btn_save">حفظ وتغيير</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const translations = {
+            ar: {
+                dir: "rtl",
+                welcome_title: "مرحبا بك في منصة أتقن القرآن",
+                welcome_subtitle: "رحلتك لإتقان تلاوة وحفظ القرآن تبدأ هنا",
+                label_username: "اسم المستخدم",
+                label_password: "رمز الدخول",
+                forgot_pass: "نسيت كلمة السر؟",
+                btn_login: "تسجيل الدخول",
+                no_account: "ليس لديك حساب؟",
+                create_account: "إنشاء حساب جديد",
+                modal_title_1: "استعادة كلمة المرور",
+                label_email: "البريد الإلكتروني أو الجوال",
+                btn_send_code: "إرسال رمز التحقق",
+                modal_title_2: "أدخل الرمز المرسل",
+                btn_verify: "تحقق",
+                modal_title_3: "تعيين كلمة مرور جديدة",
+                label_new_pass: "كلمة المرور الجديدة",
+                label_confirm_pass: "تأكيد كلمة المرور",
+                btn_save: "حفظ الدخول"
+            },
+            en: {
+                dir: "ltr",
+                welcome_title: "Welcome to Atqan App",
+                welcome_subtitle: "Your journey to master Quran recitation",
+                label_username: "Username",
+                label_password: "Password",
+                forgot_pass: "Forgot Password?",
+                btn_login: "Login",
+                no_account: "Don't have an account?",
+                create_account: "Create New Account",
+                modal_title_1: "Recover Password",
+                label_email: "Email or Phone",
+                btn_send_code: "Send Verification Code",
+                modal_title_2: "Enter Code",
+                btn_verify: "Verify",
+                modal_title_3: "Set New Password",
+                label_new_pass: "New Password",
+                label_confirm_pass: "Confirm Password",
+                btn_save: "Save & Login"
+            },
+            ur: {
+                dir: "rtl",
+                welcome_title: "اتقان پلیٹ فارم میں خوش آمدید",
+                welcome_subtitle: "قرآن کی تلاوت اور حفظ میں مہارت کا سفر",
+                label_username: "صارف کا نام",
+                label_password: "پاس ورڈ",
+                forgot_pass: "پاس ورڈ بھول گئے؟",
+                btn_login: "لاگ ان کریں",
+                no_account: "کیا آپ کا اکاؤنٹ نہیں ہے؟",
+                create_account: "نیا اکاؤنٹ بنائیں",
+                modal_title_1: "پاس ورڈ بحال کریں",
+                label_email: "ای میل یا فون",
+                btn_send_code: "تصدیقی کوڈ بھیجیں",
+                modal_title_2: "کوڈ درج کریں",
+                btn_verify: "تصدیق کریں",
+                modal_title_3: "نیا پاس ورڈ سیٹ کریں",
+                label_new_pass: "نیا پاس ورڈ",
+                label_confirm_pass: "پاس ورڈ کی تصدیق کریں",
+                btn_save: "محفوظ کریں"
+            }
+        };
+
+        const langSelector = document.getElementById('languageSelector');
+        function setLanguage(lang) {
+            const data = translations[lang];
+            document.documentElement.setAttribute('dir', data.dir);
+            document.documentElement.setAttribute('lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (data[key]) element.textContent = data[key];
+            });
+        }
+        langSelector.addEventListener('change', (e) => setLanguage(e.target.value));
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = 'main.html';
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('forgotModal');
+        const forgotBtn = document.getElementById('forgotBtn');
+        const closeModal = document.getElementById('closeModal');
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+
+        forgotBtn.addEventListener('click', (e) => { e.preventDefault(); modal.classList.add('active'); showStep('step1'); document.getElementById('codeSimInput').value = ''; });
+        closeModal.addEventListener('click', () => { modal.classList.remove('active'); });
+
+        function showStep(stepId) {
+            [step1, step2, step3].forEach(s => s.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        document.getElementById('sendCodeBtn').addEventListener('click', (e) => { e.preventDefault(); setTimeout(() => showStep('step2'), 500); });
+        document.getElementById('verifyCodeBtn').addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            if(document.getElementById('codeSimInput').value === '1234') showStep('step3'); 
+            else alert('الرمز 1234'); 
+        });
+        document.getElementById('savePassBtn').addEventListener('click', (e) => { e.preventDefault(); alert('تم بنجاح!'); modal.classList.remove('active'); });
+    </script>
+</body>
+</html>
