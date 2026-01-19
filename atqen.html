@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تطبيق القرآن الذكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --cream: #F6F8ED;
+    --navy: #001F3E;
+    --navy-mid: #1A3C59;
+    --lime: #D6E045;
+    --green-bright: #00D16F;
+    --green-dark: #00804D;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Cairo", sans-serif;
+    background-color: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+    line-height: 1.8;
+}
+
+/* --- Animated Background Blobs --- */
+.blob-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: floatBlob 20s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
+
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: var(--lime);
+    animation-duration: 25s;
+}
+
+.blob-2 {
+    bottom: -10%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: var(--green-bright);
+    animation-duration: 30s;
+    animation-direction: alternate-reverse;
+}
+
+.blob-3 {
+    top: 40%;
+    left: 40%;
+    width: 400px;
+    height: 400px;
+    background: rgba(0, 31, 62, 0.1);
+    animation-duration: 35s;
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(60px, 40px) scale(1.1); }
+}
+
+/* --- Floating Header --- */
+.header-wrapper {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+    padding: 0 20px;
+}
+
+.navbar {
+    background: rgba(0, 31, 62, 0.95); /* Navy transparent */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 12px 30px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s;
+}
+
+.navbar:hover {
+    transform: translateY(2px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    font-weight: 900;
+    font-size: 1.1rem;
+}
+
+.logo-box {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--lime), var(--green-bright));
+    color: var(--navy);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(0, 209, 111, 0.4);
+}
+
+.nav-links {
+    display: flex;
+    gap: 5px;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Layout --- */
+.container {
+    max-width: 1100px;
+    margin: 140px auto 60px;
+    padding: 0 20px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 90px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s forwards 0.2s;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 6vw, 70px);
+    font-weight: 900;
+    margin: 0 0 20px;
+    line-height: 1.1;
+    color: var(--navy);
+}
+
+.hero h1 span {
+    background: linear-gradient(120deg, var(--green-dark), var(--green-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--navy-mid);
+    font-weight: 600;
+}
+
+/* --- Cards Grid --- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 35px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 35px 30px;
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(0, 31, 62, 0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 31, 62, 0.12);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--lime);
+}
+
+.card h2 {
+    font-size: 26px;
+    margin: 0 0 15px;
+    color: var(--navy);
+    position: relative;
+    display: inline-block;
+}
+
+/* Underline animation */
+.card h2::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--lime), var(--green-bright));
+    margin-top: 8px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.card:hover h2::after {
+    width: 100%;
+}
+
+.card p {
+    margin: 0;
+    font-weight: 600;
+    color: var(--navy-mid);
+    line-height: 1.8;
+}
+
+/* Featured Card Style */
+.card.featured {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    color: white;
+    border: none;
+}
+
+.card.featured h2 { color: white; }
+.card.featured p { color: rgba(255,255,255,0.9); font-size: 1.1rem; }
+.card.featured h2::after { background: var(--lime); }
+
+/* Problem & Solution Split */
+.split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+    margin-top: 35px;
+}
+
+.card.problem { border-right: 5px solid #ff6b6b; }
+.card.solution { border-right: 5px solid var(--green-bright); }
+
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll To Top */
+.to-top {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 55px;
+    height: 55px;
+    background: var(--navy);
+    color: var(--lime);
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.3s;
+    z-index: 999;
+}
+
+.to-top.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.to-top:hover {
+    background: var(--green-bright);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 850px) {
+    .navbar { flex-direction: column; gap: 15px; border-radius: 20px; padding: 20px; width: 100%; }
+    .nav-links { flex-wrap: wrap; justify-content: center; }
+    .split-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 42px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+</div>
+
+<div class="header-wrapper">
+    <header class="navbar">
+        <div class="brand">
+            <div class="logo-box">ق</div>
+            <span>تطبيق القرآن الذكي</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#idea">الفكرة</a>
+            <a href="#vision">الرؤية</a>
+            <a href="#problem">المشكلة</a>
+            <a href="#impact">الأثر</a>
+            <a href="#innovation">الابتكار</a>
+            <a href="#solution">الحل</a>
+            <a href="#team">الفريق</a>
+        </nav>
+    </header>
+</div>
+
+<main class="container">
+
+    <section class="hero">
+        <h1 class="title">تطبيق <span>القرآن الذكي</span></h1>
+        <p class="subtitle">
+         تطبيق رقمي ذكي لتعليم وتحفيظ القرآن الكريم، يقدّم تجربة حديثة وتفاعلية، مناسبة لمختلف المستويات واللغات، ويعتمد على المتابعة الدقيقة والتحفيز المستمر لتحقيق الإتقان.
+        </p>
+    </section>
+
+    <div class="grid">
+        
+        <section class="card featured scroll-reveal" id="idea">
+            <h2>وصف الفكرة</h2>
+            <p>منصة رقمية ذكية شاملة لتعليم وتحفيظ القرآن الكريم تحول الطريقة التقليدية البطيئة إلى رحلة تفاعلية مخصصة تجمع تحليل التلاوة الصوتي بالذكاء الاصطناعي، مغامرات تعليمية ممتعة للأطفال عبر شخصيات تقود مراحل مرتبطة بمهام حقيقية في التلاوة والحفظ والتفسير، خريطة تفاعلية للحلقات مع بياناتها الكاملة (مواقع، أوقات، مستويات، معلمين)، ومسارات مبسطة لكبار السن وغير الناطقين بالعربية، مع لوحات تحكم للمعلمين للإشراف الفعال.</p>
+        </section>
+
+        <section class="card scroll-reveal" id="vision">
+            <h2>الرؤية</h2>
+            <p>بناء منظومة قرآنية عالمية حديثة تراعي الفروق الفردية والعمرية واللغوية، تجعل تعلّم كتاب الله تجربة يومية ممتعة ومستمرة عبر التقنيات المتقدمة، لتقريب القرآن من قلوب الأطفال المحبين للألعاب، كبار السن الباحثين عن اليسر، وغير العرب الراغبين في نطق صحيح، مع تسهيل الوصول للحلقات المناسبة لكل متعلم لضمان إتقان التلاوة والحفظ والتدبر في كل بيت عربي.</p>
+        </section>
+
+        <section class="card scroll-reveal" id="innovation">
+            <h2>الابتكار</h2>
+            <p>تحليل صوتي ذكي ومغامرات تعليمية.</p>
+        </section>
+
+        <section class="card scroll-reveal" id="impact">
+            <h2>الأثر</h2>
+            <p>رفع جودة التلاوة وزيادة الالتزام.</p>
+        </section>
+
+    </div>
+
+    <div class="split-grid">
+        <section class="card problem scroll-reveal" id="problem">
+            <h2>التحدي والتشتت</h2>
+            <p>يمرّ متعلمو القرآن اليوم بتجربة مجزأة ومشتتة بين أساليب تقليدية بطيئة، وحلقات متفرقة، وغياب أدوات ذكية تساعد على تقييم التلاوة وتحفيز الاستمرار، مما يجعل الوصول لتعلّم متقن ومستمر مهمة صعبة على المتعلم والمعلم وولي الأمر. تأخر تقييم التلاوة وضعف المتابعة الفردية يؤديان إلى تراكم الأخطاء وصعوبة تحسين الأداء. تفاوت المستويات داخل الحلقة الواحدة وملل الأطفال وغياب مسارات مبسطة لكبار السن وغير الناطقين بالعربية يضعف ارتباط المتعلم بالحلقة. عدم وجود منصة موحدة لعرض الحلقات وبياناتها والتسجيل فيها يزيد التشتت على المتعلم وولي الأمر ويضاعف العبء التنظيمي على المعلم.</p>
+        </section>
+        
+        <section class="card solution scroll-reveal" id="solution">
+            <h2>الحل</h2>
+            <p>تطبيق متكامل يخدم جميع الفئات.</p>
+        </section>
+    </div>
+
+    <div class="grid" style="margin-top: 35px;">
+        <section class="card scroll-reveal" id="team" style="text-align: center;">
+            <h2>فريق العمل</h2>
+            <p>سيتم إضافته لاحقًا.</p>
+        </section>
+    </div>
+
+</main>
+
+<button class="to-top" id="toTop">↑</button>
+
+<script>
+    // Scroll Reveal Animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+    // Scroll to Top
+    const btn = document.getElementById("toTop");
+    window.addEventListener("scroll", () => {
+        window.scrollY > 200 ? btn.classList.add("show") : btn.classList.remove("show");
+    });
+    btn.onclick = () => window.scrollTo({top: 0, behavior: "smooth"});
+</script>
+
+</body>
+</html>
