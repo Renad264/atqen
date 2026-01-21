@@ -17,7 +17,7 @@
 
         .mobile-container {
             width: 375px; height: 700px;
-            background-color: #f8f9fa;
+            background-color: #FAFAFA;
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
             overflow: hidden; position: relative;
@@ -26,252 +26,403 @@
 
         .content-layer {
             flex: 1; overflow-y: auto; position: relative; z-index: 1;
-            padding: 0 0 90px 0;
+            padding: 20px 20px 90px 20px;
             scrollbar-width: none;
         }
         .content-layer::-webkit-scrollbar { display: none; }
 
-        .profile-header-container {
-            background: white; padding: 30px 20px 25px 20px;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
-            text-align: center; margin-bottom: 20px;
-        }
-
-        .page-title { font-size: 16px; font-weight: 800; color: #2c3e50; margin-bottom: 20px; }
-
-        .avatar-area { position: relative; width: 90px; height: 90px; margin: 0 auto 10px auto; }
-        .avatar-img {
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-            border: 4px solid #E9F7EF;
-        }
-        .edit-badge {
-            position: absolute; bottom: 0; right: 0; width: 28px; height: 28px;
-            background: #13EC6A; border-radius: 50%; border: 3px solid white;
+        /* --- الهيدر الشخصي --- */
+        .profile-header { text-align: center; margin-bottom: 25px; margin-top: 10px; position: relative; }
+        .page-title { font-size: 16px; font-weight: 800; color: #2c3e50; margin-bottom: 20px; display: block; }
+        
+        .report-btn-corner {
+            position: absolute; top: 0; left: 0;
+            width: 35px; height: 35px; border-radius: 10px;
+            background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 12px; cursor: pointer;
+            color: #2c3e50; cursor: pointer; transition: 0.2s;
         }
+        .report-btn-corner:active { transform: scale(0.95); }
 
+        .avatar-wrapper { position: relative; width: 85px; height: 85px; margin: 0 auto 10px auto; }
+        .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .edit-icon { position: absolute; bottom: 0; right: 0; width: 26px; height: 26px; background: #13EC6A; border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; cursor: pointer; }
+        
         .user-name { font-size: 18px; font-weight: 800; color: #2c3e50; margin-bottom: 2px; }
-        .user-info { font-size: 12px; color: #95a5a6; font-weight: 600; }
+        .user-status { font-size: 11px; color: #13EC6A; font-weight: 700; background: #E9F7EF; padding: 4px 12px; border-radius: 15px; display: inline-block; }
 
-        .stats-grid {
-            display: flex; justify-content: space-between; margin-top: 25px;
-            padding: 0 10px;
-        }
-        .stat-box { text-align: center; flex: 1; }
-        .stat-val { display: block; font-size: 18px; font-weight: 800; color: #2c3e50; }
-        .stat-lbl { font-size: 11px; color: #95a5a6; margin-top: 2px; }
-
-        .section-container { padding: 0 20px; margin-bottom: 20px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .sec-title { font-size: 14px; font-weight: 800; color: #2c3e50; }
-        .sec-link { font-size: 11px; color: #13EC6A; font-weight: 700; text-decoration: none; }
-
-        .badges-scroll {
-            display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;
-            scrollbar-width: none;
-        }
-        .badges-scroll::-webkit-scrollbar { display: none; }
-        
-        .badge-card {
-            background: white; border-radius: 15px; padding: 10px; min-width: 90px;
-            text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.03);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .badge-icon { font-size: 24px; margin-bottom: 8px; }
-        .badge-name { font-size: 10px; font-weight: 700; color: #2c3e50; }
-
-        .settings-group { display: flex; flex-direction: column; gap: 10px; }
-        
-        .menu-item {
-            background: white; border-radius: 15px; padding: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02); cursor: pointer;
-        }
-        .menu-left { display: flex; align-items: center; gap: 15px; }
-        .menu-icon { 
-            width: 38px; height: 38px; background: #f5f6f8; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; color: #555; font-size: 16px;
-        }
-        .menu-text { font-size: 13px; font-weight: 700; color: #2c3e50; }
-        
-        .arrow-icon { color: #ccc; font-size: 12px; }
-
-        .logout-item .menu-icon { background: #fee2e2; color: #ef4444; }
-        .logout-item .menu-text { color: #ef4444; }
-
-        .modal-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: flex-end;
-        }
-        .modal-overlay.show { display: flex; }
-
-        .edit-modal {
-            background: #f9f9f9; width: 100%; height: 85%;
-            border-radius: 30px 30px 0 0; padding: 25px;
-            display: flex; flex-direction: column; animation: slideUp 0.3s forwards;
-        }
-        .modal-top { text-align: center; margin-bottom: 25px; position: relative; }
-        .m-title { font-size: 16px; font-weight: 800; color: #2c3e50; }
-        .m-close { position: absolute; left: 0; top: 0; font-size: 20px; color: #999; cursor: pointer; }
-
-        .inp-group { margin-bottom: 15px; }
-        .inp-label { display: block; font-size: 11px; font-weight: 700; color: #7f8c8d; margin-bottom: 5px; }
-        .inp-field {
-            width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 15px;
-            background: white; font-family: 'Cairo'; font-size: 13px; font-weight: 600; color: #2c3e50;
-            outline: none; 
-        }
-        .inp-field:focus { border-color: #13EC6A; }
-
-        .btn-save {
-            width: 100%; padding: 15px; background: #13EC6A; color: white; border: none;
-            border-radius: 15px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: auto;
+        .personal-info-btn {
+            background: white; color: #2c3e50; border: 1px solid #eee;
+            padding: 12px; border-radius: 15px; font-size: 12px; font-weight: 700; 
+            margin: 20px auto 10px auto; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
-        .bottom-nav {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            background: white; padding: 15px 25px 25px 25px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-top-left-radius: 25px; border-top-right-radius: 25px;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 10;
+        /* --- الإحصائيات --- */
+        .stats-row { display: flex; justify-content: space-between; margin-bottom: 20px; background: white; border-radius: 20px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-icon { font-size: 16px; margin-bottom: 5px; display: block; }
+        .stat-val { font-size: 16px; font-weight: 800; color: #2c3e50; display: block; }
+        .stat-lbl { font-size: 10px; color: #999; }
+
+        /* --- هدف الحفظ --- */
+        .goal-card { background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .goal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .goal-title { font-size: 13px; font-weight: 800; color: #2c3e50; display: flex; align-items: center; gap: 5px; }
+        .goal-perc { font-size: 12px; font-weight: 800; color: #13EC6A; }
+        .progress-track { width: 100%; height: 8px; background: #f0f0f0; border-radius: 10px; overflow: hidden; }
+        .progress-bar { width: 75%; height: 100%; background: #13EC6A; border-radius: 10px; }
+        .goal-footer { display: flex; justify-content: space-between; margin-top: 5px; font-size: 10px; color: #ccc; }
+
+        /* --- أقسام الإعدادات --- */
+        .settings-section { margin-bottom: 20px; }
+        .sec-header { font-size: 12px; font-weight: 700; color: #7f8c8d; margin-bottom: 10px; display: block; }
+        .settings-card { background: white; border-radius: 20px; padding: 5px 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f9f9f9; }
+        .setting-row:last-child { border-bottom: none; }
+        .st-label { font-size: 13px; font-weight: 700; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
+        .st-icon { color: #13EC6A; font-size: 14px; }
+        .custom-select { background: #f5f5f5; border: none; padding: 5px 10px; border-radius: 8px; font-family: 'Cairo'; font-size: 11px; font-weight: 700; color: #555; outline: none; }
+        .font-size-control { font-size: 12px; font-weight: 700; color: #13EC6A; }
+        .switch { position: relative; display: inline-block; width: 36px; height: 20px; } .switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #eee; transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; } input:checked + .slider { background-color: #13EC6A; } input:checked + .slider:before { transform: translateX(16px); }
+
+        .teacher-card { background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border-left: 4px solid #13EC6A; }
+        .t-info { display: flex; align-items: center; gap: 10px; }
+        .t-icon-wrapper { width: 40px; height: 40px; border-radius: 50%; background: #E9F7EF; display: flex; align-items: center; justify-content: center; color: #13EC6A; font-size: 20px; }
+        .t-details h4 { font-size: 13px; font-weight: 800; color: #2c3e50; margin: 0; }
+        .t-details p { font-size: 10px; color: #999; margin: 0; }
+        .t-action { width: 30px; height: 30px; background: #f5f6f8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; }
+
+        .logout-btn { background: white; color: #e74c3c; width: 100%; padding: 15px; border-radius: 20px; border: none; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-top: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+
+        /* ==================== شاشة معلوماتي الشخصية ==================== */
+        .personal-info-view {
+            display: none; flex-direction: column; height: 100%; width: 100%;
         }
+        .personal-info-view.show { display: flex; animation: slideIn 0.3s ease-out; }
+        .pi-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .pi-back { font-size: 18px; color: #2c3e50; cursor: pointer; }
+        .pi-title { font-size: 16px; font-weight: 800; color: #2c3e50; }
+        .pi-content { flex: 1; overflow-y: auto; padding: 0 20px 90px 20px; }
+        .pi-avatar-wrapper { position: relative; width: 85px; height: 85px; margin: 20px auto; text-align: center; }
+        .pi-avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .pi-edit-icon { position: absolute; bottom: 0; right: 0; width: 26px; height: 26px; background: #13EC6A; border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; cursor: pointer; }
+        .pi-user-name { font-size: 16px; font-weight: 800; color: #2c3e50; margin-top: 10px; }
+        .pi-user-status { font-size: 11px; color: #ccc; font-weight: 600; }
+
+        .pi-form { background: white; border-radius: 20px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .pi-inp-group { margin-bottom: 15px; }
+        .pi-inp-label { display: block; font-size: 11px; font-weight: 700; color: #7f8c8d; margin-bottom: 5px; }
+        .pi-inp-field { width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 15px; background: #f9f9f9; font-family: 'Cairo'; outline: none; font-size: 13px; color: #2c3e50; font-weight: 600; }
+        .pi-btn-save { width: 100%; padding: 15px; background: #13EC6A; color: white; border: none; border-radius: 15px; font-weight: 800; margin-top: 20px; cursor: pointer; }
+
+        /* ==================== الداشبورد ==================== */
+        .dashboard-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f8f9fa; z-index: 100; display: none; flex-direction: column; animation: slideIn 0.3s ease-out; overflow-y: auto; }
+        .dashboard-overlay.show { display: flex; }
+        .dash-header { padding: 20px; background: white; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 10; }
+        .back-btn { font-size: 18px; color: #2c3e50; cursor: pointer; }
+        .dash-title { font-size: 16px; font-weight: 800; color: #2c3e50; }
+        .dash-content { padding: 20px; padding-bottom: 60px; }
+        .ai-card { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); border-radius: 15px; padding: 20px; color: white; margin-bottom: 20px; }
+        .ai-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .ai-text { font-size: 11px; line-height: 1.6; opacity: 0.9; }
+        .chart-box { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .chart-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .chart-title { font-size: 13px; font-weight: 700; color: #2c3e50; }
+        .bar-chart { display: flex; justify-content: space-between; align-items: flex-end; height: 120px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .bar-group { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100%; cursor: pointer; }
+        .bar { width: 10px; background: #eee; border-radius: 5px; transition: height 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .bar.high { background: #13EC6A; }
+        .bar-label { font-size: 10px; color: #999; }
+        .donut-chart-wrapper { display: flex; align-items: center; justify-content: space-between; }
+        .donut-chart { width: 90px; height: 90px; border-radius: 50%; background: conic-gradient(#13EC6A 0% 70%, #f39c12 70% 90%, #eee 90% 100%); position: relative; display: flex; align-items: center; justify-content: center; }
+        .donut-inner { width: 70px; height: 70px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .donut-legend { flex: 1; margin-right: 20px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; color: #555; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .trend-chart { display: flex; align-items: flex-end; justify-content: space-between; height: 80px; gap: 5px; }
+        .trend-bar { flex: 1; background: #e0f2f1; border-radius: 4px; transition: height 0.5s; position: relative; }
+        .trend-bar.trend-up { background: #13EC6A; }
+        .dash-note { background: #fff; border-left: 4px solid #F39C12; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .note-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .note-icon-wrapper { width: 35px; height: 35px; border-radius: 50%; background: #FFF3E0; display: flex; align-items: center; justify-content: center; color: #F39C12; font-size: 18px; }
+        .note-text { font-size: 11px; color: #555; background: #fff8e1; padding: 10px; border-radius: 10px; }
+        .d-stats-grid { display: flex; gap: 10px; margin-bottom: 15px; }
+        .d-stat-card { flex: 1; background: white; border-radius: 15px; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .d-s-val { display: block; font-size: 18px; font-weight: 800; color: #2c3e50; }
+        .d-s-lbl { font-size: 10px; color: #95a5a6; }
+
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: white; padding: 15px 25px 25px 25px; display: flex; justify-content: space-between; align-items: center; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 10; }
         .nav-item { color: #bdc3c7; font-size: 22px; cursor: pointer; text-decoration: none; }
         .nav-item.active { color: #13EC6A; }
         .fab-wrapper { position: relative; top: -30px; }
-        .fab-btn {
-            width: 65px; height: 65px; background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 28px; border: 6px solid white; box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4);
-        }
+        .fab-btn { width: 65px; height: 65px; background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; border: 6px solid white; box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4); }
 
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
     </style>
 </head>
 <body>
 
     <div class="mobile-container">
         
-        <div class="content-layer">
+        <div class="content-layer" id="mainProfileView">
             
-            <div class="profile-header-container">
-                <div class="page-title">الملف الشخصي</div>
-                
-                <div class="avatar-area">
-                    <img src="145867.png" id="mainAvatar" class="avatar-img" alt="Profile">
-                    <div class="edit-badge" onclick="openEdit()"><i class="fa-solid fa-pen"></i></div>
+            <div class="profile-header">
+                <div class="report-btn-corner" onclick="openDashboard()">
+                    <i class="fa-solid fa-chart-simple"></i>
                 </div>
-                
-                <h2 class="user-name" id="profileName">صالح أحمد</h2>
-                <p class="user-info">المستوى 3 • الرياض</p>
 
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <span class="stat-val">1,250</span>
-                        <span class="stat-lbl">نقطة</span>
+                <span class="page-title">الملف الشخصي</span>
+                <div class="avatar-wrapper">
+                    <img src="145867.png" class="avatar-img" alt="User">
+                    <div class="edit-icon"><i class="fa-solid fa-pen"></i></div>
+                </div>
+                <h2 class="user-name" id="mainUserName">صالح أحمد</h2>
+                <span class="user-status">طالب - المستوى المتقدم</span>
+                
+                <div class="personal-info-btn" onclick="showPersonalInfo()">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <i class="fa-regular fa-id-card" style="color:#13EC6A;"></i>
+                        <span>المعلومات الأساسية</span>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-val" style="color:#13EC6A;">143</span>
-                        <span class="stat-lbl">آية</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-val">12</span>
-                        <span class="stat-lbl">يوم</span>
+                    <i class="fa-solid fa-chevron-left" style="font-size:10px; color:#ccc;"></i>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <i class="fa-solid fa-shield-halved stat-icon" style="color:#13EC6A;"></i>
+                    <span class="stat-val">98%</span>
+                    <span class="stat-lbl">الحفظ</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-regular fa-clock stat-icon" style="color:#2c3e50;"></i>
+                    <span class="stat-val">120</span>
+                    <span class="stat-lbl">دقيقة</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-wallet stat-icon" style="color:#2c3e50;"></i>
+                    <span class="stat-val">13</span>
+                    <span class="stat-lbl">الرصيد</span>
+                </div>
+            </div>
+
+            <div class="goal-card">
+                <div class="goal-head">
+                    <span class="goal-title"><i class="fa-solid fa-flag"></i> هدف الحفظ الأسبوعي</span>
+                    <span class="goal-perc">75%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="goal-footer">
+                    <span>تعديل الهدف</span>
+                    <span>3/4 أجزاء</span>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <span class="sec-header">تفضيلات القارئ</span>
+                <div class="settings-card">
+                    <div class="setting-row">
+                        <div class="st-label"><i class="fa-solid fa-microphone st-icon"></i> القارئ المفضل</div>
+                        <select class="custom-select">
+                            <option>مشاري راشد العفاسي</option>
+                            <option>عبدالرحمن السديس</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <div class="section-container">
-                <div class="section-header">
-                    <span class="sec-title">أوسمتي</span>
-                    <a href="#" class="sec-link">عرض الكل</a>
-                </div>
-                <div class="badges-scroll">
-                    <div class="badge-card">
-                        <div class="badge-icon">🥇</div>
-                        <span class="badge-name">الأول</span>
+            <div class="settings-section">
+                <span class="sec-header">إعدادات العرض</span>
+                <div class="settings-card">
+                    <div class="setting-row">
+                        <div class="st-label">حجم الخط</div>
+                        <span class="font-size-control">24px</span>
                     </div>
-                    <div class="badge-card">
-                        <div class="badge-icon">🔥</div>
-                        <span class="badge-name">مثابر</span>
-                    </div>
-                    <div class="badge-card">
-                        <div class="badge-icon">🚀</div>
-                        <span class="badge-name">منطلق</span>
-                    </div>
-                    <div class="badge-card">
-                        <div class="badge-icon">⭐</div>
-                        <span class="badge-name">نجم</span>
+                    <div class="setting-row">
+                        <div class="st-label"><i class="fa-regular fa-moon"></i> الوضع الليلي</div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
             </div>
 
-            <div class="section-container">
-                <span class="sec-title" style="display:block; margin-bottom:15px;">الإعدادات</span>
-                
-                <div class="settings-group">
-                    
-                    <div class="menu-item" onclick="openEdit()">
-                        <div class="menu-left">
-                            <div class="menu-icon"><i class="fa-regular fa-user"></i></div>
-                            <span class="menu-text">البيانات الشخصية</span>
-                        </div>
-                        <i class="fa-solid fa-angle-left arrow-icon"></i>
+            <div class="settings-section">
+                <span class="sec-header">إعدادات التنبيهات</span>
+                <div class="settings-card">
+                    <div class="setting-row">
+                        <div class="st-label"><i class="fa-regular fa-bell"></i> تذكير الورد اليومي</div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
                     </div>
-
-                    <div class="menu-item">
-                        <div class="menu-left">
-                            <div class="menu-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                            <span class="menu-text">الخصوصية والأمان</span>
-                        </div>
-                        <i class="fa-solid fa-angle-left arrow-icon"></i>
+                    <div class="setting-row">
+                        <div class="st-label"><i class="fa-solid fa-volume-high"></i> تنبيهات موعد الحلقة</div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
                     </div>
-
-                    <div class="menu-item">
-                        <div class="menu-left">
-                            <div class="menu-icon"><i class="fa-regular fa-circle-question"></i></div>
-                            <span class="menu-text">المساعدة والدعم</span>
-                        </div>
-                        <i class="fa-solid fa-angle-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item logout-item" onclick="window.location.href='login.html'">
-                        <div class="menu-left">
-                            <div class="menu-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                            <span class="menu-text">تسجيل الخروج</span>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
+            <div class="settings-section">
+                <span class="sec-header">المعلم المشرف</span>
+                <div class="teacher-card">
+                    <div class="t-info">
+                        <div class="t-icon-wrapper"><i class="fa-solid fa-user-tie"></i></div>
+                        <div class="t-details">
+                            <h4>أ. عمر فالح</h4>
+                            <p>حلقة الإمام الشاطبي</p>
+                        </div>
+                    </div>
+                    <div class="t-action"><i class="fa-regular fa-comment-dots"></i></div>
+                </div>
+            </div>
+
+            <button class="logout-btn" onclick="window.location.href='login.html'">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج
+            </button>
 
         </div>
 
-        <div class="modal-overlay" id="editModal">
-            <div class="edit-modal">
-                <div class="modal-top">
-                    <span class="m-title">تعديل الملف</span>
-                    <i class="fa-solid fa-xmark m-close" onclick="closeEdit()"></i>
+        <div class="content-layer personal-info-view" id="personalInfoView">
+            <div class="pi-header">
+                <i class="fa-solid fa-arrow-right pi-back" onclick="closePersonalInfo()"></i>
+                <span class="pi-title">المعلومات الأساسية</span>
+                <div style="width:20px;"></div>
+            </div>
+
+            <div class="pi-content">
+                <div class="pi-avatar-wrapper">
+                    <img src="145867.png" class="pi-avatar-img" alt="User">
+                    <div class="pi-edit-icon"><i class="fa-solid fa-pen"></i></div>
+                </div>
+                <div style="text-align:center;">
+                    <h2 class="pi-user-name" id="piUserName">صالح أحمد</h2>
+                    <span class="pi-user-status">تعديل بياناتك الشخصية</span>
                 </div>
 
-                <div class="inp-group">
-                    <label class="inp-label">الاسم</label>
-                    <input type="text" class="inp-field" id="inputName" value="صالح أحمد">
+                <div class="pi-form">
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">الاسم الكامل</label>
+                        <input type="text" class="pi-inp-field" id="inputName" value="صالح أحمد">
+                    </div>
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">العمر</label>
+                        <input type="number" class="pi-inp-field" value="24">
+                    </div>
+                    
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">الجنسية</label>
+                        <input type="text" class="pi-inp-field" value="سعودي">
+                    </div>
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">رقم الهوية</label>
+                        <input type="tel" class="pi-inp-field" value="1098765432">
+                    </div>
+
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">الموقع والسكن</label>
+                        <input type="text" class="pi-inp-field" value="الرياض - حي الملقا">
+                    </div>
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">رقم الجوال</label>
+                        <input type="tel" class="pi-inp-field" value="+966 50 123 4567" style="direction:ltr; text-align:right;">
+                    </div>
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">البريد الإلكتروني</label>
+                        <input type="email" class="pi-inp-field" value="saleh.ad@example.com" style="direction:ltr; text-align:right;">
+                    </div>
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">الجنس</label>
+                        <input type="text" class="pi-inp-field" value="ذكر">
+                    </div>
+                    <div class="pi-inp-group">
+                        <label class="pi-inp-label">المركز المسجل فيه حالياً</label>
+                        <div style="display:flex; align-items:center; gap:5px; color:#13EC6A; background:#f0fbf5; padding:10px; border-radius:10px;">
+                            <i class="fa-solid fa-mosque" style="font-size:14px;"></i>
+                            <span style="font-size:12px; font-weight:700;">مركز تبيان لتعليم القرآن</span>
+                        </div>
+                    </div>
+                    <button class="pi-btn-save" onclick="saveData()">حفظ التعديلات</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-overlay" id="dashboardModal">
+            <div class="dash-header">
+                <i class="fa-solid fa-arrow-right back-btn" onclick="closeDashboard()"></i>
+                <span class="dash-title">تقارير الأداء</span>
+            </div>
+
+            <div class="dash-content">
+                
+                <div class="d-stats-grid">
+                    <div class="d-stat-card"><span class="d-s-val">12</span><span class="d-s-lbl">سورة</span></div>
+                    <div class="d-stat-card"><span class="d-s-val">45</span><span class="d-s-lbl">دقيقة</span></div>
+                    <div class="d-stat-card"><span class="d-s-val">8</span><span class="d-s-lbl">اختبار</span></div>
                 </div>
 
-                <div class="inp-group">
-                    <label class="inp-label">البريد الإلكتروني</label>
-                    <input type="email" class="inp-field" value="saleh@example.com">
+                <div class="ai-card">
+                    <div class="ai-head">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <h4>الذكاء الاصطناعي</h4>
+                    </div>
+                    <p class="ai-text">
+                        أداء ممتاز! ارتفع معدل الحفظ لديك بنسبة 15% هذا الأسبوع. واصل التركيز على مراجعة المتشابهات.
+                    </p>
                 </div>
 
-                <div class="inp-group">
-                    <label class="inp-label">رقم الجوال</label>
-                    <input type="tel" class="inp-field" value="0551234567">
+                <div class="chart-box">
+                    <div class="chart-header">
+                        <span class="chart-title">النشاط الأسبوعي (صفحات)</span>
+                    </div>
+                    <div class="bar-chart" id="barChartContainer">
+                    </div>
                 </div>
 
-                <button class="btn-save" onclick="saveData()">حفظ التغييرات</button>
+                <div class="chart-box">
+                    <div class="chart-header">
+                        <span class="chart-title">توزيع الجهد</span>
+                    </div>
+                    <div class="donut-chart-wrapper">
+                        <div class="donut-legend">
+                            <div class="legend-item"><div class="dot" style="background:#13EC6A"></div> حفظ (70%)</div>
+                            <div class="legend-item"><div class="dot" style="background:#f39c12"></div> مراجعة (20%)</div>
+                            <div class="legend-item"><div class="dot" style="background:#eee"></div> تلاوة (10%)</div>
+                        </div>
+                        <div class="donut-chart">
+                            <div class="donut-inner">
+                                <span style="font-size:14px; font-weight:800; color:#2c3e50;">ممتاز</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-box">
+                    <div class="chart-header">
+                        <span class="chart-title">التقدم الشهري</span>
+                    </div>
+                    <div class="trend-chart" id="trendChartContainer">
+                    </div>
+                </div>
+
+                <div class="dash-note">
+                    <div class="note-head">
+                        <div class="note-icon-wrapper"><i class="fa-solid fa-user-tie"></i></div>
+                        <span style="font-size:12px; font-weight:700;">ملاحظة من أ. عمر فالح</span>
+                    </div>
+                    <div class="note-text">
+                        "السلام عليكم يا صالح، راجعت تلاوتك الأخيرة. أحسنت في الغنن، لكن أرجو الانتباه للمدود الطبيعية في سورة النازعات."
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -286,20 +437,59 @@
     </div>
 
     <script>
-        function openEdit() {
-            document.getElementById('editModal').classList.add('show');
+        function showPersonalInfo() {
+            document.getElementById('mainProfileView').style.display = 'none';
+            document.getElementById('personalInfoView').classList.add('show');
+        }
+        function closePersonalInfo() {
+            document.getElementById('personalInfoView').classList.remove('show');
+            document.getElementById('mainProfileView').style.display = 'block';
         }
 
-        function closeEdit() {
-            document.getElementById('editModal').classList.remove('show');
+        function openDashboard() {
+            document.getElementById('dashboardModal').classList.add('show');
+            renderCharts();
+        }
+        function closeDashboard() {
+            document.getElementById('dashboardModal').classList.remove('show');
         }
 
         function saveData() {
-            const newName = document.getElementById('inputName').value;
-            if(newName) {
-                document.getElementById('profileName').innerText = newName;
+            const name = document.getElementById('inputName').value;
+            if (name) {
+                document.getElementById('mainUserName').innerText = name;
+                document.getElementById('piUserName').innerText = name;
             }
-            closeEdit();
+            closePersonalInfo();
+        }
+
+        function renderCharts() {
+            const barContainer = document.getElementById('barChartContainer');
+            barContainer.innerHTML = '';
+            const days = ['أ', 'إ', 'ث', 'ر', 'خ', 'ج', 'س'];
+            const barHeights = [40, 60, 85, 30, 95, 50, 20]; 
+            days.forEach((day, index) => {
+                const h = barHeights[index];
+                const isHigh = h > 60;
+                barContainer.innerHTML += `
+                    <div class="bar-group" onclick="alert('يوم ${day}: ${Math.floor(h/10)} صفحات')">
+                        <div class="bar ${isHigh ? 'high' : ''}" style="height: 0%;" data-h="${h}%"></div>
+                        <span class="bar-label">${day}</span>
+                    </div>
+                `;
+            });
+
+            const trendContainer = document.getElementById('trendChartContainer');
+            trendContainer.innerHTML = '';
+            for(let i=0; i<15; i++) {
+                let h = Math.floor(Math.random() * 60 + 20);
+                trendContainer.innerHTML += `<div class="trend-bar ${h>50?'trend-up':''}" style="height:0%" data-h="${h}%"></div>`;
+            }
+
+            setTimeout(() => {
+                document.querySelectorAll('.bar').forEach(b => b.style.height = b.getAttribute('data-h'));
+                document.querySelectorAll('.trend-bar').forEach(b => b.style.height = b.getAttribute('data-h'));
+            }, 100);
         }
     </script>
 
