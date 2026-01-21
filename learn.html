@@ -82,8 +82,8 @@
         .word.current { background-color: #E9F7EF; color: #13EC6A; transform: scale(1.1); display: inline-block; font-weight: 700; }
         .word.done { color: #13EC6A; }
         
-        .memorize-mode .word { color: transparent; text-shadow: 0 0 13px rgba(0,0,0,0.15); }
-        .memorize-mode .word.current, .memorize-mode .word.done { color: #13EC6A; text-shadow: none; }
+        .memorize-mode .word { color: transparent; text-shadow: 0 0 15px rgba(0,0,0,0.1); background: #f9f9f9; border-radius: 4px; margin: 0 2px; }
+        .memorize-mode .word.current, .memorize-mode .word.done { color: #13EC6A; text-shadow: none; background: transparent; }
 
         .controls-wrapper {
             display: flex; justify-content: center; align-items: center;
@@ -323,19 +323,26 @@
         ];
 
         const fatihaVerses = [
-            "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
-            "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
-            "الرَّحْمَٰنِ الرَّحِيمِ",
-            "مَالِكِ يَوْمِ الدِّينِ",
-            "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
-            "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
-            "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"
+            "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+            "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+            "الرَّحْمَٰنِ الرَّحِيمِ",
+            "مَالِكِ يَوْمِ الدِّينِ",
+            "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+            "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+            "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"
         ];
 
         let isRecording = false;
         let simulationTimer;
         let currentMode = 'recite';
         
+        const allIndices = Array.from({length: 114}, (_, i) => i);
+        for (let i = allIndices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
+        }
+        const reviewedIndices = allIndices.slice(0, 15).sort((a, b) => a - b);
+
         function initPage() {
             loadSurahContent(1);
         }
@@ -440,7 +447,7 @@
             } else {
                 list.innerHTML = `
                     <div class="mistake-item">
-                        <div class="w-info"><span>وَلَا الضَّالِّينَ</span><small>توقفت هنا لمدة 4 ثواني (تردد)</small></div>
+                        <div class="w-info"><span>وَلَا الضَّالِّينَ</span><small>توقفت هنا لمدة 4 ثواني (تردد)</small></div>
                         <div class="btn-play-fix"><i class="fa-solid fa-clock-rotate-left"></i></div>
                     </div>`;
                 document.getElementById('aiMsg').innerText = "حفظك جيد، لكن التردد في خواتيم الآيات يدل على عدم التثبيت. كرر الآية الأخيرة 5 مرات.";
@@ -484,7 +491,6 @@
                 if(!vEl) { stopRecite(); return; }
                 const words = vEl.querySelectorAll('.word');
                 if (wIndex < words.length) {
-                    words[wIndex].classList.add('done'); 
                     words[wIndex].scrollIntoView({ behavior: "smooth", block: "center" });
                     wIndex++;
                 } else {
@@ -501,9 +507,32 @@
             if(btn) btn.classList.add('active');
             const list = document.getElementById('surahListContainer');
             list.innerHTML = '';
+            
             surahNames.forEach((name, i) => {
                 const id = i + 1;
-                let badge = type === 'recite' ? `<span class="s-badge">إتقان: ${Math.floor(Math.random()*20+80)}%</span>` : '';
+                const isReviewed = reviewedIndices.includes(i);
+                
+                if (type === 'review' && !isReviewed) return;
+                if (type === 'memorize' && isReviewed) return;
+
+                let badge = '';
+                if(type === 'recite') {
+                    if (id <= 5) {
+                        const highPercent = Math.floor(Math.random() * 30 + 70);
+                        badge = `<span class="s-badge" style="background:#E9F7EF; color:#13EC6A;">إتقان: ${highPercent}%</span>`;
+                    } else if (id <= 8) {
+                        const lowPercent = Math.floor(Math.random() * 30 + 10);
+                        badge = `<span class="s-badge" style="background:#FFF8E1; color:#F39C12;">إتقان: ${lowPercent}%</span>`;
+                    } else {
+                        badge = `<span class="s-badge" style="background:#f5f5f5; color:#999;">لم تبدأ</span>`;
+                    }
+                } else if (type === 'review') {
+                    const highPercent = Math.floor(Math.random() * 10 + 90);
+                    badge = `<span class="s-badge" style="background:#FFF8E1; color:#F39C12;">إتقان: ${highPercent}%</span>`;
+                } else if (type === 'memorize') {
+                    badge = `<span class="s-badge" style="background:#f5f5f5; color:#999;">جديد</span>`;
+                }
+
                 const el = document.createElement('div');
                 el.className = 's-item';
                 el.innerHTML = `<div style="font-weight:700; color:#2c3e50;">${id}. سورة ${name}</div>${badge}`;
