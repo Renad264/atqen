@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - أتقن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: all 0.2s ease; }
+        
+        body { 
+            background-color: #e0e5ec; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+        }
+
+        .mobile-container {
+            width: 375px; height: 700px;
+            background-color: #f8f9fa;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
+            overflow: hidden; position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .content-layer {
+            flex: 1; overflow-y: auto; position: relative; z-index: 1;
+            padding: 0 0 90px 0;
+            scrollbar-width: none;
+        }
+        .content-layer::-webkit-scrollbar { display: none; }
+
+        .profile-header-container {
+            background: white; padding: 30px 20px 25px 20px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            text-align: center; margin-bottom: 20px;
+        }
+
+        .page-title { font-size: 16px; font-weight: 800; color: #2c3e50; margin-bottom: 20px; }
+
+        .avatar-area { position: relative; width: 90px; height: 90px; margin: 0 auto 10px auto; }
+        .avatar-img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 4px solid #E9F7EF;
+        }
+        .edit-badge {
+            position: absolute; bottom: 0; right: 0; width: 28px; height: 28px;
+            background: #13EC6A; border-radius: 50%; border: 3px solid white;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 12px; cursor: pointer;
+        }
+
+        .user-name { font-size: 18px; font-weight: 800; color: #2c3e50; margin-bottom: 2px; }
+        .user-info { font-size: 12px; color: #95a5a6; font-weight: 600; }
+
+        .stats-grid {
+            display: flex; justify-content: space-between; margin-top: 25px;
+            padding: 0 10px;
+        }
+        .stat-box { text-align: center; flex: 1; }
+        .stat-val { display: block; font-size: 18px; font-weight: 800; color: #2c3e50; }
+        .stat-lbl { font-size: 11px; color: #95a5a6; margin-top: 2px; }
+
+        .section-container { padding: 0 20px; margin-bottom: 20px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .sec-title { font-size: 14px; font-weight: 800; color: #2c3e50; }
+        .sec-link { font-size: 11px; color: #13EC6A; font-weight: 700; text-decoration: none; }
+
+        .badges-scroll {
+            display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;
+            scrollbar-width: none;
+        }
+        .badges-scroll::-webkit-scrollbar { display: none; }
+        
+        .badge-card {
+            background: white; border-radius: 15px; padding: 10px; min-width: 90px;
+            text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .badge-icon { font-size: 24px; margin-bottom: 8px; }
+        .badge-name { font-size: 10px; font-weight: 700; color: #2c3e50; }
+
+        .settings-group { display: flex; flex-direction: column; gap: 10px; }
+        
+        .menu-item {
+            background: white; border-radius: 15px; padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); cursor: pointer;
+        }
+        .menu-left { display: flex; align-items: center; gap: 15px; }
+        .menu-icon { 
+            width: 38px; height: 38px; background: #f5f6f8; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; color: #555; font-size: 16px;
+        }
+        .menu-text { font-size: 13px; font-weight: 700; color: #2c3e50; }
+        
+        .arrow-icon { color: #ccc; font-size: 12px; }
+
+        .logout-item .menu-icon { background: #fee2e2; color: #ef4444; }
+        .logout-item .menu-text { color: #ef4444; }
+
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 50; display: none; align-items: flex-end;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .edit-modal {
+            background: #f9f9f9; width: 100%; height: 85%;
+            border-radius: 30px 30px 0 0; padding: 25px;
+            display: flex; flex-direction: column; animation: slideUp 0.3s forwards;
+        }
+        .modal-top { text-align: center; margin-bottom: 25px; position: relative; }
+        .m-title { font-size: 16px; font-weight: 800; color: #2c3e50; }
+        .m-close { position: absolute; left: 0; top: 0; font-size: 20px; color: #999; cursor: pointer; }
+
+        .inp-group { margin-bottom: 15px; }
+        .inp-label { display: block; font-size: 11px; font-weight: 700; color: #7f8c8d; margin-bottom: 5px; }
+        .inp-field {
+            width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 15px;
+            background: white; font-family: 'Cairo'; font-size: 13px; font-weight: 600; color: #2c3e50;
+            outline: none; 
+        }
+        .inp-field:focus { border-color: #13EC6A; }
+
+        .btn-save {
+            width: 100%; padding: 15px; background: #13EC6A; color: white; border: none;
+            border-radius: 15px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: auto;
+        }
+
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 15px 25px 25px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top-left-radius: 25px; border-top-right-radius: 25px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 10;
+        }
+        .nav-item { color: #bdc3c7; font-size: 22px; cursor: pointer; text-decoration: none; }
+        .nav-item.active { color: #13EC6A; }
+        .fab-wrapper { position: relative; top: -30px; }
+        .fab-btn {
+            width: 65px; height: 65px; background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 28px; border: 6px solid white; box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4);
+        }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div class="content-layer">
+            
+            <div class="profile-header-container">
+                <div class="page-title">الملف الشخصي</div>
+                
+                <div class="avatar-area">
+                    <img src="145867.png" id="mainAvatar" class="avatar-img" alt="Profile">
+                    <div class="edit-badge" onclick="openEdit()"><i class="fa-solid fa-pen"></i></div>
+                </div>
+                
+                <h2 class="user-name" id="profileName">صالح أحمد</h2>
+                <p class="user-info">المستوى 3 • الرياض</p>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-val">1,250</span>
+                        <span class="stat-lbl">نقطة</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-val" style="color:#13EC6A;">143</span>
+                        <span class="stat-lbl">آية</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-val">12</span>
+                        <span class="stat-lbl">يوم</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="sec-title">أوسمتي</span>
+                    <a href="#" class="sec-link">عرض الكل</a>
+                </div>
+                <div class="badges-scroll">
+                    <div class="badge-card">
+                        <div class="badge-icon">🥇</div>
+                        <span class="badge-name">الأول</span>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">🔥</div>
+                        <span class="badge-name">مثابر</span>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">🚀</div>
+                        <span class="badge-name">منطلق</span>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">⭐</div>
+                        <span class="badge-name">نجم</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <span class="sec-title" style="display:block; margin-bottom:15px;">الإعدادات</span>
+                
+                <div class="settings-group">
+                    
+                    <div class="menu-item" onclick="openEdit()">
+                        <div class="menu-left">
+                            <div class="menu-icon"><i class="fa-regular fa-user"></i></div>
+                            <span class="menu-text">البيانات الشخصية</span>
+                        </div>
+                        <i class="fa-solid fa-angle-left arrow-icon"></i>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-left">
+                            <div class="menu-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <span class="menu-text">الخصوصية والأمان</span>
+                        </div>
+                        <i class="fa-solid fa-angle-left arrow-icon"></i>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-left">
+                            <div class="menu-icon"><i class="fa-regular fa-circle-question"></i></div>
+                            <span class="menu-text">المساعدة والدعم</span>
+                        </div>
+                        <i class="fa-solid fa-angle-left arrow-icon"></i>
+                    </div>
+
+                    <div class="menu-item logout-item" onclick="window.location.href='login.html'">
+                        <div class="menu-left">
+                            <div class="menu-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                            <span class="menu-text">تسجيل الخروج</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-overlay" id="editModal">
+            <div class="edit-modal">
+                <div class="modal-top">
+                    <span class="m-title">تعديل الملف</span>
+                    <i class="fa-solid fa-xmark m-close" onclick="closeEdit()"></i>
+                </div>
+
+                <div class="inp-group">
+                    <label class="inp-label">الاسم</label>
+                    <input type="text" class="inp-field" id="inputName" value="صالح أحمد">
+                </div>
+
+                <div class="inp-group">
+                    <label class="inp-label">البريد الإلكتروني</label>
+                    <input type="email" class="inp-field" value="saleh@example.com">
+                </div>
+
+                <div class="inp-group">
+                    <label class="inp-label">رقم الجوال</label>
+                    <input type="tel" class="inp-field" value="0551234567">
+                </div>
+
+                <button class="btn-save" onclick="saveData()">حفظ التغييرات</button>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="main.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+            <a href="mos.html" class="nav-item"><i class="fa-solid fa-mosque"></i></a>
+            <div class="fab-wrapper"><a href="learn.html" class="fab-btn"><i class="fa-solid fa-microphone" style="color:white;"></i></a></div>
+            <a href="game.html" class="nav-item"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="prof.html" class="nav-item active"><i class="fa-regular fa-user"></i></a>
+        </div>
+
+    </div>
+
+    <script>
+        function openEdit() {
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function closeEdit() {
+            document.getElementById('editModal').classList.remove('show');
+        }
+
+        function saveData() {
+            const newName = document.getElementById('inputName').value;
+            if(newName) {
+                document.getElementById('profileName').innerText = newName;
+            }
+            closeEdit();
+        }
+    </script>
+
+</body>
+</html>

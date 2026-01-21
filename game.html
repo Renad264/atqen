@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة البطل - أتقن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; user-select: none; }
+        
+        body { 
+            background-color: #e0e5ec; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+        }
+
+        .mobile-container {
+            width: 375px; height: 700px;
+            background: linear-gradient(180deg, #4FC3F7 0%, #81D4FA 30%, #A5D6A7 70%, #66BB6A 100%);
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15); 
+            overflow: hidden; position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .decoration-container { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .cloud { position: absolute; color: rgba(255,255,255,0.7); animation: floatCloud 20s infinite linear; }
+        .c1 { top: 50px; left: -60px; font-size: 50px; animation-duration: 25s; }
+        .c2 { top: 120px; left: -60px; font-size: 30px; animation-duration: 18s; animation-delay: 5s; }
+        
+        .bird-wrapper { position: absolute; left: -50px; animation: flyAcross linear infinite; }
+        .bird { color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .b1 { top: 80px; font-size: 20px; animation-duration: 15s; }
+        .b2 { top: 150px; font-size: 16px; animation-duration: 20s; animation-delay: 2s; opacity: 0.8; }
+        .b3 { top: 220px; font-size: 24px; animation-duration: 12s; animation-delay: 7s; }
+
+        .game-map-container {
+            flex: 1; overflow-y: auto; position: relative; z-index: 1;
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .game-map-container::-webkit-scrollbar { display: none; }
+
+        .game-track {
+            padding: 100px 20px 120px 20px; 
+            display: flex; flex-direction: column-reverse; 
+            align-items: center; gap: 50px;
+            min-height: 100%; 
+        }
+
+        .header-title {
+            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+            text-align: center; z-index: 20;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(5px);
+            padding: 8px 25px; border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .header-title h2 { 
+            font-size: 16px; color: #fff; 
+            font-weight: 800; margin: 0;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .level-node {
+            width: 75px; height: 75px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; transition: 0.3s;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1); border: 4px solid white;
+            flex-shrink: 0;
+        }
+        
+        .level-content { font-size: 26px; color: white; }
+        .level-label {
+            position: absolute; bottom: -30px; background: white; 
+            padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;
+            color: #555; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .level-locked { background-color: #CFD8DC; cursor: default; filter: grayscale(1); opacity: 0.8; }
+        .level-locked .level-content { color: #90A4AE; }
+        
+        .level-current { 
+            background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
+            animation: pulse-green 2s infinite; cursor: pointer;
+        }
+        .level-current:active { transform: scale(0.95); }
+
+        .level-done { background-color: #2ECC71; }
+        
+        .level-quiz { background: linear-gradient(135deg, #FFCA28 0%, #FF6F00 100%); cursor: pointer; }
+
+        .avatar-container {
+            position: absolute; width: 70px; height: 70px; z-index: 5;
+            transition: all 0.5s ease-in-out; pointer-events: none;
+        }
+        .avatar-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); }
+
+        .task-modal {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 50;
+            display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .task-modal.show { display: flex; opacity: 1; }
+
+        .task-card {
+            background: white; width: 85%; border-radius: 25px; padding: 25px;
+            text-align: center; position: relative;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .close-task { position: absolute; top: 15px; left: 15px; font-size: 20px; color: #999; cursor: pointer; }
+        .task-icon { font-size: 50px; margin-bottom: 15px; display: block; }
+        .task-title { font-size: 18px; font-weight: 800; color: #2c3e50; margin-bottom: 5px; }
+        .task-desc { font-size: 12px; color: #7f8c8d; margin-bottom: 20px; }
+
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+        .quiz-btn {
+            background: #f5f5f5; border: 2px solid #eee; padding: 12px; border-radius: 12px;
+            font-weight: 700; color: #2c3e50; cursor: pointer; transition: 0.2s;
+        }
+        .quiz-btn.correct { background: #E9F7EF; border-color: #13EC6A; color: #13EC6A; }
+        .quiz-btn.wrong { background: #ffebee; border-color: #e74c3c; color: #e74c3c; }
+
+        .recite-mic {
+            width: 80px; height: 80px; background: #13EC6A; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto;
+            color: white; font-size: 35px; cursor: pointer; box-shadow: 0 10px 20px rgba(19, 236, 106, 0.3);
+        }
+        .recite-mic.active { animation: pulse-green 1s infinite; background: #e74c3c; }
+
+        .live-verse-box {
+            background: #fdfbfb; border: 1px dashed #13EC6A; border-radius: 15px;
+            padding: 20px; margin-top: 10px; min-height: 150px;
+            display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+            direction: rtl; gap: 5px;
+        }
+        .live-word {
+            font-family: 'Amiri', serif; font-size: 22px; color: #bdc3c7; transition: 0.2s;
+        }
+        .live-word.read { color: #2c3e50; font-weight: 700; }
+        .live-word.current { color: #13EC6A; transform: scale(1.2); }
+
+        .success-modal {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.98); z-index: 60;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center;
+        }
+        .success-modal.show { display: flex; animation: fadeIn 0.3s; }
+        .badge-glow {
+            width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,215,64,0.5) 0%, rgba(255,255,255,0) 70%);
+            position: absolute; z-index: -1; animation: spin 10s linear infinite;
+        }
+        .big-badge { font-size: 100px; color: #FFD54F; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); animation: bounceBadge 1s infinite alternate; }
+        .success-title { font-size: 24px; font-weight: 800; color: #2c3e50; margin-top: 20px; }
+        .success-sub { font-size: 14px; color: #7f8c8d; margin-bottom: 30px; }
+        .btn-continue {
+            background: #13EC6A; color: white; padding: 15px 40px; border-radius: 30px;
+            font-size: 16px; font-weight: 800; border: none; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(19, 236, 106, 0.3); transition: 0.2s;
+        }
+
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 15px 25px 25px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top-left-radius: 25px; border-top-right-radius: 25px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 20;
+        }
+        .nav-item { color: #bdc3c7; font-size: 22px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+        .nav-item.game-active { color: #F39C12; }
+        .fab-wrapper { position: relative; top: -30px; }
+        .fab-btn {
+            width: 65px; height: 65px; background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 28px; border: 6px solid white; box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4);
+        }
+
+        @keyframes floatCloud { from { transform: translateX(0); } to { transform: translateX(500px); } }
+        @keyframes flyAcross { from { transform: translateX(0) scaleX(1); } to { transform: translateX(500px) scaleX(1); } }
+        @keyframes pulse-green { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(19, 236, 106, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(19, 236, 106, 0); } 100% { transform: scale(1); } }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes bounceBadge { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div class="decoration-container">
+            <i class="fa-solid fa-cloud cloud c1"></i>
+            <i class="fa-solid fa-cloud cloud c2"></i>
+            <div class="bird-wrapper b1"><i class="fa-solid fa-dove bird"></i></div>
+            <div class="bird-wrapper b2"><i class="fa-solid fa-dove bird"></i></div>
+            <div class="bird-wrapper b3"><i class="fa-solid fa-dove bird"></i></div>
+        </div>
+
+        <div class="header-title">
+            <h2>رحلة جزء عمّ</h2>
+        </div>
+
+        <div class="game-map-container">
+            <div class="game-track">
+                
+                <div class="level-node level-locked" style="margin-right: 60px;"><div class="level-label">???</div></div>
+                <div class="level-node level-locked" style="margin-left: 40px;"><div class="level-label">???</div></div>
+                <div class="level-node level-locked" style="margin-right: 50px;"><div class="level-label">???</div></div>
+                <div class="level-node level-locked" style="margin-left: 30px;"><div class="level-label">???</div></div>
+                <div class="level-node level-locked" style="margin-right: 70px;"><div class="level-label">???</div></div>
+
+                <div class="level-node level-locked" style="margin-left: -50px;">
+                    <div class="level-content"><i class="fa-solid fa-lock"></i></div>
+                    <div class="level-label">سورة الكافرون</div>
+                </div>
+
+                <div class="level-node level-locked" style="margin-right: 50px;">
+                    <div class="level-content"><i class="fa-solid fa-lock"></i></div>
+                    <div class="level-label">سورة النصر</div>
+                </div>
+
+                <div class="level-node level-locked" id="level3" style="margin-left: 0;">
+                    <div class="level-content"><i class="fa-solid fa-lock"></i></div>
+                    <div class="level-label">تحدي التجويد</div>
+                </div>
+
+                <div class="level-node level-current" onclick="openGame('recite')" style="margin-right: 60px;">
+                    <div class="level-content"><i class="fa-solid fa-microphone"></i></div>
+                    <div class="level-label">تلاوة سورة الإخلاص</div>
+                    
+                    <div class="avatar-container" style="top: -25px; left: -30px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" class="avatar-img" alt="Boy">
+                    </div>
+                </div>
+
+                <div class="level-node level-done" style="margin-left: 60px;">
+                    <div class="level-content"><i class="fa-solid fa-check"></i></div>
+                    <div class="level-label">سورة الفلق</div>
+                </div>
+
+                <div class="level-node level-done" style="margin-right: 30px;">
+                    <div class="level-content"><i class="fa-solid fa-check"></i></div>
+                    <div class="level-label">سورة الناس</div>
+                </div>
+
+                <div class="level-node level-done" style="margin-left: 0;">
+                    <div class="level-content"><i class="fa-solid fa-flag-checkered"></i></div>
+                    <div class="level-label">البداية</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="task-modal" id="taskModal">
+            
+            <div class="task-card" id="reciteTask" style="display:none;">
+                <i class="fa-solid fa-xmark close-task" onclick="closeGame()"></i>
+                
+                <div id="reciteStartView">
+                    <span class="task-icon">🎤</span>
+                    <h3 class="task-title">تحدي التلاوة</h3>
+                    <p class="task-desc">اقرأ سورة الإخلاص قراءة صحيحة لتفتح القفل!</p>
+                    <div class="recite-mic" onclick="startRecitation()">
+                        <i class="fa-solid fa-microphone"></i>
+                    </div>
+                </div>
+
+                <div id="liveVerseDisplay" style="display:none;">
+                    <h3 class="task-title" style="font-size:14px; margin-bottom:10px;">اقرأ بصوت عالٍ</h3>
+                    <div class="live-verse-box" id="verseBox"></div>
+                </div>
+
+            </div>
+
+            <div class="task-card" id="quizTask" style="display:none;">
+                <i class="fa-solid fa-xmark close-task" onclick="closeGame()"></i>
+                <span class="task-icon">🧠</span>
+                <h3 class="task-title">سؤال سريع</h3>
+                <p class="task-desc">ما هو حكم النون الساكنة في "مِن شَرِّ"؟</p>
+                <div class="quiz-options">
+                    <div class="quiz-btn" onclick="checkAnswer(this, false)">إظهار</div>
+                    <div class="quiz-btn" onclick="checkAnswer(this, true)">إخفاء</div>
+                    <div class="quiz-btn" onclick="checkAnswer(this, false)">إقلاب</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="success-modal" id="successModal">
+            <div class="badge-glow"></div>
+            <i class="fa-solid fa-medal big-badge"></i>
+            <h2 class="success-title">مبارك يا بطل! 🎉</h2>
+            <p class="success-sub">تلاوة رائعة ومخارج حروف ممتازة.<br>استمر يا بطل!</p>
+            <button class="btn-continue" onclick="closeSuccess()">افتح التحدي التالي</button>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="main.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+            <a href="mos.html" class="nav-item"><i class="fa-solid fa-mosque"></i></a>
+            <div class="fab-wrapper"><a href="learn.html" class="fab-btn"><i class="fa-solid fa-microphone" style="color:white;"></i></a></div>
+            <a href="game.html" class="nav-item game-active"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="prof.html" class="nav-item"><i class="fa-regular fa-user"></i></a>
+        </div>
+
+    </div>
+
+    <script>
+        const ikhlasText = "قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ";
+
+        function openGame(type) {
+            document.getElementById('taskModal').classList.add('show');
+            document.getElementById('reciteTask').style.display = 'none';
+            document.getElementById('quizTask').style.display = 'none';
+
+            if (type === 'recite') {
+                document.getElementById('reciteTask').style.display = 'block';
+                document.getElementById('reciteStartView').style.display = 'block';
+                document.getElementById('liveVerseDisplay').style.display = 'none';
+            } else if (type === 'quiz') { 
+                if(document.getElementById('level3').classList.contains('level-quiz')) {
+                    document.getElementById('quizTask').style.display = 'block';
+                }
+            }
+        }
+
+        function closeGame() {
+            document.getElementById('taskModal').classList.remove('show');
+        }
+
+        function startRecitation() {
+            document.getElementById('reciteStartView').style.display = 'none';
+            document.getElementById('liveVerseDisplay').style.display = 'block';
+            
+            const box = document.getElementById('verseBox');
+            box.innerHTML = '';
+            
+            const words = ikhlasText.split(' ');
+            words.forEach(w => {
+                const span = document.createElement('span');
+                span.className = 'live-word';
+                span.innerText = w;
+                box.appendChild(span);
+            });
+
+            let i = 0;
+            const spans = document.querySelectorAll('.live-word');
+            const interval = setInterval(() => {
+                if (i < spans.length) {
+                    spans.forEach(s => s.classList.remove('current'));
+                    spans[i].classList.add('read', 'current');
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(showSuccess, 500);
+                }
+            }, 400);
+        }
+
+        function checkAnswer(btn, isCorrect) {
+            if (isCorrect) {
+                btn.classList.add('correct');
+                setTimeout(() => showSuccess(), 800);
+            } else {
+                btn.classList.add('wrong');
+                setTimeout(() => btn.classList.remove('wrong'), 500);
+            }
+        }
+
+        function showSuccess() {
+            closeGame();
+            document.getElementById('successModal').classList.add('show');
+        }
+
+        function closeSuccess() {
+            document.getElementById('successModal').classList.remove('show');
+            
+            const nextLevel = document.getElementById('level3');
+            nextLevel.classList.remove('level-locked');
+            nextLevel.classList.add('level-quiz');
+            nextLevel.querySelector('.level-content i').className = 'fa-solid fa-question';
+            nextLevel.setAttribute('onclick', "openGame('quiz')");
+        }
+        
+        window.onload = function() {
+            const container = document.querySelector('.game-map-container');
+            container.scrollTop = container.scrollHeight;
+        };
+    </script>
+
+</body>
+</html>

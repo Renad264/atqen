@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المساجد والحلقات - أتقن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        
+        body { 
+            background-color: #e0e5ec; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+        }
+
+        .mobile-container {
+            width: 375px; height: 700px;
+            background-color: #f5f5f5;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
+            overflow: hidden; position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        #map {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        .ui-layer {
+            position: relative; z-index: 2; flex: 1;
+            display: flex; flex-direction: column;
+            pointer-events: none;
+            padding: 20px;
+        }
+        
+        .interactive-element { pointer-events: auto; }
+
+        .top-section {
+            display: flex; flex-direction: column; gap: 10px; margin-bottom: auto;
+        }
+
+        .page-header {
+            background: rgba(255,255,255,0.95); padding: 15px; border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;
+        }
+        .header-title { font-size: 14px; font-weight: 800; color: #2c3e50; margin-bottom: 5px; }
+        
+        .user-status {
+            background: #E9F7EF; padding: 8px 12px; border-radius: 12px; border: 1px solid #13EC6A;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .user-status span { font-size: 11px; font-weight: 700; color: #2c3e50; }
+        .status-badge { background: #13EC6A; color: white; padding: 3px 8px; border-radius: 10px; font-size: 9px; }
+
+        .search-bar {
+            background: white; padding: 10px 15px; border-radius: 15px;
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .search-bar input { border: none; outline: none; width: 100%; font-family: 'Cairo'; font-size: 12px; }
+        
+        .filter-row { display: flex; gap: 8px; margin-top: 5px; }
+        .filter-btn {
+            flex: 1; padding: 8px; background: white; border-radius: 20px; text-align: center;
+            font-size: 11px; font-weight: 700; color: #7f8c8d; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s;
+        }
+        .filter-btn.active { background: #13EC6A; color: white; }
+        .filter-btn.active-blue { background: #3498db; color: white; }
+        .filter-btn.active-pink { background: #e91e63; color: white; }
+
+        .mosque-card-wrapper {
+            position: absolute; bottom: 90px; left: 20px; right: 20px;
+            transform: translateY(150%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+        .mosque-card-wrapper.show { transform: translateY(0); }
+
+        .mosque-card {
+            background: white; border-radius: 25px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative;
+        }
+        .close-card {
+            position: absolute; top: 10px; left: 10px; width: 30px; height: 30px;
+            background: rgba(0,0,0,0.5); border-radius: 50%; color: white;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5;
+        }
+
+        .card-img-area { height: 130px; position: relative; }
+        .card-img-area img { width: 100%; height: 100%; object-fit: cover; }
+        .badge-open {
+            position: absolute; top: 15px; right: 15px; background: #13EC6A; color: white;
+            padding: 4px 10px; border-radius: 15px; font-size: 10px; font-weight: 800;
+        }
+
+        .card-info { padding: 15px; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .card-title h3 { font-size: 15px; font-weight: 800; color: #2c3e50; margin-bottom: 2px; }
+        .card-title p { font-size: 10px; color: #95a5a6; display: flex; align-items: center; gap: 4px; }
+        .rating { background: #FFF8E1; color: #F39C12; padding: 3px 8px; border-radius: 8px; font-size: 11px; font-weight: 800; }
+
+        .stats-grid { display: flex; text-align: center; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; padding: 10px 0; margin-bottom: 12px; }
+        .stat-box { flex: 1; border-left: 1px solid #f0f0f0; }
+        .stat-box:last-child { border-left: none; }
+        .stat-label { display: block; font-size: 9px; color: #95a5a6; }
+        .stat-val { font-size: 13px; font-weight: 800; color: #2c3e50; }
+
+        .btn-contact {
+            width: 100%; padding: 12px; background: #13EC6A; color: white; border: none;
+            border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 15px 25px 25px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top-left-radius: 25px; border-top-right-radius: 25px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 20;
+        }
+        .nav-item { color: #bdc3c7; font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .nav-item.active { color: #13EC6A; }
+        .fab-wrapper { position: relative; top: -30px; }
+        .fab-btn {
+            width: 65px; height: 65px; background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 28px; border: 6px solid white; box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4);
+        }
+
+        .custom-pin { text-align: center; font-size: 38px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); transition: 0.2s; }
+        .custom-pin:hover { transform: scale(1.1) translateY(-5px); }
+        .pin-blue { color: #3498db; }
+        .pin-pink { color: #e91e63; }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div id="map"></div>
+
+        <div class="ui-layer">
+            
+            <div class="top-section interactive-element">
+                <div class="page-header">
+                    <div class="header-title">حلقات ومراكز تعليم وتحفيظ القرآن الكريم</div>
+                    <div class="user-status">
+                        <span><i class="fa-solid fa-location-dot" style="color:#13EC6A; margin-left:5px;"></i> جامع الراجحي - حلقة الشاطبي</span>
+                        <span class="status-badge">مسجل حالياً</span>
+                    </div>
+                </div>
+
+                <div class="search-bar">
+                    <i class="fa-solid fa-sliders" style="color:#95a5a6;"></i>
+                    <input type="text" placeholder="ابحث عن مسجد أو مركز...">
+                    <i class="fa-solid fa-magnifying-glass" style="color:#13EC6A;"></i>
+                </div>
+
+                <div class="filter-row">
+                    <div class="filter-btn active" onclick="filterMap('all', this)">الكل</div>
+                    <div class="filter-btn" onclick="filterMap('boys', this)">بنين</div>
+                    <div class="filter-btn" onclick="filterMap('girls', this)">بنات</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mosque-card-wrapper interactive-element" id="mosqueCard">
+            <div class="mosque-card">
+                <div class="close-card" onclick="hideCard()"><i class="fa-solid fa-xmark"></i></div>
+                
+                <div class="card-img-area">
+                    <img id="cardImg" src="" alt="Mosque">
+                    <div class="badge-open">مفتوح الآن</div>
+                </div>
+
+                <div class="card-info">
+                    <div class="card-header">
+                        <div class="rating"><i class="fa-solid fa-star"></i> <span id="cardRating"></span></div>
+                        <div class="card-title" style="text-align: right;">
+                            <h3 id="cardName"></h3>
+                            <p><i class="fa-solid fa-location-dot"></i> مركز تحفيظ القرآن الكريم</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <span class="stat-label">الطلاب</span>
+                            <span class="stat-val" id="cardStudents"></span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">المعلمون</span>
+                            <span class="stat-val" id="cardTeachers"></span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">الحلقات</span>
+                            <span class="stat-val" id="cardCircles"></span>
+                        </div>
+                    </div>
+
+                    <button class="btn-contact">
+                        <i class="fa-brands fa-whatsapp"></i> تواصل الآن
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav interactive-element">
+            <a href="main.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+            <a href="mod.html" class="nav-item active"><i class="fa-solid fa-mosque"></i></a>
+            <div class="fab-wrapper"><a href="learn.html" class="fab-btn"><i class="fa-solid fa-microphone" style="color:white;"></i></a></div>
+            <a href="game.html" class="nav-item"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="prof.html" class="nav-item"><i class="fa-regular fa-user"></i></a>
+        </div>
+
+    </div>
+
+    <script>
+        var map = L.map('map', { zoomControl: false }).setView([24.7136, 46.6753], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        const locations = [
+            { 
+                name: "جامع الراجحي (مخرج 15)", 
+                lat: 24.6882, lng: 46.7847, type: "boys", 
+                img: "/Users/renadbraek/Desktop/burhan/87712.jpg",
+                rating: "4.9", students: "154", teachers: "13", circles: "8"
+            },
+            { 
+                name: "مركز الدائري الشمالي", 
+                lat: 24.7805, lng: 46.6551, type: "boys",
+                img: "/Users/renadbraek/Desktop/burhan/P012242.jpg", 
+                rating: "4.7", students: "90", teachers: "8", circles: "5"
+            },
+            { 
+                name: "جامع الملك خالد", 
+                lat: 24.7058, lng: 46.6389, type: "boys",
+                img: "/Users/renadbraek/Desktop/burhan/images.jpeg", 
+                rating: "4.8", students: "120", teachers: "10", circles: "6"
+            },
+            { 
+                name: "دار الفرقان النسائية", 
+                lat: 24.7388, lng: 46.7690, type: "girls",
+                img: "/Users/renadbraek/Desktop/burhan/688ff066-e9d8-4792-8dcf-fe4fe086b6a8-1000x666.webp", 
+                rating: "4.9", students: "200", teachers: "15", circles: "10"
+            },
+            { 
+                name: "مركز الأمير سلطان", 
+                lat: 24.6995, lng: 46.7154, type: "girls",
+                img: "/Users/renadbraek/Desktop/burhan/P012242.jpg", 
+                rating: "4.6", students: "85", teachers: "7", circles: "4"
+            }
+        ];
+
+        let markersLayer = L.layerGroup().addTo(map);
+
+        const blueIcon = L.divIcon({
+            className: 'custom-pin pin-blue',
+            html: '<i class="fa-solid fa-location-dot"></i>',
+            iconSize: [30, 40], iconAnchor: [15, 40]
+        });
+        const pinkIcon = L.divIcon({
+            className: 'custom-pin pin-pink',
+            html: '<i class="fa-solid fa-location-dot"></i>',
+            iconSize: [30, 40], iconAnchor: [15, 40]
+        });
+
+        function drawMarkers(filter) {
+            markersLayer.clearLayers();
+            locations.forEach(loc => {
+                if (filter === 'all' || loc.type === filter) {
+                    const icon = loc.type === 'boys' ? blueIcon : pinkIcon;
+                    const marker = L.marker([loc.lat, loc.lng], { icon: icon });
+                    
+                    marker.on('click', () => {
+                        showCard(loc);
+                        map.flyTo([loc.lat - 0.01, loc.lng], 13);
+                    });
+                    
+                    markersLayer.addLayer(marker);
+                }
+            });
+        }
+
+        function showCard(data) {
+            document.getElementById('cardImg').src = data.img;
+            document.getElementById('cardName').innerText = data.name;
+            document.getElementById('cardRating').innerText = data.rating;
+            document.getElementById('cardStudents').innerText = data.students;
+            document.getElementById('cardTeachers').innerText = data.teachers;
+            document.getElementById('cardCircles').innerText = data.circles;
+            
+            document.getElementById('mosqueCard').classList.add('show');
+        }
+
+        function hideCard() {
+            document.getElementById('mosqueCard').classList.remove('show');
+        }
+
+        function filterMap(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('active', 'active-blue', 'active-pink');
+            });
+            
+            if (type === 'all') btn.classList.add('active');
+            if (type === 'boys') btn.classList.add('active-blue');
+            if (type === 'girls') btn.classList.add('active-pink');
+
+            hideCard();
+            drawMarkers(type);
+        }
+
+        drawMarkers('all');
+
+    </script>
+
+</body>
+</html>

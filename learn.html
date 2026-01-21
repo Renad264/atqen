@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المعلم الذكي - أتقن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; }
+        
+        body { 
+            background-color: #e0e5ec; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+        }
+
+        .mobile-container {
+            width: 375px; height: 700px;
+            background-image: url('IMG_2605.PNG'); 
+            background-size: cover; background-position: center;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
+            overflow: hidden; position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .mobile-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(248, 249, 250, 0.95);
+            z-index: 0; pointer-events: none;
+        }
+
+        .content-layer {
+            position: relative; z-index: 1; flex: 1;
+            display: flex; flex-direction: column;
+            padding: 15px 20px 85px 20px;
+            overflow-y: auto; scrollbar-width: none;
+        }
+        .content-layer::-webkit-scrollbar { display: none; }
+
+        .top-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .header-titles h2 { font-size: 16px; font-weight: 800; color: #2c3e50; margin: 0; }
+        .header-titles p { font-size: 11px; color: #7f8c8d; margin: 0; }
+        .btn-select-surah {
+            background: #fff; border: 1px solid #13EC6A; color: #13EC6A;
+            padding: 5px 12px; border-radius: 15px; font-size: 11px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 5px;
+        }
+
+        .mode-tabs {
+            background: #e0e5ec; padding: 4px; border-radius: 12px;
+            display: flex; margin-bottom: 15px; flex-shrink: 0;
+        }
+        .tab-btn {
+            flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: 700;
+            color: #7f8c8d; border-radius: 10px; cursor: pointer; transition: 0.3s;
+        }
+        .tab-btn.active { background: #13EC6A; color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        .quran-box {
+            background: white; border-radius: 25px; 
+            flex: 1; min-height: 250px; max-height: 400px;
+            overflow-y: auto; padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #f5f5f5;
+            text-align: center; position: relative;
+            display: flex; flex-direction: column; justify-content: flex-start;
+        }
+        .quran-box::-webkit-scrollbar { display: none; } 
+
+        .verse-line {
+            font-family: 'Amiri', serif; font-size: 26px; line-height: 2.6; 
+            color: #2c3e50; font-weight: 500; direction: rtl; margin-bottom: 15px;
+        }
+        
+        .word { padding: 2px 4px; border-radius: 6px; transition: all 0.2s; cursor: default; }
+        .word.current { background-color: #E9F7EF; color: #13EC6A; transform: scale(1.1); display: inline-block; font-weight: 700; }
+        .word.done { color: #13EC6A; }
+        
+        .memorize-mode .word { color: transparent; text-shadow: 0 0 13px rgba(0,0,0,0.15); }
+        .memorize-mode .word.current, .memorize-mode .word.done { color: #13EC6A; text-shadow: none; }
+
+        .controls-wrapper {
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 10px; position: relative; height: 70px; flex-shrink: 0;
+        }
+        .mic-btn {
+            width: 75px; height: 75px; border-radius: 50%;
+            background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 30px; border: 6px solid #fff;
+            box-shadow: 0 8px 25px rgba(19, 236, 106, 0.3);
+            cursor: pointer; transition: 0.3s; z-index: 10;
+        }
+        .mic-btn.recording {
+            background: #e74c3c; animation: pulse 1.5s infinite; border-color: #ffebee;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+        .mic-btn.disabled {
+            background: #bdc3c7; cursor: not-allowed; border-color: #ecf0f1;
+            box-shadow: none; pointer-events: none;
+        }
+
+        .status-text {
+            position: absolute; bottom: -25px; font-size: 11px; font-weight: 700;
+            color: #13EC6A; opacity: 0; transition: 0.3s;
+        }
+        .status-text.show { opacity: 1; bottom: -10px; }
+
+        .history-section {
+            background: white; border-radius: 25px 25px 0 0;
+            padding: 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            margin: 10px -25px -90px -25px; padding-bottom: 100px;
+        }
+        
+        .history-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0; padding-bottom: 10px;
+        }
+        .h-title { font-size: 15px; font-weight: 800; color: #2c3e50; }
+        .h-date { font-size: 11px; color: #95a5a6; background: #f9f9f9; padding: 4px 10px; border-radius: 10px; }
+
+        .score-card {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+            background: #f8fcf9; padding: 15px; border-radius: 18px; border: 1px solid #e9f7ef;
+        }
+        .score-ring {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: conic-gradient(#13EC6A 0% 85%, #ddd 85% 100%);
+            display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .score-ring::before { content: ''; position: absolute; width: 45px; height: 45px; background: #f8fcf9; border-radius: 50%; }
+        .score-num { position: relative; z-index: 2; font-size: 13px; font-weight: 800; color: #2c3e50; }
+        
+        .score-details h4 { font-size: 14px; font-weight: 700; color: #2c3e50; margin-bottom: 3px; }
+        .score-details p { font-size: 11px; color: #7f8c8d; }
+
+        .mistakes-list { margin-bottom: 15px; }
+        .mistake-item {
+            background: #fff; border: 1px solid #ffebee; border-right: 4px solid #e74c3c;
+            border-radius: 12px; padding: 12px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .w-info span { display: block; font-size: 13px; font-weight: 800; color: #c0392b; margin-bottom: 2px; }
+        .w-info small { font-size: 10px; color: #777; }
+        
+        .btn-play-fix {
+            width: 32px; height: 32px; background: #fdf2f2; border-radius: 50%;
+            color: #e74c3c; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-play-fix:hover { background: #e74c3c; color: white; }
+
+        .ai-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #fff 100%);
+            border: 1px solid #bbdefb; border-radius: 15px; padding: 15px;
+            display: flex; gap: 12px; align-items: flex-start;
+        }
+        .ai-icon { font-size: 16px; color: #2196f3; margin-top: 2px; }
+        .ai-msg { font-size: 11px; color: #444; line-height: 1.6; }
+
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 15px 25px 25px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top-left-radius: 25px; border-top-right-radius: 25px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 50;
+            transition: transform 0.3s;
+        }
+        .bottom-nav.hide { transform: translateY(100%); }
+        .nav-item { color: #bdc3c7; font-size: 22px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+        .nav-item.active { color: #13EC6A; }
+        .fab-space { width: 60px; }
+
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 100; display: none; align-items: flex-end;
+        }
+        .modal-overlay.show { display: flex; }
+        .surah-modal {
+            background: #f9f9f9; width: 100%; height: 85%;
+            border-radius: 30px 30px 0 0; padding: 25px;
+            display: flex; flex-direction: column; animation: slideUp 0.3s forwards;
+        }
+        .modal-head { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .close-btn { font-size: 20px; color: #999; cursor: pointer; }
+        
+        .filter-tags { display: flex; gap: 5px; margin-bottom: 15px; background: white; padding: 5px; border-radius: 12px; }
+        .tag { flex: 1; text-align: center; padding: 8px; font-size: 11px; font-weight: 700; color: #999; border-radius: 8px; cursor: pointer; }
+        .tag.active { background: #13EC6A; color: white; }
+
+        .surah-list { flex: 1; overflow-y: auto; }
+        .s-item {
+            background: white; padding: 12px; border-radius: 12px; margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+        }
+        .s-badge { font-size: 10px; padding: 3px 8px; border-radius: 8px; background: #E9F7EF; color: #13EC6A; font-weight: 700; }
+
+        .coming-soon-msg {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;
+            color: #95a5a6; font-weight: 700; font-size: 14px;
+        }
+        .coming-soon-msg i { font-size: 30px; margin-bottom: 10px; color: #bdc3c7; }
+
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); } 100% { transform: scale(1); } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div class="content-layer">
+            
+            <div class="top-header">
+                <a href="main.html" style="color: #333;"><i class="fa-solid fa-arrow-right"></i></a>
+                <div class="header-titles" style="text-align: center;">
+                    <h2 id="currentSurah">سورة الفاتحة</h2>
+                    <p id="currentInfo">مكية • 7 آيات</p>
+                </div>
+                <div class="btn-select-surah" onclick="openModal()">
+                    <i class="fa-solid fa-list"></i> السور
+                </div>
+            </div>
+
+            <div class="mode-tabs">
+                <div class="tab-btn active" onclick="setMode('recite', this)">تلاوة (نص ظاهر)</div>
+                <div class="tab-btn" onclick="setMode('memorize', this)">حفظ (اختبار)</div>
+            </div>
+
+            <div class="quran-box" id="quranBox"></div>
+
+            <div class="controls-wrapper">
+                <div class="mic-btn" id="micBtn" onclick="toggleRecite()">
+                    <i class="fa-solid fa-microphone"></i>
+                </div>
+                <div class="status-text" id="statusText">جاري الاستماع...</div>
+            </div>
+
+            <div class="history-section" id="historySection">
+                <div class="history-header">
+                    <span class="h-title" id="evalTitle">التقييم السابق</span>
+                    <span class="h-date" id="evalDate">منذ 3 أيام</span>
+                </div>
+
+                <div class="score-card">
+                    <div class="score-ring" id="scoreRing">
+                        <span class="score-num" id="scoreNum">82%</span>
+                    </div>
+                    <div class="score-details">
+                        <h4 id="scoreLabel">مستوى جيد</h4>
+                        <p id="scoreSub">تحتاج لمراجعة بعض أحكام التجويد</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:10px; font-size:13px; font-weight:800; color:#2c3e50;">الأخطاء المرصودة:</div>
+                <div class="mistakes-list" id="mistakesList">
+                    <div class="mistake-item">
+                        <div class="w-info">
+                            <span>الْمَغْضُوبِ</span>
+                            <small>تفخيم غير مكتمل</small>
+                        </div>
+                        <div class="btn-play-fix" onclick="alert('نطق: المغضوبِ')"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                </div>
+
+                <div class="ai-box">
+                    <div class="ai-icon"><i class="fa-solid fa-robot"></i></div>
+                    <div class="ai-msg" id="aiMsg">نصيحة سابقة: حافظ على الاستماع للقراء المتقنين لضبط المخارج.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottom-nav" id="bottomNav">
+            <a href="main.html" class="nav-item"><i class="fa-solid fa-house"></i></a>
+            <a href="mos.html" class="nav-item"><i class="fa-solid fa-mosque"></i></a>
+            <div class="fab-space"></div>
+            <a href="game.html" class="nav-item"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="prof.html" class="nav-item"><i class="fa-regular fa-user"></i></a>
+        </div>
+
+        <div class="modal-overlay" id="surahModal">
+            <div class="surah-modal">
+                <div class="modal-head">
+                    <h3 style="margin:0; color:#2c3e50;">اختر السورة</h3>
+                    <i class="fa-solid fa-xmark close-btn" onclick="closeModal()"></i>
+                </div>
+                
+                <div class="filter-tags">
+                    <div class="tag active" onclick="filterList('recite', this)">تلاوة</div>
+                    <div class="tag" onclick="filterList('memorize', this)">حفظ جديد</div>
+                    <div class="tag" onclick="filterList('review', this)">مراجعة ما تم حفظه</div>
+                </div>
+
+                <div class="surah-list" id="surahListContainer"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const surahNames = [
+            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+            "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
+            "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم",
+            "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+            "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق",
+            "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة",
+            "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
+            "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+            "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد",
+            "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات",
+            "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر",
+            "المسد", "الإخلاص", "الفلق", "الناس"
+        ];
+
+        const fatihaVerses = [
+            "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+            "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+            "الرَّحْمَٰنِ الرَّحِيمِ",
+            "مَالِكِ يَوْمِ الدِّينِ",
+            "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+            "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+            "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"
+        ];
+
+        let isRecording = false;
+        let simulationTimer;
+        let currentMode = 'recite';
+        
+        function initPage() {
+            loadSurahContent(1);
+        }
+
+        function loadSurahContent(id) {
+            const box = document.getElementById('quranBox');
+            const micBtn = document.getElementById('micBtn');
+            const historySec = document.getElementById('historySection');
+            
+            box.innerHTML = '';
+
+            if (id === 1) {
+                fatihaVerses.forEach((v, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'verse-line';
+                    div.id = `verse-${i}`;
+                    div.innerHTML = v.split(' ').map(w => `<span class="word">${w}</span>`).join(' ');
+                    box.appendChild(div);
+                });
+                
+                micBtn.classList.remove('disabled');
+                historySec.style.display = 'block';
+                document.getElementById('currentInfo').innerText = "مكية • 7 آيات";
+            } else {
+                box.innerHTML = `
+                    <div class="coming-soon-msg">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>سيتم الإضافة قريباً</span>
+                    </div>
+                `;
+                micBtn.classList.add('disabled');
+                historySec.style.display = 'none';
+                document.getElementById('currentInfo').innerText = "بيانات السورة";
+            }
+        }
+
+        function setMode(mode, btn) {
+            currentMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const box = document.getElementById('quranBox');
+            if (mode === 'memorize') box.classList.add('memorize-mode');
+            else box.classList.remove('memorize-mode');
+        }
+
+        function toggleRecite() {
+            const btn = document.getElementById('micBtn');
+            const status = document.getElementById('statusText');
+            const nav = document.getElementById('bottomNav');
+
+            if(!isRecording) {
+                isRecording = true;
+                btn.classList.add('recording');
+                status.classList.add('show');
+                status.innerText = currentMode === 'recite' ? "جاري الاستماع..." : "جاري اختبار الحفظ...";
+                nav.classList.add('hide'); 
+                
+                if(currentMode === 'recite') simulateRecitation();
+                else simulateMemorization();
+
+            } else {
+                stopRecite();
+            }
+        }
+
+        function stopRecite() {
+            isRecording = false;
+            document.getElementById('micBtn').classList.remove('recording');
+            document.getElementById('statusText').classList.remove('show');
+            document.getElementById('bottomNav').classList.remove('hide');
+            clearInterval(simulationTimer);
+            updateEvaluation();
+        }
+
+        function updateEvaluation() {
+            document.querySelector('.content-layer').scrollTo({ top: 1000, behavior: 'smooth' });
+
+            document.getElementById('evalTitle').innerText = "التقييم الحالي";
+            document.getElementById('evalTitle').style.color = "#13EC6A";
+            
+            document.getElementById('evalDate').innerText = "الآن";
+            document.getElementById('evalDate').style.background = "#E9F7EF";
+            document.getElementById('evalDate').style.color = "#13EC6A";
+
+            let newScore = currentMode === 'recite' ? 96 : 88; 
+            document.getElementById('scoreNum').innerText = newScore + "%";
+            document.getElementById('scoreRing').style.background = `conic-gradient(#13EC6A 0% ${newScore}%, #eee ${newScore}% 100%)`;
+            
+            document.getElementById('scoreLabel').innerText = newScore > 90 ? "أداء ممتاز!" : "أداء جيد جداً";
+            document.getElementById('scoreSub').innerText = currentMode === 'recite' 
+                ? "تلاوة خاشعة ومخارج حروف واضحة" 
+                : "لديك بعض التردد في الآية الثالثة، لكن الحفظ جيد";
+
+            const list = document.getElementById('mistakesList');
+            if(currentMode === 'recite') {
+                list.innerHTML = `
+                    <div class="mistake-item" style="border-right-color:#13EC6A;">
+                        <div class="w-info"><span style="color:#2c3e50;">لا يوجد أخطاء</span><small>تلاوة سليمة 100%</small></div>
+                        <div class="btn-play-fix" style="color:#13EC6A; background:#E9F7EF;"><i class="fa-solid fa-check"></i></div>
+                    </div>`;
+                document.getElementById('aiMsg').innerText = "ما شاء الله، استمر على هذا الأداء. حاول تحسين الوقف والابتداء لزيادة المعنى وضوحاً.";
+            } else {
+                list.innerHTML = `
+                    <div class="mistake-item">
+                        <div class="w-info"><span>وَلَا الضَّالِّينَ</span><small>توقفت هنا لمدة 4 ثواني (تردد)</small></div>
+                        <div class="btn-play-fix"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    </div>`;
+                document.getElementById('aiMsg').innerText = "حفظك جيد، لكن التردد في خواتيم الآيات يدل على عدم التثبيت. كرر الآية الأخيرة 5 مرات.";
+            }
+        }
+
+        function simulateRecitation() {
+            let vIndex = 0, wIndex = 0;
+            document.querySelectorAll('.word').forEach(w => w.className = 'word'); 
+
+            simulationTimer = setInterval(() => {
+                const vEl = document.getElementById(`verse-${vIndex}`);
+                if(!vEl) { stopRecite(); return; }
+                const words = vEl.querySelectorAll('.word');
+                if (wIndex < words.length) {
+                    if(wIndex > 0) words[wIndex-1].classList.remove('current'); 
+                    words[wIndex].classList.add('current', 'done'); 
+                    words[wIndex].scrollIntoView({ behavior: "smooth", block: "center" });
+                    wIndex++;
+                } else {
+                    vIndex++; wIndex = 0;
+                }
+            }, 300);
+        }
+
+        function simulateMemorization() {
+            let vIndex = 0, wIndex = 0;
+            let pauseCounter = 0;
+            document.querySelectorAll('.word').forEach(w => w.className = 'word'); 
+
+            simulationTimer = setInterval(() => {
+                if(Math.random() > 0.8 && pauseCounter < 3) {
+                    document.getElementById('statusText').innerText = "يفكر...";
+                    pauseCounter++;
+                    return; 
+                }
+                document.getElementById('statusText').innerText = "جاري التسميع...";
+                pauseCounter = 0;
+
+                const vEl = document.getElementById(`verse-${vIndex}`);
+                if(!vEl) { stopRecite(); return; }
+                const words = vEl.querySelectorAll('.word');
+                if (wIndex < words.length) {
+                    words[wIndex].classList.add('done'); 
+                    words[wIndex].scrollIntoView({ behavior: "smooth", block: "center" });
+                    wIndex++;
+                } else {
+                    vIndex++; wIndex = 0;
+                }
+            }, 500);
+        }
+
+        function openModal() { document.getElementById('surahModal').classList.add('show'); filterList('recite', document.querySelector('.tag')); }
+        function closeModal() { document.getElementById('surahModal').classList.remove('show'); }
+
+        function filterList(type, btn) {
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            const list = document.getElementById('surahListContainer');
+            list.innerHTML = '';
+            surahNames.forEach((name, i) => {
+                const id = i + 1;
+                let badge = type === 'recite' ? `<span class="s-badge">إتقان: ${Math.floor(Math.random()*20+80)}%</span>` : '';
+                const el = document.createElement('div');
+                el.className = 's-item';
+                el.innerHTML = `<div style="font-weight:700; color:#2c3e50;">${id}. سورة ${name}</div>${badge}`;
+                el.onclick = () => {
+                    document.getElementById('currentSurah').innerText = `سورة ${name}`;
+                    loadSurahContent(id);
+                    closeModal();
+                };
+                list.appendChild(el);
+            });
+        }
+
+        initPage();
+
+    </script>
+
+</body>
+</html>

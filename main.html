@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرئيسية - أتقن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        
+        body { 
+            background-color: #e0e5ec; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; 
+        }
+
+        .mobile-container {
+            width: 375px; height: 700px;
+            
+            /* ================================================================= */
+            /* 🔴🔴 ملاحظة: ضعي رابط صورة خلفية التطبيق هنا بالأسفل 🔴🔴 */
+            /* ================================================================= */
+            background-image: url('/Users/renadbraek/Desktop/burhan/IMG_2605.PNG'); 
+            
+            background-size: cover; background-position: center;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
+            overflow: hidden; position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .mobile-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(248, 249, 250, 0.90); 
+            z-index: 0; pointer-events: none;
+        }
+
+        .content-scroll {
+            flex: 1; overflow-y: auto; position: relative; z-index: 1;
+            padding: 0 25px 90px 25px;
+            scrollbar-width: none;
+        }
+        .content-scroll::-webkit-scrollbar { display: none; }
+
+        .home-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; margin-bottom: 20px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            position: sticky; top: 0; z-index: 10;
+        }
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .profile-img {
+            width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
+            border: 2px solid #13EC6A; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: #eee;
+        }
+        .greeting-text h2 { font-size: 16px; color: #2c3e50; font-weight: 800; margin-bottom: 2px; }
+        .greeting-text p { font-size: 11px; color: #7f8c8d; }
+        .notif-btn {
+            width: 40px; height: 40px; background: white; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #2c3e50; font-size: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer; position: relative; transition: 0.2s;
+        }
+        .notif-btn:active { transform: scale(0.95); }
+        .notif-dot {
+            position: absolute; top: 10px; right: 10px; width: 8px; height: 8px;
+            background-color: #e74c3c; border-radius: 50%; border: 1px solid white;
+        }
+
+        .stats-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
+        .stat-card {
+            background: white; flex: 1; border-radius: 16px; padding: 12px 5px;
+            text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+        }
+        .stat-icon { font-size: 18px; color: #13EC6A; margin-bottom: 2px; }
+        .stat-title { font-size: 10px; color: #95a5a6; font-weight: 600; }
+        .stat-value { font-size: 14px; color: #2c3e50; font-weight: 800; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .section-title { font-size: 15px; font-weight: 800; color: #2c3e50; }
+        .edit-link { font-size: 12px; color: #13EC6A; font-weight: 700; text-decoration: none; cursor: pointer; }
+
+        .plan-card {
+            width: 100%; height: 160px; border-radius: 20px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            position: relative; overflow: hidden; color: white;
+            padding: 20px; margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(44, 62, 80, 0.2);
+        }
+        .plan-bg-pattern {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://img.freepik.com/free-vector/green-curve-abstract-background_53876-99569.jpg');
+            background-size: cover; opacity: 0.3; mix-blend-mode: overlay;
+        }
+        .plan-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+        .surah-title { font-size: 18px; font-weight: 800; }
+        .part-info { font-size: 12px; opacity: 0.8; margin-top: 5px; }
+        .progress-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px; font-weight: 600; }
+        .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
+        .progress-bar { width: 65%; height: 100%; background-color: #13EC6A; border-radius: 10px; }
+
+        .task-card {
+            width: 100%; border-radius: 20px; overflow: hidden;
+            position: relative; height: 200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 20px;
+        }
+        .task-bg {
+            width: 100%; height: 100%; object-fit: cover;
+            
+            /* ================================================================= */
+            /* 🔴🔴 ملاحظة: ضعي رابط صورة خلفية المهمة (المصحف) هنا 🔴🔴 */
+            /* ================================================================= */
+            background-image: url('Screenshot 1447-08-02 at 4.07.40 AM.png'); 
+            
+            background-size: cover; background-position: center;
+        }
+        .task-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 10%, rgba(0,0,0,0.2) 100%);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
+        }
+        .task-info { text-align: center; color: white; margin-bottom: 15px; }
+        .task-title { font-size: 16px; font-weight: 800; margin-bottom: 5px; }
+        .task-sub { font-size: 11px; opacity: 0.9; }
+        .btn-start-task {
+            width: 100%; padding: 12px; background-color: #13EC6A; color: white;
+            border: none; border-radius: 12px; font-size: 14px; font-weight: 800;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 15px 25px 25px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top-left-radius: 25px; border-top-right-radius: 25px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03); z-index: 10;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #bdc3c7; text-decoration: none; cursor: pointer; transition: 0.2s;
+            width: 40px; height: 40px;
+        }
+        .nav-item i { font-size: 22px; }
+        .nav-item.active { color: #13EC6A; }
+        
+        .fab-wrapper { position: relative; top: -30px; }
+        .fab-btn {
+            width: 65px; height: 65px; 
+            background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 28px; 
+            box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4);
+            border: 6px solid white; transition: transform 0.2s; text-decoration: none;
+        }
+        .fab-btn:active { transform: scale(0.95); }
+
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 50;
+            display: none; opacity: 0; transition: opacity 0.3s;
+            justify-content: center; align-items: center;
+        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+
+        .notif-box {
+            background: white; width: 85%; max-width: 340px;
+            border-radius: 20px; padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); animation: popIn 0.3s forwards;
+        }
+
+        .edit-box {
+            background: #f9f9f9; width: 100%; height: 85%;
+            position: absolute; bottom: 0; left: 0;
+            border-radius: 30px 30px 0 0; padding: 25px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; animation: slideUp 0.3s forwards;
+        }
+
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-shrink: 0; }
+        .modal-header h3 { font-size: 16px; font-weight: 800; color: #2c3e50; }
+        .close-btn { font-size: 20px; color: #999; cursor: pointer; }
+
+        .notif-item {
+            background: #f4f6f8; border-right: 4px solid #13EC6A;
+            padding: 12px; border-radius: 8px; margin-bottom: 10px;
+        }
+        .notif-title { font-size: 12px; font-weight: 800; color: #333; margin-bottom: 4px; }
+        .notif-body { font-size: 11px; color: #666; line-height: 1.5; }
+        .notif-time { font-size: 9px; color: #aaa; margin-top: 5px; text-align: left; }
+
+        .goal-toggle {
+            background: white; padding: 5px; border-radius: 15px;
+            display: flex; gap: 5px; margin-bottom: 20px; flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .toggle-btn {
+            flex: 1; padding: 12px; text-align: center; border-radius: 12px;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; color: #7f8c8d;
+        }
+        .toggle-btn.active {
+            background-color: #13EC6A; color: white;
+            box-shadow: 0 4px 10px rgba(19, 236, 106, 0.2);
+        }
+        .edit-scroll-area { overflow-y: auto; flex: 1; padding-bottom: 20px; scrollbar-width: none; }
+        .edit-scroll-area::-webkit-scrollbar { display: none; }
+        
+        .surah-card {
+            background: white; border-radius: 16px; padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); margin-bottom: 10px; border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+        .surah-card:hover { border-color: #13EC6A; }
+        .surah-info { display: flex; align-items: center; gap: 15px; }
+        .surah-number {
+            width: 35px; height: 35px; background: #E9F7EF; border-radius: 10px;
+            color: #13EC6A; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center;
+        }
+        .surah-details h3 { font-size: 14px; font-weight: 700; color: #2c3e50; margin-bottom: 2px; }
+        .surah-details p { font-size: 10px; color: #95a5a6; }
+        .status-badge { font-size: 10px; padding: 5px 10px; border-radius: 20px; font-weight: 700; }
+        .status-saved { background: #E9F7EF; color: #13EC6A; }
+        .status-progress { background: #FFF3E0; color: #F39C12; }
+        .status-pending { background: #F0F0F0; color: #999; }
+        
+        .btn-save-edit {
+            width: 100%; padding: 16px; background-color: #13EC6A; color: white;
+            border: none; border-radius: 14px; font-size: 16px; font-weight: 800;
+            cursor: pointer; margin-top: 10px; flex-shrink: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div class="content-scroll">
+            
+            <div class="home-header">
+                <div class="user-profile">
+                    <img src="145867.png" class="profile-img" alt="Profile">
+                    
+                    <div class="greeting-text">
+                        <h2>أهلاً صالح أحمد</h2>
+                        <p>واصل تقدمك المميز!</p>
+                    </div>
+                </div>
+                <div class="notif-btn" onclick="openModal('notif')">
+                    <i class="fa-regular fa-bell"></i>
+                    <div class="notif-dot"></div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fa-solid fa-fire stat-icon" style="color: #e67e22;"></i>
+                    <span class="stat-value">12 يوم</span>
+                    <span class="stat-title">تتابع الأيام</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-book-open stat-icon"></i>
+                    <span class="stat-value">143</span>
+                    <span class="stat-title">آيات تمت</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-medal stat-icon" style="color: #f1c40f;"></i>
+                    <span class="stat-value">4</span>
+                    <span class="stat-title">الأوسمة</span>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <span class="section-title">الخطة الحالية</span>
+                <a onclick="openModal('edit')" class="edit-link">تعديل</a>
+            </div>
+
+            <div class="plan-card">
+                <div class="plan-bg-pattern"></div>
+                <div class="plan-content">
+                    <div>
+                        <div class="surah-title">سورة البقرة</div>
+                        <div class="part-info">الجزء الأول</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-labels">
+                            <span>65%</span>
+                            <span>متبقي 25 آية</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <span class="section-title">المهمة اليومية</span>
+            </div>
+
+            <div class="task-card">
+                <div class="task-bg"></div>
+                <div class="task-overlay">
+                    <div class="task-info">
+                        <div class="task-title">مراجعة 5 صفحات</div>
+                        <div class="task-sub">من سورة الكهف • يوم الجمعة</div>
+                    </div>
+                    <button class="btn-start-task">
+                        <i class="fa-solid fa-play"></i> ابدأ الآن
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottom-nav">
+            <a href="main.html" class="nav-item active"><i class="fa-solid fa-house"></i></a>
+            <a href="mod.html" class="nav-item"><i class="fa-solid fa-mosque"></i></a>
+            <div class="fab-wrapper"><a href="learn.html" class="fab-btn"><i class="fa-solid fa-microphone"></i></a></div>
+            <a href="game.html" class="nav-item"><i class="fa-solid fa-gamepad"></i></a>
+            <a href="prof.html" class="nav-item"><i class="fa-regular fa-user"></i></a>
+        </div>
+
+        <div class="modal-overlay" id="notifModal">
+            <div class="notif-box">
+                <div class="modal-header">
+                    <h3>الإشعارات</h3>
+                    <i class="fa-solid fa-xmark close-btn" onclick="closeModal('notif')"></i>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-title">📢 تذكير: حلقة التحفيظ</div>
+                    <div class="notif-body">موعد الحلقة اليوم بجامع الراجحي بالرياض، الساعة 4:00 عصراً. لا تتأخر!</div>
+                    <div class="notif-time">منذ 30 دقيقة</div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-title">👨‍🏫 رسالة من أ. عمر فالح</div>
+                    <div class="notif-body">"السلام عليكم يا صالح، اطلعت على ملفك وأعجبني تقدمك جداً.. استمر يا بطل!"</div>
+                    <div class="notif-time">منذ 2 ساعة</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="editModal" style="align-items: flex-end;">
+            <div class="edit-box">
+                <div class="modal-header">
+                    <h3>تعديل الخطة</h3>
+                    <i class="fa-solid fa-xmark close-btn" onclick="closeModal('edit')"></i>
+                </div>
+
+                <div class="goal-toggle">
+                    <div class="toggle-btn" onclick="setGoal(this, 'memorize')">حفظ السورة</div>
+                    <div class="toggle-btn active" onclick="setGoal(this, 'recite')">إتقان التلاوة</div>
+                </div>
+
+                <div class="edit-scroll-area" id="surahContainer"></div>
+
+                <button class="btn-save-edit" onclick="closeModal('edit')">حفظ التغييرات</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const surahsData = [
+            { id: 1, name: "الفاتحة", verses: 7, type: "مكية" },
+            { id: 2, name: "البقرة", verses: 286, type: "مدنية" },
+            { id: 3, name: "آل عمران", verses: 200, type: "مدنية" },
+            { id: 4, name: "النساء", verses: 176, type: "مدنية" },
+            { id: 5, name: "المائدة", verses: 120, type: "مدنية" },
+            { id: 6, name: "الأنعام", verses: 165, type: "مكية" },
+            { id: 7, name: "الأعراف", verses: 206, type: "مكية" },
+            { id: 8, name: "الأنفال", verses: 75, type: "مدنية" },
+            { id: 9, name: "التوبة", verses: 129, type: "مدنية" },
+            { id: 10, name: "يونس", verses: 109, type: "مكية" },
+            { id: 11, name: "هود", verses: 123, type: "مكية" },
+            { id: 12, name: "يوسف", verses: 111, type: "مكية" },
+            { id: 13, name: "الرعد", verses: 43, type: "مدنية" },
+            { id: 14, name: "إبراهيم", verses: 52, type: "مكية" },
+            { id: 15, name: "الحجر", verses: 99, type: "مكية" },
+            { id: 16, name: "النحل", verses: 128, type: "مكية" },
+            { id: 17, name: "الإسراء", verses: 111, type: "مكية" },
+            { id: 18, name: "الكهف", verses: 110, type: "مكية" },
+            { id: 19, name: "مريم", verses: 98, type: "مكية" },
+            { id: 20, name: "طه", verses: 135, type: "مكية" },
+            { id: 21, name: "الأنبياء", verses: 112, type: "مكية" },
+            { id: 22, name: "الحج", verses: 78, type: "مدنية" },
+            { id: 23, name: "المؤمنون", verses: 118, type: "مكية" },
+            { id: 24, name: "النور", verses: 64, type: "مدنية" },
+            { id: 25, name: "الفرقان", verses: 77, type: "مكية" },
+            { id: 26, name: "الشعراء", verses: 227, type: "مكية" },
+            { id: 27, name: "النمل", verses: 93, type: "مكية" },
+            { id: 28, name: "القصص", verses: 88, type: "مكية" },
+            { id: 29, name: "العنكبوت", verses: 69, type: "مكية" },
+            { id: 30, name: "الروم", verses: 60, type: "مكية" },
+            { id: 31, name: "لقمان", verses: 34, type: "مكية" },
+            { id: 32, name: "السجدة", verses: 30, type: "مكية" },
+            { id: 33, name: "الأحزاب", verses: 73, type: "مدنية" },
+            { id: 34, name: "سبأ", verses: 54, type: "مكية" },
+            { id: 35, name: "فاطر", verses: 45, type: "مكية" },
+            { id: 36, name: "يس", verses: 83, type: "مكية" },
+            { id: 37, name: "الصافات", verses: 182, type: "مكية" },
+            { id: 38, name: "ص", verses: 88, type: "مكية" },
+            { id: 39, name: "الزمر", verses: 75, type: "مكية" },
+            { id: 40, name: "غافر", verses: 85, type: "مكية" },
+            { id: 41, name: "فصلت", verses: 54, type: "مكية" },
+            { id: 42, name: "الشورى", verses: 53, type: "مكية" },
+            { id: 43, name: "الزخرف", verses: 89, type: "مكية" },
+            { id: 44, name: "الدخان", verses: 59, type: "مكية" },
+            { id: 45, name: "الجاثية", verses: 37, type: "مكية" },
+            { id: 46, name: "الأحقاف", verses: 35, type: "مكية" },
+            { id: 47, name: "محمد", verses: 38, type: "مدنية" },
+            { id: 48, name: "الفتح", verses: 29, type: "مدنية" },
+            { id: 49, name: "الحجرات", verses: 18, type: "مدنية" },
+            { id: 50, name: "ق", verses: 45, type: "مكية" },
+            { id: 51, name: "الذاريات", verses: 60, type: "مكية" },
+            { id: 52, name: "الطور", verses: 49, type: "مكية" },
+            { id: 53, name: "النجم", verses: 62, type: "مكية" },
+            { id: 54, name: "القمر", verses: 55, type: "مكية" },
+            { id: 55, name: "الرحمن", verses: 78, type: "مدنية" },
+            { id: 56, name: "الواقعة", verses: 96, type: "مكية" },
+            { id: 57, name: "الحديد", verses: 29, type: "مدنية" },
+            { id: 58, name: "المجادلة", verses: 22, type: "مدنية" },
+            { id: 59, name: "الحشر", verses: 24, type: "مدنية" },
+            { id: 60, name: "الممتحنة", verses: 13, type: "مدنية" },
+            { id: 61, name: "الصف", verses: 14, type: "مدنية" },
+            { id: 62, name: "الجمعة", verses: 11, type: "مدنية" },
+            { id: 63, name: "المنافقون", verses: 11, type: "مدنية" },
+            { id: 64, name: "التغابن", verses: 18, type: "مدنية" },
+            { id: 65, name: "الطلاق", verses: 12, type: "مدنية" },
+            { id: 66, name: "التحريم", verses: 12, type: "مدنية" },
+            { id: 67, name: "الملك", verses: 30, type: "مكية" },
+            { id: 68, name: "القلم", verses: 52, type: "مكية" },
+            { id: 69, name: "الحاقة", verses: 52, type: "مكية" },
+            { id: 70, name: "المعارج", verses: 44, type: "مكية" },
+            { id: 71, name: "نوح", verses: 28, type: "مكية" },
+            { id: 72, name: "الجن", verses: 28, type: "مكية" },
+            { id: 73, name: "المزمل", verses: 20, type: "مكية" },
+            { id: 74, name: "المدثر", verses: 56, type: "مكية" },
+            { id: 75, name: "القيامة", verses: 40, type: "مكية" },
+            { id: 76, name: "الإنسان", verses: 31, type: "مدنية" },
+            { id: 77, name: "المرسلات", verses: 50, type: "مكية" },
+            { id: 78, name: "النبأ", verses: 40, type: "مكية" },
+            { id: 79, name: "النازعات", verses: 46, type: "مكية" },
+            { id: 80, name: "عبس", verses: 42, type: "مكية" },
+            { id: 81, name: "التكوير", verses: 29, type: "مكية" },
+            { id: 82, name: "الانفطار", verses: 19, type: "مكية" },
+            { id: 83, name: "المطففين", verses: 36, type: "مكية" },
+            { id: 84, name: "الانشقاق", verses: 25, type: "مكية" },
+            { id: 85, name: "البروج", verses: 22, type: "مكية" },
+            { id: 86, name: "الطارق", verses: 17, type: "مكية" },
+            { id: 87, name: "الأعلى", verses: 19, type: "مكية" },
+            { id: 88, name: "الغاشية", verses: 26, type: "مكية" },
+            { id: 89, name: "الفجر", verses: 30, type: "مكية" },
+            { id: 90, name: "البلد", verses: 20, type: "مكية" },
+            { id: 91, name: "الشمس", verses: 15, type: "مكية" },
+            { id: 92, name: "الليل", verses: 21, type: "مكية" },
+            { id: 93, name: "الضحى", verses: 11, type: "مكية" },
+            { id: 94, name: "الشرح", verses: 8, type: "مكية" },
+            { id: 95, name: "التين", verses: 8, type: "مكية" },
+            { id: 96, name: "العلق", verses: 19, type: "مكية" },
+            { id: 97, name: "القدر", verses: 5, type: "مكية" },
+            { id: 98, name: "البينة", verses: 8, type: "مدنية" },
+            { id: 99, name: "الزلزلة", verses: 8, type: "مدنية" },
+            { id: 100, name: "العاديات", verses: 11, type: "مكية" },
+            { id: 101, name: "القارعة", verses: 11, type: "مكية" },
+            { id: 102, name: "التكاثر", verses: 8, type: "مكية" },
+            { id: 103, name: "العصر", verses: 3, type: "مكية" },
+            { id: 104, name: "الهمزة", verses: 9, type: "مكية" },
+            { id: 105, name: "الفيل", verses: 5, type: "مكية" },
+            { id: 106, name: "قريش", verses: 4, type: "مكية" },
+            { id: 107, name: "الماعون", verses: 7, type: "مكية" },
+            { id: 108, name: "الكوثر", verses: 3, type: "مكية" },
+            { id: 109, name: "الكافرون", verses: 6, type: "مكية" },
+            { id: 110, name: "النصر", verses: 3, type: "مدنية" },
+            { id: 111, name: "المسد", verses: 5, type: "مكية" },
+            { id: 112, name: "الإخلاص", verses: 4, type: "مكية" },
+            { id: 113, name: "الفلق", verses: 5, type: "مكية" },
+            { id: 114, name: "الناس", verses: 6, type: "مكية" }
+        ];
+
+        function getStatus(id) {
+            if (id === 1 || id === 3 || id === 4 || (id >= 5 && id <= 14)) return 'saved';
+            if (id === 2) return 'progress';
+            return 'pending';
+        }
+
+        function renderSurahs(filterType) {
+            const container = document.getElementById('surahContainer');
+            container.innerHTML = '';
+
+            surahsData.forEach(surah => {
+                const status = getStatus(surah.id);
+                
+                if (filterType === 'memorize' && status === 'saved') {
+                    return;
+                }
+
+                let badgeClass = '';
+                let badgeText = '';
+                let cardStyle = '';
+
+                if (status === 'saved') {
+                    badgeClass = 'status-saved';
+                    badgeText = 'تم الحفظ';
+                    cardStyle = 'saved-card';
+                } else if (status === 'progress') {
+                    badgeClass = 'status-progress';
+                    badgeText = '65%';
+                    cardStyle = 'border-color: #13EC6A; background: #fafffc;';
+                } else {
+                    badgeClass = 'status-pending';
+                    badgeText = 'لم تبدأ';
+                }
+
+                const html = `
+                    <div class="surah-card ${cardStyle}" style="${cardStyle}">
+                        <div class="surah-info">
+                            <div class="surah-number">${surah.id}</div>
+                            <div class="surah-details">
+                                <h3>سورة ${surah.name}</h3>
+                                <p>${surah.type} • ${surah.verses} آيات</p>
+                            </div>
+                        </div>
+                        <div class="status-badge ${badgeClass}">${badgeText}</div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function openModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('show'); }, 10);
+            
+            if (type === 'edit') {
+                renderSurahs('recite'); 
+            }
+        }
+
+        function closeModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            modal.classList.remove('show');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('show');
+                setTimeout(() => { event.target.style.display = 'none'; }, 300);
+            }
+        }
+
+        function setGoal(element, type) {
+            document.querySelectorAll('.toggle-btn').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            renderSurahs(type);
+        }
+    </script>
+
+</body>
+</html>
