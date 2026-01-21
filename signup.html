@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- الأساسيات --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; }
         
         body { 
@@ -16,51 +15,51 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh; 
         }
 
-        /* --- حاوية الجوال --- */
         .mobile-container {
             width: 375px; 
-            height: 700px; /* ارتفاع ثابت */
-            
-            background: linear-gradient(180deg, #FFFFFF 60%, #E9F7EF 100%);
+            height: 700px;
+            background-image: url('/Users/renadbraek/Desktop/burhan/IMG_2605.PNG'); 
+            background-size: cover; 
+            background-position: center;
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
-            
-            /* تفعيل السكرول للمحتوى الزائد */
-            overflow-y: auto; 
-            overflow-x: hidden;
-            
-            position: relative;
+            overflow: hidden; position: relative;
             display: flex; flex-direction: column; padding: 20px 25px;
-            
-            /* إخفاء شريط التمرير (Scrollbar) */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE */
         }
         
-        /* إخفاء شريط التمرير لـ Chrome & Safari */
-        .mobile-container::-webkit-scrollbar { display: none; }
+        .mobile-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.4); 
+            z-index: 0; pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;
+            overflow-y: auto; overflow-x: hidden;
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .content-wrapper::-webkit-scrollbar { display: none; }
 
         @media (max-width: 480px) {
             body { background-color: #ffffff; align-items: flex-start; }
             .mobile-container { width: 100%; height: 100vh; border-radius: 0; box-shadow: none; }
         }
 
-        /* --- قائمة اللغة (نفس تصميم صفحة الدخول) --- */
         .lang-wrapper { 
-            position: absolute; top: 25px; left: 25px; z-index: 20; 
+            position: absolute; top: 5px; left: 0; z-index: 20; 
         }
-        html[dir="ltr"] .lang-wrapper { left: auto; right: 25px; }
+        html[dir="ltr"] .lang-wrapper { left: auto; right: 0; }
         
         .lang-select {
-            padding: 5px 10px; border: none; border-radius: 15px; background-color: transparent;
-            color: #2ECC71; font-weight: bold; font-size: 14px; outline: none; cursor: pointer;
+            padding: 5px 10px; border: none; border-radius: 15px; 
+            background-color: rgba(255,255,255,0.8);
+            color: #439E67; font-weight: bold; font-size: 14px; outline: none; cursor: pointer;
             text-align: center; width: auto; appearance: none; -webkit-appearance: none;
         }
 
-        /* --- الهيدر العلوي --- */
         .top-nav {
             display: flex; justify-content: center; align-items: center;
-            position: relative; margin-top: 50px; /* مساحة لزر اللغة */
+            position: relative; margin-top: 30px; 
             margin-bottom: 20px;
             flex-shrink: 0;
         }
@@ -72,26 +71,24 @@
         }
         html[dir="ltr"] .back-btn { right: auto; left: 0; transform: rotate(180deg); }
 
-        /* --- شريط الخطوات --- */
         .stepper {
             display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-shrink: 0;
         }
-        .step { height: 6px; border-radius: 3px; background-color: #e0e0e0; }
-        .step.active { width: 30px; background-color: #2ECC71; }
+        .step { height: 6px; border-radius: 3px; background-color: #bdc3c7; }
+        .step.active { width: 30px; background-color: #13EC6A; }
         .step.inactive { width: 10px; }
 
         .header-section { text-align: center; margin-bottom: 30px; flex-shrink: 0; }
         h1 { font-size: 20px; color: #2c3e50; margin-bottom: 8px; font-weight: 700; }
-        p.subtitle { font-size: 13px; color: #7f8c8d; max-width: 90%; margin: 0 auto; line-height: 1.6; }
+        p.subtitle { font-size: 13px; color: #555; max-width: 90%; margin: 0 auto; line-height: 1.6; font-weight: 600; }
 
-        /* --- الحقول --- */
         .input-group { position: relative; margin-bottom: 15px; }
         .input-group label { display: block; margin-bottom: 8px; font-size: 13px; color: #34495e; font-weight: 600; }
         .input-wrapper { position: relative; }
         
         .input-wrapper input, .input-wrapper select {
             width: 100%; padding: 14px 14px 14px 45px; 
-            border: 1px solid #f0f0f0; background-color: #FFFFFF; 
+            border: 1px solid #fff; background-color: rgba(255, 255, 255, 0.9); 
             border-radius: 12px; font-size: 14px; outline: none;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
             direction: ltr; text-align: left; appearance: none;
@@ -101,11 +98,11 @@
         html[dir="ltr"] .input-wrapper input, 
         html[dir="ltr"] .input-wrapper select { padding: 14px 45px 14px 14px; }
         
-        .input-wrapper input:focus, .input-wrapper select:focus { border-color: #2ECC71; }
+        .input-wrapper input:focus, .input-wrapper select:focus { border-color: #13EC6A; }
         
         .input-wrapper .field-icon { 
             position: absolute; left: 15px; top: 50%; transform: translateY(-50%); 
-            color: #2ECC71; font-size: 16px; 
+            color: #bdc3c7; font-size: 16px; 
         }
         html[dir="ltr"] .input-wrapper .field-icon { left: auto; right: 15px; }
 
@@ -115,19 +112,20 @@
         }
         html[dir="ltr"] .input-wrapper .dropdown-arrow { right: auto; left: 15px; }
 
-        /* --- الأزرار --- */
         .btn-next {
             width: 100%; padding: 16px; margin-top: 15px;
-            background-color: #2ECC71; color: white; border: none;
+            background-color: #13EC6A; 
+            color: white; border: none;
             border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.25);
+            box-shadow: 0 10px 20px rgba(19, 236, 106, 0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        .btn-next:hover { background-color: #27ae60; }
+        .btn-next:hover { background-color: #0fd65e; }
 
         .terms-text {
-            text-align: center; font-size: 11px; color: #95a5a6; margin-top: 20px; padding-bottom: 20px; line-height: 1.6;
+            text-align: center; font-size: 11px; color: #555; margin-top: 20px; padding-bottom: 20px; line-height: 1.6;
         }
-        .terms-text a { color: #7f8c8d; text-decoration: underline; }
+        .terms-text a { color: #13EC6A; text-decoration: underline; font-weight: bold; }
 
     </style>
 </head>
@@ -135,104 +133,110 @@
 
     <div class="mobile-container">
         
-        <div class="lang-wrapper">
-            <select id="languageSelector" class="lang-select">
-                <option value="ar">EN</option>
-                <option value="ar">AR</option>
-                <option value="en">EN</option>
-                <option value="ur">UR</option>
-            </select>
-        </div>
+        <div class="content-wrapper">
 
-        <div class="top-nav">
-            <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i></a>
-            <span class="nav-title" data-i18n="nav_title">المعلومات الأساسية</span>
-        </div>
-
-        <div class="stepper">
-            <div class="step active"></div>
-            <div class="step inactive"></div>
-        </div>
-
-        <div class="header-section">
-            <h1 data-i18n="page_title">أهلاً بك في منصة أتقن القرآن</h1>
-            <p class="subtitle" data-i18n="page_subtitle">يرجى إكمال بياناتك الشخصية لنخصص لك رحلة التعلم المناسبة</p>
-        </div>
-
-        <form id="signupForm">
-            <div class="input-group">
-                <label data-i18n="lbl_name">الاسم الكامل</label>
-                <div class="input-wrapper">
-                    <input type="text" value="Sophia Jacob">
-                    <i class="fa-regular fa-user field-icon"></i>
-                </div>
+            <div class="lang-wrapper">
+                <select id="languageSelector" class="lang-select">
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                    <option value="ur">اردو</option>
+                    <option value="id">Indonesia</option>
+                    <option value="tr">Türkçe</option>
+                    <option value="fr">Français</option>
+                </select>
             </div>
 
-            <div class="input-group">
-                <label data-i18n="lbl_phone">رقم الجوال</label>
-                <div class="input-wrapper">
-                    <input type="tel" value="+44 7911 123456">
-                    <i class="fa-solid fa-mobile-screen field-icon"></i>
-                </div>
+            <div class="top-nav">
+                <a href="login.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i></a>
+                <span class="nav-title" data-i18n="nav_title">المعلومات الأساسية</span>
             </div>
 
-            <div class="input-group">
-                <label data-i18n="lbl_dob">تاريخ الميلاد</label>
-                <div class="input-wrapper">
-                    <input type="text" value="15/07/2001">
-                    <i class="fa-regular fa-calendar field-icon"></i>
-                </div>
+            <div class="stepper">
+                <div class="step active"></div>
+                <div class="step inactive"></div>
             </div>
 
-            <div class="input-group">
-                <label data-i18n="lbl_nationality">الجنسية</label>
-                <div class="input-wrapper">
-                    <select>
-                        <option value="UK" selected>United Kingdom</option>
-                        <option value="SA">Saudi Arabia</option>
-                        <option value="AE">United Arab Emirates</option>
-                        <option value="KW">Kuwait</option>
-                        <option value="QA">Qatar</option>
-                        <option value="BH">Bahrain</option>
-                        <option value="OM">Oman</option>
-                        <option value="EG">Egypt</option>
-                        <option value="JO">Jordan</option>
-                        <option value="LB">Lebanon</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="FR">France</option>
-                        <option value="DE">Germany</option>
-                        <option value="IT">Italy</option>
-                        <option value="ES">Spain</option>
-                        <option value="TR">Turkey</option>
-                        <option value="MY">Malaysia</option>
-                        <option value="ID">Indonesia</option>
-                        <option value="PK">Pakistan</option>
-                        <option value="IN">India</option>
-                        <option value="BD">Bangladesh</option>
-                        <option value="DZ">Algeria</option>
-                        <option value="MA">Morocco</option>
-                        <option value="TN">Tunisia</option>
-                        <option value="SD">Sudan</option>
-                        <option value="YE">Yemen</option>
-                        <option value="IQ">Iraq</option>
-                        <option value="SY">Syria</option>
-                        <option value="PS">Palestine</option>
-                        <option value="AU">Australia</option>
-                        <option value="NZ">New Zealand</option>
-                    </select>
-                    <i class="fa-solid fa-earth-americas field-icon"></i>
-                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-                </div>
+            <div class="header-section">
+                <h1 data-i18n="page_title">أهلاً بك في منصة أتقن القرآن</h1>
+                <p class="subtitle" data-i18n="page_subtitle">يرجى إكمال بياناتك الشخصية لنخصص لك رحلة التعلم المناسبة</p>
             </div>
 
-            <button type="submit" class="btn-next" data-i18n="btn_next">التالي</button>
-            
-            <p class="terms-text">
-                <span data-i18n="terms_1">بضغطك على التالي، أنت توافق على</span><br>
-                <a href="#" data-i18n="terms_2">شروط الاستخدام</a> و <a href="#" data-i18n="terms_3">سياسة الخصوصية</a>
-            </p>
-        </form>
+            <form id="signupForm">
+                <div class="input-group">
+                    <label data-i18n="lbl_name">الاسم الكامل</label>
+                    <div class="input-wrapper">
+                        <input type="text" value="Saleh Ahmed">
+                        <i class="fa-regular fa-user field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="lbl_phone">رقم الجوال</label>
+                    <div class="input-wrapper">
+                        <input type="tel" value="+966 50 123 4567">
+                        <i class="fa-solid fa-mobile-screen field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="lbl_dob">تاريخ الميلاد</label>
+                    <div class="input-wrapper">
+                        <input type="date" value="2001-07-15" style="color: #333;">
+                        <i class="fa-regular fa-calendar field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="lbl_nationality">الجنسية</label>
+                    <div class="input-wrapper">
+                        <select>
+                            <option value="SA" selected>Saudi Arabia</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="KW">Kuwait</option>
+                            <option value="QA">Qatar</option>
+                            <option value="BH">Bahrain</option>
+                            <option value="OM">Oman</option>
+                            <option value="EG">Egypt</option>
+                            <option value="JO">Jordan</option>
+                            <option value="LB">Lebanon</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="FR">France</option>
+                            <option value="DE">Germany</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                            <option value="TR">Turkey</option>
+                            <option value="MY">Malaysia</option>
+                            <option value="ID">Indonesia</option>
+                            <option value="PK">Pakistan</option>
+                            <option value="IN">India</option>
+                            <option value="BD">Bangladesh</option>
+                            <option value="DZ">Algeria</option>
+                            <option value="MA">Morocco</option>
+                            <option value="TN">Tunisia</option>
+                            <option value="SD">Sudan</option>
+                            <option value="YE">Yemen</option>
+                            <option value="IQ">Iraq</option>
+                            <option value="SY">Syria</option>
+                            <option value="PS">Palestine</option>
+                            <option value="AU">Australia</option>
+                            <option value="NZ">New Zealand</option>
+                        </select>
+                        <i class="fa-solid fa-earth-americas field-icon"></i>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-next" data-i18n="btn_next">التالي</button>
+                
+                <p class="terms-text">
+                    <span data-i18n="terms_1">بضغطك على التالي، أنت توافق على</span><br>
+                    <a href="#" data-i18n="terms_2">شروط الاستخدام</a> و <a href="#" data-i18n="terms_3">سياسة الخصوصية</a>
+                </p>
+            </form>
+
+        </div>
 
     </div>
 
@@ -265,24 +269,34 @@
                 terms_1: "By clicking next, you agree to our",
                 terms_2: "Terms of Service",
                 terms_3: "Privacy Policy"
-            }
+            },
+            ur: { dir: "rtl", nav_title: "بنیادی معلومات", page_title: "اتقان ایپ میں خوش آمدید", page_subtitle: "براہ کرم اپنا پروفائل مکمل کریں", lbl_name: "پورا نام", lbl_phone: "فون نمبر", lbl_dob: "پیدائش کی تاریخ", lbl_nationality: "قومیت", btn_next: "اگلا", terms_1: "اگلا پر کلک کرکے، آپ ہماری شرائط سے اتفاق کرتے ہیں", terms_2: "سروس کی شرائط", terms_3: "پرائیویسی پالیسی" },
+            id: { dir: "ltr", nav_title: "Informasi Dasar", page_title: "Selamat datang di Atqan", page_subtitle: "Silakan lengkapi profil Anda", lbl_name: "Nama Lengkap", lbl_phone: "Nomor Telepon", lbl_dob: "Tanggal Lahir", lbl_nationality: "Kebangsaan", btn_next: "Berikutnya", terms_1: "Dengan mengklik berikutnya, Anda setuju dengan", terms_2: "Ketentuan Layanan", terms_3: "Kebijakan Privasi" },
+            tr: { dir: "ltr", nav_title: "Temel Bilgiler", page_title: "Atqan'a Hoşgeldiniz", page_subtitle: "Lütfen profilinizi tamamlayın", lbl_name: "Ad Soyad", lbl_phone: "Telefon Numarası", lbl_dob: "Doğum Tarihi", lbl_nationality: "Milliyet", btn_next: "İleri", terms_1: "İleri'ye tıklayarak şartlarımızı kabul edersiniz", terms_2: "Hizmet Şartları", terms_3: "Gizlilik Politikası" },
+            fr: { dir: "ltr", nav_title: "Informations de base", page_title: "Bienvenue à Atqan", page_subtitle: "Veuillez compléter votre profil", lbl_name: "Nom complet", lbl_phone: "Numéro de téléphone", lbl_dob: "Date de naissance", lbl_nationality: "Nationalité", btn_next: "Suivant", terms_1: "En cliquant sur suivant, vous acceptez nos", terms_2: "Conditions d'utilisation", terms_3: "Politique de confidentialité" }
         };
 
         const langSelector = document.getElementById('languageSelector');
 
         function setLanguage(lang) {
-            const data = translations[lang];
+            const data = translations[lang] || translations['en'];
             document.documentElement.setAttribute('dir', data.dir);
-            
+            document.documentElement.setAttribute('lang', lang);
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
                 if (data[key]) element.textContent = data[key];
             });
+            localStorage.setItem('atqanLanguage', lang);
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('atqanLanguage') || 'ar';
+            langSelector.value = savedLang;
+            setLanguage(savedLang);
+        });
 
         langSelector.addEventListener('change', (e) => setLanguage(e.target.value));
 
-        // الانتقال لصفحة signup2.html
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             window.location.href = 'signup2.html';
