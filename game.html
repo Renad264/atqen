@@ -18,150 +18,215 @@
 
         .mobile-container {
             width: 375px; height: 700px;
-            background: linear-gradient(180deg, #4FC3F7 0%, #81D4FA 30%, #A5D6A7 70%, #66BB6A 100%);
+            background-color: #fff;
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.15); 
             overflow: hidden; position: relative;
             display: flex; flex-direction: column;
         }
 
-        .decoration-container { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 0; overflow: hidden; }
-        .cloud { position: absolute; color: rgba(255,255,255,0.7); animation: floatCloud 20s infinite linear; }
-        .c1 { top: 50px; left: -60px; font-size: 50px; animation-duration: 25s; }
-        .c2 { top: 120px; left: -60px; font-size: 30px; animation-duration: 18s; animation-delay: 5s; }
-        
-        .bird-wrapper { position: absolute; left: -50px; animation: flyAcross linear infinite; }
-        .bird { color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
-        .b1 { top: 80px; font-size: 20px; animation-duration: 15s; }
-        .b2 { top: 150px; font-size: 16px; animation-duration: 20s; animation-delay: 2s; opacity: 0.8; }
-        .b3 { top: 220px; font-size: 24px; animation-duration: 12s; animation-delay: 7s; }
-
+    
         .game-map-container {
             flex: 1; overflow-y: auto; position: relative; z-index: 1;
-            scrollbar-width: none; -ms-overflow-style: none;
+            scrollbar-width: none;
+            background: linear-gradient(180deg, #4FC3F7 0%, #81D4FA 10%, #E8F5E9 40%, #66BB6A 100%);
         }
         .game-map-container::-webkit-scrollbar { display: none; }
 
+    
         .game-track {
-            padding: 100px 20px 120px 20px; 
-            display: flex; flex-direction: column-reverse; 
-            align-items: center; gap: 50px;
-            min-height: 100%; 
+            padding: 100px 20px 150px 20px; 
+            display: flex; flex-direction: column;
+            align-items: center; gap: 70px;
+            position: relative;
+            min-height: 2500px;
         }
 
+      
+        .sky-deco {
+            position: absolute; top: 0; left: 0; width: 100%; height: 400px;
+            pointer-events: none; z-index: 0;
+        }
+        .cloud { position: absolute; color: rgba(255,255,255,0.8); animation: floatCloud 25s infinite linear; }
+        .c1 { top: 40px; left: 20px; font-size: 50px; }
+        .c2 { top: 100px; right: -20px; font-size: 35px; animation-delay: 5s; }
+        .sun { position: absolute; top: 30px; left: 30px; font-size: 60px; color: #FFD54F; animation: spinSun 20s infinite linear; }
+        .bird { position: absolute; color: white; font-size: 20px; animation: flyBird 15s infinite linear; top: 150px; left: -30px; }
+
+        .ground-deco {
+            position: absolute; top: 400px; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .tree { position: absolute; font-size: 80px; color: #2E7D32; opacity: 0.6; }
+        .flower { position: absolute; font-size: 24px; animation: bounceFlower 3s infinite; }
+        
+        .t-1 { top: 100px; left: -20px; } .t-2 { top: 300px; right: -30px; font-size: 60px; }
+        .t-3 { top: 600px; left: 10px; font-size: 90px; } .t-4 { top: 900px; right: -10px; }
+        .t-5 { top: 1200px; left: -30px; font-size: 100px; } .t-6 { top: 1500px; right: 20px; }
+        
+        .f-1 { top: 200px; right: 50px; color: #E91E63; } .f-2 { top: 500px; left: 40px; color: #FFEB3B; }
+        .f-3 { top: 800px; right: 80px; color: #9C27B0; } .f-4 { top: 1100px; left: 20px; color: #FF9800; }
+        .f-5 { top: 1400px; right: 30px; color: #03A9F4; }
+
+      
         .header-title {
             position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
             text-align: center; z-index: 20;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.95);
             padding: 8px 25px; border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .header-title h2 { 
-            font-size: 16px; color: #fff; 
-            font-weight: 800; margin: 0;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        .header-title h2 { font-size: 16px; color: #2c3e50; font-weight: 800; margin: 0; }
+
+      
+        .svg-path {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+        .path-stroke {
+            fill: none; stroke: white; stroke-width: 5;
+            stroke-dasharray: 15, 15; stroke-linecap: round;
+            opacity: 0.7; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
         }
 
+      
         .level-node {
             width: 75px; height: 75px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             position: relative; transition: 0.3s;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1); border: 4px solid white;
-            flex-shrink: 0;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.1); border: 4px solid white;
+            z-index: 2; 
         }
-        
+        .level-node:active { transform: translateY(4px); box-shadow: none; }
+
         .level-content { font-size: 26px; color: white; }
         .level-label {
-            position: absolute; bottom: -30px; background: white; 
+            position: absolute; top: -30px; background: white; 
             padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;
             color: #555; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .level-locked { background-color: #CFD8DC; cursor: default; filter: grayscale(1); opacity: 0.8; }
-        .level-locked .level-content { color: #90A4AE; }
-        
-        .level-current { 
-            background: linear-gradient(135deg, #13EC6A 0%, #0eb952 100%);
-            animation: pulse-green 2s infinite; cursor: pointer;
-        }
-        .level-current:active { transform: scale(0.95); }
+        .lvl-start { background: #29B6F6; }
+        .lvl-done { background: #66BB6A; }
+        .lvl-current { background: linear-gradient(135deg, #FFCA28 0%, #FF6F00 100%); animation: pulse-glow 2s infinite; }
+        .lvl-locked { background: #CFD8DC; filter: grayscale(1); }
+        .lvl-quiz { background: linear-gradient(135deg, #AB47BC 0%, #7B1FA2 100%); }
+        .lvl-boss { background: linear-gradient(135deg, #ef5350 0%, #c62828 100%); }
 
-        .level-done { background-color: #2ECC71; }
-        
-        .level-quiz { background: linear-gradient(135deg, #FFCA28 0%, #FF6F00 100%); cursor: pointer; }
+        .pos-center { margin-left: 0; }
+        .pos-left { margin-right: 140px; }
+        .pos-right { margin-left: 140px; }
 
+    
         .avatar-container {
-            position: absolute; width: 70px; height: 70px; z-index: 5;
-            transition: all 0.5s ease-in-out; pointer-events: none;
+            position: absolute; width: 70px; height: 70px; z-index: 10;
+            top: -25px; right: -25px;
+            animation: bounceAvatar 2s infinite ease-in-out;
         }
-        .avatar-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); }
+        .avatar-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.2)); }
 
-        .task-modal {
+     
+        .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 50;
-            display: none; justify-content: center; align-items: center;
+            z-index: 50; display: none; justify-content: center; align-items: center;
             opacity: 0; transition: opacity 0.3s;
         }
-        .task-modal.show { display: flex; opacity: 1; }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        
+        .task-modal { background: rgba(0,0,0,0.7); }
+       
+        .success-modal { 
+            background: rgba(255,255,255,0.98); 
+            z-index: 60; flex-direction: column; text-align: center; 
+            overflow: hidden; 
+        }
 
-        .task-card {
+        .card-box {
             background: white; width: 85%; border-radius: 25px; padding: 25px;
-            text-align: center; position: relative;
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; position: relative; animation: popIn 0.4s;
         }
-        .close-task { position: absolute; top: 15px; left: 15px; font-size: 20px; color: #999; cursor: pointer; }
-        .task-icon { font-size: 50px; margin-bottom: 15px; display: block; }
-        .task-title { font-size: 18px; font-weight: 800; color: #2c3e50; margin-bottom: 5px; }
-        .task-desc { font-size: 12px; color: #7f8c8d; margin-bottom: 20px; }
+        .close-btn { position: absolute; top: 15px; left: 15px; font-size: 20px; color: #999; cursor: pointer; }
+        
+        .task-icon-big { font-size: 50px; margin-bottom: 10px; display: block; }
+        .task-h { font-size: 18px; font-weight: 800; color: #2c3e50; margin-bottom: 5px; }
+        .task-p { font-size: 12px; color: #7f8c8d; margin-bottom: 20px; }
 
-        .quiz-options { display: flex; flex-direction: column; gap: 10px; }
-        .quiz-btn {
-            background: #f5f5f5; border: 2px solid #eee; padding: 12px; border-radius: 12px;
-            font-weight: 700; color: #2c3e50; cursor: pointer; transition: 0.2s;
-        }
-        .quiz-btn.correct { background: #E9F7EF; border-color: #13EC6A; color: #13EC6A; }
-        .quiz-btn.wrong { background: #ffebee; border-color: #e74c3c; color: #e74c3c; }
-
-        .recite-mic {
-            width: 80px; height: 80px; background: #13EC6A; border-radius: 50%;
+        .mic-circle {
+            width: 70px; height: 70px; background: #13EC6A; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; margin: 0 auto;
-            color: white; font-size: 35px; cursor: pointer; box-shadow: 0 10px 20px rgba(19, 236, 106, 0.3);
+            color: white; font-size: 30px; cursor: pointer; box-shadow: 0 10px 20px rgba(19, 236, 106, 0.3);
         }
-        .recite-mic.active { animation: pulse-green 1s infinite; background: #e74c3c; }
+        .mic-circle.active { animation: pulse-glow 1s infinite; background: #e74c3c; }
 
-        .live-verse-box {
+        .verse-display {
             background: #fdfbfb; border: 1px dashed #13EC6A; border-radius: 15px;
-            padding: 20px; margin-top: 10px; min-height: 150px;
+            padding: 15px; margin-top: 10px; min-height: 120px;
             display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
             direction: rtl; gap: 5px;
         }
-        .live-word {
-            font-family: 'Amiri', serif; font-size: 22px; color: #bdc3c7; transition: 0.2s;
-        }
-        .live-word.read { color: #2c3e50; font-weight: 700; }
-        .live-word.current { color: #13EC6A; transform: scale(1.2); }
+        .word-live { font-family: 'Amiri', serif; font-size: 20px; color: #bdc3c7; transition: 0.2s; }
+        .word-live.read { color: #2c3e50; font-weight: 700; }
+        .word-live.current { color: #13EC6A; transform: scale(1.2); }
 
-        .success-modal {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.98); z-index: 60;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center;
+        .quiz-opt {
+            background: #f5f5f5; border: 2px solid #eee; padding: 12px; border-radius: 12px;
+            font-weight: 700; color: #2c3e50; cursor: pointer; margin-bottom: 8px; transition: 0.2s;
         }
-        .success-modal.show { display: flex; animation: fadeIn 0.3s; }
-        .badge-glow {
-            width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,215,64,0.5) 0%, rgba(255,255,255,0) 70%);
-            position: absolute; z-index: -1; animation: spin 10s linear infinite;
+        .quiz-opt.correct { background: #E9F7EF; border-color: #13EC6A; color: #13EC6A; }
+        .quiz-opt.wrong { background: #ffebee; border-color: #e74c3c; color: #e74c3c; }
+
+       
+     
+        .win-icon-container {
+            position: relative; width: 150px; height: 150px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
         }
-        .big-badge { font-size: 100px; color: #FFD54F; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); animation: bounceBadge 1s infinite alternate; }
-        .success-title { font-size: 24px; font-weight: 800; color: #2c3e50; margin-top: 20px; }
-        .success-sub { font-size: 14px; color: #7f8c8d; margin-bottom: 30px; }
-        .btn-continue {
-            background: #13EC6A; color: white; padding: 15px 40px; border-radius: 30px;
-            font-size: 16px; font-weight: 800; border: none; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(19, 236, 106, 0.3); transition: 0.2s;
+        .win-rays {
+            position: absolute; width: 100%; height: 100%;
+            background: repeating-conic-gradient(from 0deg, #FFECB3 0deg 20deg, transparent 20deg 40deg);
+            animation: spinSlow 10s linear infinite; opacity: 0.6;
         }
+        .win-icon {
+            width: 100px; height: 100px; border-radius: 50%; background: #FFF8E1; border: 6px solid #FFECB3;
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 0 30px rgba(255, 215, 64, 0.6); z-index: 2; animation: popIn 0.5s;
+        }
+        .win-star { font-size: 50px; color: #FFC107; }
+
+      
+        .success-title { font-size: 26px; font-weight: 800; color: #2c3e50; margin-bottom: 10px; }
+        .success-sub { font-size: 14px; color: #7f8c8d; margin-bottom: 20px; padding: 0 20px; line-height: 1.6; }
+        
+       
+        .reward-points {
+            background: #FFF8E1; color: #FFC107; padding: 5px 15px; border-radius: 15px;
+            font-weight: 700; font-size: 14px; margin-bottom: 20px; display: inline-block;
+            border: 2px solid #FFECB3; animation: pulse-glow 1.5s infinite;
+        }
+
+        .win-img { width: 120px; margin-bottom: 25px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+
+    
+        .btn-gradient {
+            background: linear-gradient(135deg, #13EC6A 0%, #00C853 100%); color: white; 
+            padding: 12px 40px; border-radius: 30px; font-size: 16px; font-weight: 800; border: none; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4); width: 85%; margin-bottom: 12px;
+            transition: transform 0.2s;
+        }
+        .btn-gradient:active { transform: scale(0.98); }
+        .btn-outline {
+            background: white; color: #2c3e50; padding: 12px 40px; border-radius: 30px;
+            font-size: 16px; font-weight: 800; border: 2px solid #eee; cursor: pointer; width: 85%;
+        }
+
+        .confetti {
+            position: absolute; width: 10px; height: 10px;
+            background-color: #FFC107; opacity: 0.8;
+            animation: fall 3s linear infinite; z-index: 55;
+        }
+        .c-blue { background-color: #2196F3; } .c-green { background-color: #4CAF50; }
+        .c-red { background-color: #F44336; } .c-purple { background-color: #9C27B0; }
 
         .bottom-nav {
             position: absolute; bottom: 0; left: 0; width: 100%;
@@ -179,12 +244,15 @@
             color: white; font-size: 28px; border: 6px solid white; box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4);
         }
 
-        @keyframes floatCloud { from { transform: translateX(0); } to { transform: translateX(500px); } }
-        @keyframes flyAcross { from { transform: translateX(0) scaleX(1); } to { transform: translateX(500px) scaleX(1); } }
-        @keyframes pulse-green { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(19, 236, 106, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(19, 236, 106, 0); } 100% { transform: scale(1); } }
+        @keyframes floatCloud { from { transform: translateX(-100px); } to { transform: translateX(400px); } }
+        @keyframes flyBird { from { transform: translateX(-50px) scaleX(1); } to { transform: translateX(400px) scaleX(1); } }
+        @keyframes spinSun { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse-glow { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); } 100% { transform: scale(1); } }
         @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes bounceBadge { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        @keyframes bounceFlower { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes bounceAvatar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes fall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(800px) rotate(360deg); opacity: 0; } }
 
     </style>
 </head>
@@ -192,109 +260,103 @@
 
     <div class="mobile-container">
         
-        <div class="decoration-container">
-            <i class="fa-solid fa-cloud cloud c1"></i>
-            <i class="fa-solid fa-cloud cloud c2"></i>
-            <div class="bird-wrapper b1"><i class="fa-solid fa-dove bird"></i></div>
-            <div class="bird-wrapper b2"><i class="fa-solid fa-dove bird"></i></div>
-            <div class="bird-wrapper b3"><i class="fa-solid fa-dove bird"></i></div>
-        </div>
-
         <div class="header-title">
             <h2>رحلة جزء عمّ</h2>
         </div>
 
         <div class="game-map-container">
+            
             <div class="game-track">
                 
-                <div class="level-node level-locked" style="margin-right: 60px;"><div class="level-label">???</div></div>
-                <div class="level-node level-locked" style="margin-left: 40px;"><div class="level-label">???</div></div>
-                <div class="level-node level-locked" style="margin-right: 50px;"><div class="level-label">???</div></div>
-                <div class="level-node level-locked" style="margin-left: 30px;"><div class="level-label">???</div></div>
-                <div class="level-node level-locked" style="margin-right: 70px;"><div class="level-label">???</div></div>
-
-                <div class="level-node level-locked" style="margin-left: -50px;">
-                    <div class="level-content"><i class="fa-solid fa-lock"></i></div>
-                    <div class="level-label">سورة الكافرون</div>
+                <div class="sky-deco">
+                    <i class="fa-solid fa-sun sun"></i>
+                    <i class="fa-solid fa-cloud cloud c1"></i>
+                    <i class="fa-solid fa-cloud cloud c2"></i>
+                    <i class="fa-solid fa-dove bird"></i>
                 </div>
 
-                <div class="level-node level-locked" style="margin-right: 50px;">
-                    <div class="level-content"><i class="fa-solid fa-lock"></i></div>
-                    <div class="level-label">سورة النصر</div>
+                <div class="ground-deco">
+                    <i class="fa-solid fa-tree tree t-1"></i> <i class="fa-solid fa-tree tree t-2"></i>
+                    <i class="fa-solid fa-tree tree t-3"></i> <i class="fa-solid fa-tree tree t-4"></i>
+                    <i class="fa-solid fa-tree tree t-5"></i> <i class="fa-solid fa-tree tree t-6"></i>
+                    <i class="fa-solid fa-clover flower f-1"></i> <i class="fa-solid fa-clover flower f-2"></i>
+                    <i class="fa-solid fa-clover flower f-3"></i> <i class="fa-solid fa-clover flower f-4"></i>
+                    <i class="fa-solid fa-clover flower f-5"></i>
                 </div>
 
-                <div class="level-node level-locked" id="level3" style="margin-left: 0;">
-                    <div class="level-content"><i class="fa-solid fa-lock"></i></div>
-                    <div class="level-label">تحدي التجويد</div>
+                <svg class="svg-path" viewBox="0 0 375 2500" preserveAspectRatio="none">
+                    <path class="path-stroke" d="M187,50 Q287,150 287,250 T187,450 T87,650 T187,850 T287,1050 T187,1250 T87,1450 T187,1650 T287,1850 T187,2050 T87,2250 T187,2450" />
+                </svg>
+
+                <div class="level-node lvl-start level-done pos-center"><div class="level-content"><i class="fa-solid fa-flag-checkered"></i></div><div class="level-label">البداية</div></div>
+                <div class="level-node lvl-done pos-right"><div class="level-content"><i class="fa-solid fa-check"></i></div><div class="level-label">سورة الناس</div></div>
+                <div class="level-node lvl-done pos-left"><div class="level-content"><i class="fa-solid fa-check"></i></div><div class="level-label">سورة الفلق</div></div>
+
+                <div class="level-node lvl-current pos-center" onclick="openTask('recite')">
+                    <div class="level-content"><i class="fa-solid fa-play"></i></div>
+                    <div class="level-label">سورة الإخلاص</div>
+                    <div class="avatar-container"><img src="145867.png" class="avatar-img" alt="My Avatar"></div>
                 </div>
 
-                <div class="level-node level-current" onclick="openGame('recite')" style="margin-right: 60px;">
-                    <div class="level-content"><i class="fa-solid fa-microphone"></i></div>
-                    <div class="level-label">تلاوة سورة الإخلاص</div>
-                    
-                    <div class="avatar-container" style="top: -25px; left: -30px;">
-                        <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" class="avatar-img" alt="Boy">
-                    </div>
-                </div>
-
-                <div class="level-node level-done" style="margin-left: 60px;">
-                    <div class="level-content"><i class="fa-solid fa-check"></i></div>
-                    <div class="level-label">سورة الفلق</div>
-                </div>
-
-                <div class="level-node level-done" style="margin-right: 30px;">
-                    <div class="level-content"><i class="fa-solid fa-check"></i></div>
-                    <div class="level-label">سورة الناس</div>
-                </div>
-
-                <div class="level-node level-done" style="margin-left: 0;">
-                    <div class="level-content"><i class="fa-solid fa-flag-checkered"></i></div>
-                    <div class="level-label">البداية</div>
-                </div>
+                <div class="level-node lvl-locked lvl-quiz pos-right" id="level5"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">اختبار تجويد</div></div>
+                <div class="level-node lvl-locked pos-left" id="level6"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة المسد</div></div>
+                <div class="level-node lvl-locked pos-center" id="level7"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة النصر</div></div>
+                <div class="level-node lvl-locked pos-right" id="level8"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة الكافرون</div></div>
+                <div class="level-node lvl-locked lvl-boss pos-left" id="level9"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">تحدي الأذكار</div></div>
+                <div class="level-node lvl-locked pos-center" id="level10"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة الكوثر</div></div>
+                <div class="level-node lvl-locked pos-right" id="level11"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة الماعون</div></div>
+                <div class="level-node lvl-locked pos-left" id="level12"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة قريش</div></div>
+                <div class="level-node lvl-locked lvl-quiz pos-center" id="level13"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">مراجعة شاملة</div></div>
+                <div class="level-node lvl-locked pos-right" id="level14"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة الفيل</div></div>
+                <div class="level-node lvl-locked pos-left" id="level15"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة الهمزة</div></div>
+                <div class="level-node lvl-locked pos-center" id="level16"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة العصر</div></div>
+                <div class="level-node lvl-locked pos-right" id="level17"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة التكاثر</div></div>
 
             </div>
         </div>
 
-        <div class="task-modal" id="taskModal">
+        <div class="modal-overlay task-modal" id="taskModal">
+            <div class="card-box" id="reciteCard" style="display:none;">
+                <i class="fa-solid fa-xmark close-btn" onclick="closeModal('task')"></i>
+                <div id="reciteIntro">
+                    <span class="task-icon-big">🎤</span>
+                    <h3 class="task-h">تحدي التلاوة</h3>
+                    <p class="task-p">اقرأ سورة الإخلاص قراءة صحيحة.</p>
+                    <div class="mic-circle" onclick="startRecitation()"><i class="fa-solid fa-microphone"></i></div>
+                </div>
+                <div id="reciteLive" style="display:none;">
+                    <h3 class="task-h" style="font-size:14px;">اقرأ بصوت عالٍ</h3>
+                    <div class="verse-display" id="verseBox"></div>
+                </div>
+            </div>
+            <div class="card-box" id="quizCard" style="display:none;">
+                <i class="fa-solid fa-xmark close-btn" onclick="closeModal('task')"></i>
+                <span class="task-icon-big">🧠</span>
+                <h3 class="task-h">سؤال سريع</h3>
+                <p class="task-p">ما حكم النون الساكنة في "مِن شَرِّ"؟</p>
+                <div class="quiz-opt" onclick="checkAnswer(this, false)">إظهار</div>
+                <div class="quiz-opt" onclick="checkAnswer(this, true)">إخفاء</div>
+                <div class="quiz-opt" onclick="checkAnswer(this, false)">إقلاب</div>
+            </div>
+        </div>
+
+        <div class="modal-overlay success-modal" id="successModal">
+            <i class="fa-solid fa-xmark close-btn" onclick="closeSuccess()"></i>
             
-            <div class="task-card" id="reciteTask" style="display:none;">
-                <i class="fa-solid fa-xmark close-task" onclick="closeGame()"></i>
-                
-                <div id="reciteStartView">
-                    <span class="task-icon">🎤</span>
-                    <h3 class="task-title">تحدي التلاوة</h3>
-                    <p class="task-desc">اقرأ سورة الإخلاص قراءة صحيحة لتفتح القفل!</p>
-                    <div class="recite-mic" onclick="startRecitation()">
-                        <i class="fa-solid fa-microphone"></i>
-                    </div>
-                </div>
-
-                <div id="liveVerseDisplay" style="display:none;">
-                    <h3 class="task-title" style="font-size:14px; margin-bottom:10px;">اقرأ بصوت عالٍ</h3>
-                    <div class="live-verse-box" id="verseBox"></div>
-                </div>
-
+            <div class="win-icon-container">
+                <div class="win-rays"></div>
+                <div class="win-icon"><i class="fa-solid fa-star win-star"></i></div>
             </div>
+            
+            <h2 class="success-title">إنجاز أسطوري يا بطل! 🌟👑</h2>
+            <p class="success-sub">ما شاء الله! لقد أتقنت سورة الإخلاص ببراعة. استمر في التألق، القمة بانتظارك! 🚀</p>
+            
+            
 
-            <div class="task-card" id="quizTask" style="display:none;">
-                <i class="fa-solid fa-xmark close-task" onclick="closeGame()"></i>
-                <span class="task-icon">🧠</span>
-                <h3 class="task-title">سؤال سريع</h3>
-                <p class="task-desc">ما هو حكم النون الساكنة في "مِن شَرِّ"؟</p>
-                <div class="quiz-options">
-                    <div class="quiz-btn" onclick="checkAnswer(this, false)">إظهار</div>
-                    <div class="quiz-btn" onclick="checkAnswer(this, true)">إخفاء</div>
-                    <div class="quiz-btn" onclick="checkAnswer(this, false)">إقلاب</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="success-modal" id="successModal">
-            <div class="badge-glow"></div>
-            <i class="fa-solid fa-medal big-badge"></i>
-            <h2 class="success-title">مبارك يا بطل! 🎉</h2>
-            <p class="success-sub">تلاوة رائعة ومخارج حروف ممتازة.<br>استمر يا بطل!</p>
-            <button class="btn-continue" onclick="closeSuccess()">افتح التحدي التالي</button>
+            <img src="145867.png" class="win-img" alt="Happy Kid">
+            
+            <button class="btn-gradient" onclick="closeSuccess()">العودة للخريطة <i class="fa-solid fa-arrow-right"></i></button>
+            <button class="btn-outline"><i class="fa-solid fa-share-nodes"></i> مشاركة الإنجاز</button>
         </div>
 
         <div class="bottom-nav">
@@ -308,86 +370,113 @@
     </div>
 
     <script>
-        const ikhlasText = "قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ";
+        const ikhlasText = "قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ";
+        let currentTaskType = '';
+        let confettiInterval;
 
-        function openGame(type) {
+        function openTask(type) {
             document.getElementById('taskModal').classList.add('show');
-            document.getElementById('reciteTask').style.display = 'none';
-            document.getElementById('quizTask').style.display = 'none';
-
-            if (type === 'recite') {
-                document.getElementById('reciteTask').style.display = 'block';
-                document.getElementById('reciteStartView').style.display = 'block';
-                document.getElementById('liveVerseDisplay').style.display = 'none';
-            } else if (type === 'quiz') { 
-                if(document.getElementById('level3').classList.contains('level-quiz')) {
-                    document.getElementById('quizTask').style.display = 'block';
-                }
+            document.getElementById('reciteCard').style.display = 'none';
+            document.getElementById('quizCard').style.display = 'none';
+            
+            if(type === 'recite') {
+                document.getElementById('reciteCard').style.display = 'block';
+                document.getElementById('reciteIntro').style.display = 'block';
+                document.getElementById('reciteLive').style.display = 'none';
+                currentTaskType = 'recite';
+            } else if (type === 'quiz') {
+                document.getElementById('quizCard').style.display = 'block';
+                currentTaskType = 'quiz';
             }
         }
 
-        function closeGame() {
-            document.getElementById('taskModal').classList.remove('show');
+        function closeModal(type) {
+            if(type === 'task') document.getElementById('taskModal').classList.remove('show');
         }
 
         function startRecitation() {
-            document.getElementById('reciteStartView').style.display = 'none';
-            document.getElementById('liveVerseDisplay').style.display = 'block';
+            document.getElementById('reciteIntro').style.display = 'none';
+            document.getElementById('reciteLive').style.display = 'block';
             
             const box = document.getElementById('verseBox');
             box.innerHTML = '';
-            
-            const words = ikhlasText.split(' ');
-            words.forEach(w => {
-                const span = document.createElement('span');
-                span.className = 'live-word';
-                span.innerText = w;
-                box.appendChild(span);
+            ikhlasText.split(' ').forEach(w => {
+                box.innerHTML += `<span class="word-live">${w}</span>`;
             });
 
+            const words = document.querySelectorAll('.word-live');
             let i = 0;
-            const spans = document.querySelectorAll('.live-word');
-            const interval = setInterval(() => {
-                if (i < spans.length) {
-                    spans.forEach(s => s.classList.remove('current'));
-                    spans[i].classList.add('read', 'current');
+            const timer = setInterval(() => {
+                if(i < words.length) {
+                    words.forEach(w => w.classList.remove('current'));
+                    words[i].classList.add('read', 'current');
                     i++;
                 } else {
-                    clearInterval(interval);
-                    setTimeout(showSuccess, 500);
+                    clearInterval(timer);
+                    setTimeout(() => showWin(), 500);
                 }
-            }, 400);
+            }, 300);
         }
 
         function checkAnswer(btn, isCorrect) {
-            if (isCorrect) {
+            if(isCorrect) {
                 btn.classList.add('correct');
-                setTimeout(() => showSuccess(), 800);
+                setTimeout(() => showWin(), 600);
             } else {
                 btn.classList.add('wrong');
                 setTimeout(() => btn.classList.remove('wrong'), 500);
             }
         }
 
-        function showSuccess() {
-            closeGame();
+        function showWin() {
+            closeModal('task');
             document.getElementById('successModal').classList.add('show');
+            startConfetti(); 
         }
 
         function closeSuccess() {
             document.getElementById('successModal').classList.remove('show');
+            stopConfetti(); 
             
-            const nextLevel = document.getElementById('level3');
-            nextLevel.classList.remove('level-locked');
-            nextLevel.classList.add('level-quiz');
-            nextLevel.querySelector('.level-content i').className = 'fa-solid fa-question';
-            nextLevel.setAttribute('onclick', "openGame('quiz')");
+            if(currentTaskType === 'recite') {
+                const lvl5 = document.getElementById('level5');
+                lvl5.classList.remove('lvl-locked');
+                lvl5.querySelector('.level-content i').className = 'fa-solid fa-question';
+                lvl5.setAttribute('onclick', "openTask('quiz')");
+                lvl5.style.cursor = 'pointer';
+            } else if (currentTaskType === 'quiz') {
+                const lvl6 = document.getElementById('level6');
+                lvl6.classList.remove('lvl-locked');
+                lvl6.style.background = '#66BB6A';
+                lvl6.querySelector('.level-content i').className = 'fa-solid fa-play';
+            }
         }
+
         
-        window.onload = function() {
-            const container = document.querySelector('.game-map-container');
-            container.scrollTop = container.scrollHeight;
-        };
+        function startConfetti() {
+            const modal = document.getElementById('successModal');
+            confettiInterval = setInterval(() => {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's'; 
+                
+                const colors = ['c-blue', 'c-green', 'c-red', 'c-purple', ''];
+                confetti.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+                
+                modal.appendChild(confetti);
+
+               
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3500);
+            }, 150); 
+        }
+
+        function stopConfetti() {
+            clearInterval(confettiInterval);
+            document.querySelectorAll('.confetti').forEach(c => c.remove());
+        }
     </script>
 
 </body>
