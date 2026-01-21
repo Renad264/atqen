@@ -17,12 +17,8 @@
 
         .mobile-container {
             width: 375px; height: 700px;
-            
-            /* ================================================================= */
-            /* 🔴🔴 ملاحظة: ضعي رابط صورة خلفية التطبيق هنا بالأسفل 🔴🔴 */
-            /* ================================================================= */
-            background-image: url('/Users/renadbraek/Desktop/burhan/IMG_2605.PNG'); 
-            
+            /* خلفية التطبيق */
+            background-image: url('IMG_2605.PNG'); 
             background-size: cover; background-position: center;
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
@@ -32,7 +28,7 @@
 
         .mobile-container::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(248, 249, 250, 0.90); 
+            background: rgba(248, 249, 250, 0.92); /* شفافية خفيفة للخلفية */
             z-index: 0; pointer-events: none;
         }
 
@@ -43,11 +39,12 @@
         }
         .content-scroll::-webkit-scrollbar { display: none; }
 
+        /* --- الهيدر --- */
         .home-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 0; margin-bottom: 20px;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
             position: sticky; top: 0; z-index: 10;
+            background: linear-gradient(to bottom, rgba(248,249,250,1) 80%, rgba(248,249,250,0) 100%);
         }
         .user-profile { display: flex; align-items: center; gap: 12px; }
         .profile-img {
@@ -69,6 +66,7 @@
             background-color: #e74c3c; border-radius: 50%; border: 1px solid white;
         }
 
+        /* --- الإحصائيات السريعة --- */
         .stats-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
         .stat-card {
             background: white; flex: 1; border-radius: 16px; padding: 12px 5px;
@@ -83,6 +81,7 @@
         .section-title { font-size: 15px; font-weight: 800; color: #2c3e50; }
         .edit-link { font-size: 12px; color: #13EC6A; font-weight: 700; text-decoration: none; cursor: pointer; }
 
+        /* --- بطاقة الخطة --- */
         .plan-card {
             width: 100%; height: 160px; border-radius: 20px;
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
@@ -102,6 +101,21 @@
         .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
         .progress-bar { width: 65%; height: 100%; background-color: #13EC6A; border-radius: 10px; }
 
+        /* --- بطاقة ملاحظة المعلم (الجديدة) --- */
+        .teacher-note-main {
+            background: white; border-left: 4px solid #F39C12;
+            border-radius: 16px; padding: 15px; margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; gap: 12px;
+        }
+        .tn-icon {
+            width: 40px; height: 40px; background: #FFF3E0; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #F39C12; font-size: 18px; flex-shrink: 0;
+        }
+        .tn-content h4 { font-size: 13px; font-weight: 800; color: #2c3e50; margin: 0 0 4px 0; }
+        .tn-content p { font-size: 11px; color: #555; line-height: 1.4; margin: 0; }
+
+        /* --- بطاقة المهمة اليومية --- */
         .task-card {
             width: 100%; border-radius: 20px; overflow: hidden;
             position: relative; height: 200px;
@@ -109,12 +123,8 @@
         }
         .task-bg {
             width: 100%; height: 100%; object-fit: cover;
-            
-            /* ================================================================= */
-            /* 🔴🔴 ملاحظة: ضعي رابط صورة خلفية المهمة (المصحف) هنا 🔴🔴 */
-            /* ================================================================= */
+            /* صورة المصحف الخلفية */
             background-image: url('Screenshot 1447-08-02 at 4.07.40 AM.png'); 
-            
             background-size: cover; background-position: center;
         }
         .task-overlay {
@@ -131,6 +141,7 @@
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
+        /* --- البار السفلي --- */
         .bottom-nav {
             position: absolute; bottom: 0; left: 0; width: 100%;
             background: white; padding: 15px 25px 25px 25px;
@@ -158,6 +169,7 @@
         }
         .fab-btn:active { transform: scale(0.95); }
 
+        /* --- المودال --- */
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 50;
@@ -247,7 +259,6 @@
             <div class="home-header">
                 <div class="user-profile">
                     <img src="145867.png" class="profile-img" alt="Profile">
-                    
                     <div class="greeting-text">
                         <h2>أهلاً صالح أحمد</h2>
                         <p>واصل تقدمك المميز!</p>
@@ -274,6 +285,14 @@
                     <i class="fa-solid fa-medal stat-icon" style="color: #f1c40f;"></i>
                     <span class="stat-value">4</span>
                     <span class="stat-title">الأوسمة</span>
+                </div>
+            </div>
+
+            <div class="teacher-note-main">
+                <div class="tn-icon"><i class="fa-solid fa-user-tie"></i></div>
+                <div class="tn-content">
+                    <h4>رسالة من المعلم</h4>
+                    <p>"بارك الله فيك يا صالح، تلاوتك في تحسن مستمر. ركز قليلاً على المدود في سورة النبأ."</p>
                 </div>
             </div>
 
@@ -322,7 +341,8 @@
 
         <div class="bottom-nav">
             <a href="main.html" class="nav-item active"><i class="fa-solid fa-house"></i></a>
-            <a href="mod.html" class="nav-item"><i class="fa-solid fa-mosque"></i></a>
+            <a href="mos.html" class="nav-item"><i class="fa-solid fa-mosque"></i></a>
+            
             <div class="fab-wrapper"><a href="learn.html" class="fab-btn"><i class="fa-solid fa-microphone"></i></a></div>
             <a href="game.html" class="nav-item"><i class="fa-solid fa-gamepad"></i></a>
             <a href="prof.html" class="nav-item"><i class="fa-regular fa-user"></i></a>
@@ -380,113 +400,11 @@
             { id: 9, name: "التوبة", verses: 129, type: "مدنية" },
             { id: 10, name: "يونس", verses: 109, type: "مكية" },
             { id: 11, name: "هود", verses: 123, type: "مكية" },
-            { id: 12, name: "يوسف", verses: 111, type: "مكية" },
-            { id: 13, name: "الرعد", verses: 43, type: "مدنية" },
-            { id: 14, name: "إبراهيم", verses: 52, type: "مكية" },
-            { id: 15, name: "الحجر", verses: 99, type: "مكية" },
-            { id: 16, name: "النحل", verses: 128, type: "مكية" },
-            { id: 17, name: "الإسراء", verses: 111, type: "مكية" },
-            { id: 18, name: "الكهف", verses: 110, type: "مكية" },
-            { id: 19, name: "مريم", verses: 98, type: "مكية" },
-            { id: 20, name: "طه", verses: 135, type: "مكية" },
-            { id: 21, name: "الأنبياء", verses: 112, type: "مكية" },
-            { id: 22, name: "الحج", verses: 78, type: "مدنية" },
-            { id: 23, name: "المؤمنون", verses: 118, type: "مكية" },
-            { id: 24, name: "النور", verses: 64, type: "مدنية" },
-            { id: 25, name: "الفرقان", verses: 77, type: "مكية" },
-            { id: 26, name: "الشعراء", verses: 227, type: "مكية" },
-            { id: 27, name: "النمل", verses: 93, type: "مكية" },
-            { id: 28, name: "القصص", verses: 88, type: "مكية" },
-            { id: 29, name: "العنكبوت", verses: 69, type: "مكية" },
-            { id: 30, name: "الروم", verses: 60, type: "مكية" },
-            { id: 31, name: "لقمان", verses: 34, type: "مكية" },
-            { id: 32, name: "السجدة", verses: 30, type: "مكية" },
-            { id: 33, name: "الأحزاب", verses: 73, type: "مدنية" },
-            { id: 34, name: "سبأ", verses: 54, type: "مكية" },
-            { id: 35, name: "فاطر", verses: 45, type: "مكية" },
-            { id: 36, name: "يس", verses: 83, type: "مكية" },
-            { id: 37, name: "الصافات", verses: 182, type: "مكية" },
-            { id: 38, name: "ص", verses: 88, type: "مكية" },
-            { id: 39, name: "الزمر", verses: 75, type: "مكية" },
-            { id: 40, name: "غافر", verses: 85, type: "مكية" },
-            { id: 41, name: "فصلت", verses: 54, type: "مكية" },
-            { id: 42, name: "الشورى", verses: 53, type: "مكية" },
-            { id: 43, name: "الزخرف", verses: 89, type: "مكية" },
-            { id: 44, name: "الدخان", verses: 59, type: "مكية" },
-            { id: 45, name: "الجاثية", verses: 37, type: "مكية" },
-            { id: 46, name: "الأحقاف", verses: 35, type: "مكية" },
-            { id: 47, name: "محمد", verses: 38, type: "مدنية" },
-            { id: 48, name: "الفتح", verses: 29, type: "مدنية" },
-            { id: 49, name: "الحجرات", verses: 18, type: "مدنية" },
-            { id: 50, name: "ق", verses: 45, type: "مكية" },
-            { id: 51, name: "الذاريات", verses: 60, type: "مكية" },
-            { id: 52, name: "الطور", verses: 49, type: "مكية" },
-            { id: 53, name: "النجم", verses: 62, type: "مكية" },
-            { id: 54, name: "القمر", verses: 55, type: "مكية" },
-            { id: 55, name: "الرحمن", verses: 78, type: "مدنية" },
-            { id: 56, name: "الواقعة", verses: 96, type: "مكية" },
-            { id: 57, name: "الحديد", verses: 29, type: "مدنية" },
-            { id: 58, name: "المجادلة", verses: 22, type: "مدنية" },
-            { id: 59, name: "الحشر", verses: 24, type: "مدنية" },
-            { id: 60, name: "الممتحنة", verses: 13, type: "مدنية" },
-            { id: 61, name: "الصف", verses: 14, type: "مدنية" },
-            { id: 62, name: "الجمعة", verses: 11, type: "مدنية" },
-            { id: 63, name: "المنافقون", verses: 11, type: "مدنية" },
-            { id: 64, name: "التغابن", verses: 18, type: "مدنية" },
-            { id: 65, name: "الطلاق", verses: 12, type: "مدنية" },
-            { id: 66, name: "التحريم", verses: 12, type: "مدنية" },
-            { id: 67, name: "الملك", verses: 30, type: "مكية" },
-            { id: 68, name: "القلم", verses: 52, type: "مكية" },
-            { id: 69, name: "الحاقة", verses: 52, type: "مكية" },
-            { id: 70, name: "المعارج", verses: 44, type: "مكية" },
-            { id: 71, name: "نوح", verses: 28, type: "مكية" },
-            { id: 72, name: "الجن", verses: 28, type: "مكية" },
-            { id: 73, name: "المزمل", verses: 20, type: "مكية" },
-            { id: 74, name: "المدثر", verses: 56, type: "مكية" },
-            { id: 75, name: "القيامة", verses: 40, type: "مكية" },
-            { id: 76, name: "الإنسان", verses: 31, type: "مدنية" },
-            { id: 77, name: "المرسلات", verses: 50, type: "مكية" },
-            { id: 78, name: "النبأ", verses: 40, type: "مكية" },
-            { id: 79, name: "النازعات", verses: 46, type: "مكية" },
-            { id: 80, name: "عبس", verses: 42, type: "مكية" },
-            { id: 81, name: "التكوير", verses: 29, type: "مكية" },
-            { id: 82, name: "الانفطار", verses: 19, type: "مكية" },
-            { id: 83, name: "المطففين", verses: 36, type: "مكية" },
-            { id: 84, name: "الانشقاق", verses: 25, type: "مكية" },
-            { id: 85, name: "البروج", verses: 22, type: "مكية" },
-            { id: 86, name: "الطارق", verses: 17, type: "مكية" },
-            { id: 87, name: "الأعلى", verses: 19, type: "مكية" },
-            { id: 88, name: "الغاشية", verses: 26, type: "مكية" },
-            { id: 89, name: "الفجر", verses: 30, type: "مكية" },
-            { id: 90, name: "البلد", verses: 20, type: "مكية" },
-            { id: 91, name: "الشمس", verses: 15, type: "مكية" },
-            { id: 92, name: "الليل", verses: 21, type: "مكية" },
-            { id: 93, name: "الضحى", verses: 11, type: "مكية" },
-            { id: 94, name: "الشرح", verses: 8, type: "مكية" },
-            { id: 95, name: "التين", verses: 8, type: "مكية" },
-            { id: 96, name: "العلق", verses: 19, type: "مكية" },
-            { id: 97, name: "القدر", verses: 5, type: "مكية" },
-            { id: 98, name: "البينة", verses: 8, type: "مدنية" },
-            { id: 99, name: "الزلزلة", verses: 8, type: "مدنية" },
-            { id: 100, name: "العاديات", verses: 11, type: "مكية" },
-            { id: 101, name: "القارعة", verses: 11, type: "مكية" },
-            { id: 102, name: "التكاثر", verses: 8, type: "مكية" },
-            { id: 103, name: "العصر", verses: 3, type: "مكية" },
-            { id: 104, name: "الهمزة", verses: 9, type: "مكية" },
-            { id: 105, name: "الفيل", verses: 5, type: "مكية" },
-            { id: 106, name: "قريش", verses: 4, type: "مكية" },
-            { id: 107, name: "الماعون", verses: 7, type: "مكية" },
-            { id: 108, name: "الكوثر", verses: 3, type: "مكية" },
-            { id: 109, name: "الكافرون", verses: 6, type: "مكية" },
-            { id: 110, name: "النصر", verses: 3, type: "مدنية" },
-            { id: 111, name: "المسد", verses: 5, type: "مكية" },
-            { id: 112, name: "الإخلاص", verses: 4, type: "مكية" },
-            { id: 113, name: "الفلق", verses: 5, type: "مكية" },
-            { id: 114, name: "الناس", verses: 6, type: "مكية" }
+            { id: 12, name: "يوسف", verses: 111, type: "مكية" }
         ];
 
         function getStatus(id) {
-            if (id === 1 || id === 3 || id === 4 || (id >= 5 && id <= 14)) return 'saved';
+            if (id === 1 || id === 3 || id === 4) return 'saved';
             if (id === 2) return 'progress';
             return 'pending';
         }
@@ -509,18 +427,18 @@
                 if (status === 'saved') {
                     badgeClass = 'status-saved';
                     badgeText = 'تم الحفظ';
-                    cardStyle = 'saved-card';
+                    cardStyle = 'border: 1px solid #E9F7EF;';
                 } else if (status === 'progress') {
                     badgeClass = 'status-progress';
                     badgeText = '65%';
-                    cardStyle = 'border-color: #13EC6A; background: #fafffc;';
+                    cardStyle = 'border: 1px solid #FFF3E0;';
                 } else {
                     badgeClass = 'status-pending';
                     badgeText = 'لم تبدأ';
                 }
 
                 const html = `
-                    <div class="surah-card ${cardStyle}" style="${cardStyle}">
+                    <div class="surah-card" style="${cardStyle}">
                         <div class="surah-info">
                             <div class="surah-number">${surah.id}</div>
                             <div class="surah-details">
