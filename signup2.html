@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- نفس الأساسيات السابقة للحفاظ على الهوية --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: all 0.2s ease; }
         
         body { 
@@ -17,25 +16,49 @@
         }
 
         .mobile-container {
-            width: 375px; height: 700px;
-            background: linear-gradient(180deg, #FFFFFF 60%, #E9F7EF 100%);
+            width: 375px; 
+            height: 700px;
+            background-image: url('/Users/renadbraek/Desktop/burhan/IMG_2605.PNG'); 
+            background-size: cover; 
+            background-position: center;
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.1); 
             overflow-y: auto; overflow-x: hidden;
             position: relative; display: flex; flex-direction: column; padding: 20px 25px;
             scrollbar-width: none; -ms-overflow-style: none;
         }
+        
+        .mobile-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.4); 
+            z-index: 0; pointer-events: none;
+        }
+
         .mobile-container::-webkit-scrollbar { display: none; }
 
         @media (max-width: 480px) {
             body { background-color: #ffffff; align-items: flex-start; }
             .mobile-container { width: 100%; height: 100vh; border-radius: 0; box-shadow: none; }
         }
+        
+        .content-wrapper {
+            position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;
+        }
 
-        /* --- الهيدر وشريط التقدم --- */
+        .lang-wrapper { 
+            position: absolute; top: 5px; left: 0; z-index: 20; 
+        }
+        html[dir="ltr"] .lang-wrapper { left: auto; right: 0; }
+        
+        .lang-select {
+            padding: 5px; border: none; border-radius: 15px; 
+            background-color: rgba(255,255,255,0.8);
+            color: #439E67; font-weight: bold; font-size: 12px; outline: none; cursor: pointer;
+        }
+
         .top-nav {
             display: flex; justify-content: center; align-items: center;
-            position: relative; margin-top: 50px; margin-bottom: 10px; flex-shrink: 0;
+            position: relative; margin-top: 30px; margin-bottom: 10px; flex-shrink: 0;
         }
         .nav-title { font-weight: 700; color: #2c3e50; font-size: 16px; }
         .back-btn {
@@ -44,7 +67,7 @@
         html[dir="ltr"] .back-btn { right: auto; left: 0; transform: rotate(180deg); }
 
         .stepper-info {
-            text-align: right; font-size: 11px; color: #7f8c8d; margin-bottom: 5px; margin-top: 10px;
+            text-align: right; font-size: 11px; color: #555; margin-bottom: 5px; margin-top: 10px; font-weight: 600;
         }
         html[dir="ltr"] .stepper-info { text-align: left; }
 
@@ -52,19 +75,17 @@
             width: 100%; height: 6px; background-color: #eee; border-radius: 3px; margin-bottom: 25px; overflow: hidden; flex-shrink: 0;
         }
         .progress-fill {
-            width: 50%; /* الخطوة 2 من 4 تقريباً */
-            height: 100%; background-color: #2ECC71; border-radius: 3px;
+            width: 100%; 
+            height: 100%; background-color: #13EC6A; border-radius: 3px;
         }
 
-        /* --- الأقسام والعناوين --- */
         .section-title { font-size: 15px; font-weight: 700; color: #2c3e50; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         
-        /* --- 1. شبكة الأهداف (Goal Grid) --- */
         .goal-grid {
             display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 25px;
         }
         .goal-card {
-            background: white; border: 1px solid #eee; border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9); border: 1px solid #fff; border-radius: 15px;
             padding: 15px 5px; text-align: center; cursor: pointer;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
@@ -72,18 +93,15 @@
         .goal-card i { font-size: 20px; color: #95a5a6; }
         .goal-card span { font-size: 12px; font-weight: 600; color: #7f8c8d; }
         
-        /* الحالة النشطة (Selected) */
         .goal-card.active {
-            background-color: #E9F7EF; border-color: #2ECC71;
+            background-color: #E9F7EF; border-color: #13EC6A;
         }
-        .goal-card.active i, .goal-card.active span { color: #2ECC71; }
+        .goal-card.active i, .goal-card.active span { color: #13EC6A; }
 
-
-        /* --- 2. خيارات الحفظ (List Options) --- */
         .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
         
         .option-item {
-            background: white; border: 1px solid #eee; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9); border: 1px solid #fff; border-radius: 12px;
             padding: 15px; display: flex; align-items: center; justify-content: space-between;
             cursor: pointer; position: relative;
         }
@@ -96,31 +114,28 @@
             display: flex; align-items: center; justify-content: center; color: transparent;
         }
 
-        /* الحالة النشطة للقائمة */
         .option-item.active {
-            background-color: #E9F7EF; border-color: #2ECC71;
+            background-color: #E9F7EF; border-color: #13EC6A;
         }
         .option-item.active .option-icon {
-            background-color: #2ECC71; border-color: #2ECC71; color: white; font-size: 12px;
+            background-color: #13EC6A; border-color: #13EC6A; color: white; font-size: 12px;
         }
 
-        /* --- 3. الالتزام اليومي (Time Selector) --- */
         .time-selector {
             display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;
         }
         .time-pill {
-            padding: 8px 16px; background: white; border: 1px solid #eee; border-radius: 20px;
+            padding: 8px 16px; background: rgba(255, 255, 255, 0.9); border: 1px solid #fff; border-radius: 20px;
             font-size: 12px; font-weight: 600; color: #555; cursor: pointer;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02); flex: 1; text-align: center; white-space: nowrap;
         }
         .time-pill.active {
-            background-color: #2ECC71; color: white; border-color: #2ECC71; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+            background-color: #13EC6A; color: white; border-color: #13EC6A; box-shadow: 0 5px 15px rgba(19, 236, 106, 0.3);
         }
-        .helper-text { font-size: 10px; color: #95a5a6; margin-bottom: 25px; margin-top: 5px; }
+        .helper-text { font-size: 10px; color: #555; margin-bottom: 25px; margin-top: 5px; font-weight: 600; }
 
-        /* --- 4. نصيحة اليوم (Tip Card) --- */
         .tip-card {
-            background: linear-gradient(135deg, #e0f7fa 0%, #E9F7EF 100%);
+            background: linear-gradient(135deg, rgba(224, 247, 250, 0.9) 0%, rgba(233, 247, 239, 0.9) 100%);
             border-radius: 15px; padding: 15px; position: relative; margin-bottom: 20px;
             border: 1px solid rgba(46, 204, 113, 0.1);
         }
@@ -129,19 +144,15 @@
         .tip-icon { position: absolute; top: 15px; left: 15px; color: #f1c40f; font-size: 18px; }
         html[dir="ltr"] .tip-icon { left: auto; right: 15px; }
 
-        /* --- زر اللغة وزر المتابعة --- */
-        .lang-wrapper { position: absolute; top: 25px; left: 25px; z-index: 20; }
-        html[dir="ltr"] .lang-wrapper { left: auto; right: 25px; }
-        .lang-select {
-            padding: 5px; border: none; background: transparent; color: #2ECC71; font-weight: bold; font-size: 12px; outline: none;
-        }
-
         .btn-start {
-            width: 100%; padding: 16px; background-color: #2ECC71; color: white; border: none;
+            width: 100%; padding: 16px; 
+            background-color: #13EC6A; 
+            color: white; border: none;
             border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.25); margin-top: auto;
+            box-shadow: 0 10px 20px rgba(19, 236, 106, 0.3); margin-top: auto;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        .btn-start:hover { background-color: #27ae60; }
+        .btn-start:hover { background-color: #0fd65e; }
 
     </style>
 </head>
@@ -149,98 +160,99 @@
 
     <div class="mobile-container">
         
-        <div class="lang-wrapper">
-            <select id="languageSelector" class="lang-select">
-                <option value="ar">EN</option>
-                <option value="ar">AR</option>
-                <option value="en">EN</option>
-            </select>
-        </div>
+        <div class="content-wrapper">
 
-        <div class="top-nav">
-            <a href="signup.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i></a>
-            <span class="nav-title" data-i18n="nav_title">تحديد الأهداف</span>
-        </div>
-
-        <div class="stepper-info" data-i18n="step_info">الخطوة 2 من 4</div>
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
-        </div>
-
-        <div class="section-title" data-i18n="sec1_title">ما هو هدفك؟</div>
-        <div class="goal-grid">
-            <div class="goal-card" onclick="selectGoal(this)">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <span data-i18n="goal_revision">مراجعة</span>
+            <div class="lang-wrapper">
+                <select id="languageSelector" class="lang-select">
+                    <option value="ar">EN</option>
+                    <option value="ar">AR</option>
+                    <option value="en">EN</option>
+                </select>
             </div>
-            <div class="goal-card" onclick="selectGoal(this)">
-                <i class="fa-solid fa-brain"></i>
-                <span data-i18n="goal_memorize">حفظ</span>
-            </div>
-            <div class="goal-card active" onclick="selectGoal(this)">
-                <i class="fa-solid fa-book-open"></i>
-                <span data-i18n="goal_recite">تلاوة</span>
-            </div>
-        </div>
 
-        <div class="section-title" data-i18n="sec2_title">كم ترغب في حفظ القرآن؟</div>
-        <div class="options-list">
-            
-            <div class="option-item active" onclick="selectOption(this)">
-                <div class="option-icon"><i class="fa-solid fa-check"></i></div>
-                <div class="option-info">
-                    <span class="option-title" data-i18n="opt1_title">المصحف كاملاً</span>
-                    <span class="option-subtitle" data-i18n="opt1_sub">حفظ 30 جزءاً من القرآن</span>
+            <div class="top-nav">
+                <a href="signup.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i></a>
+                <span class="nav-title" data-i18n="nav_title">تحديد الأهداف</span>
+            </div>
+
+            <div class="stepper-info" data-i18n="step_info">الخطوة 2 من 2</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div class="section-title" data-i18n="sec1_title">ما هو هدفك؟</div>
+            <div class="goal-grid">
+                <div class="goal-card" onclick="selectGoal(this)">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span data-i18n="goal_revision">مراجعة</span>
                 </div>
-                <i class="fa-solid fa-book" style="color: #2ECC71; font-size: 18px;"></i>
-            </div>
-
-            <div class="option-item" onclick="selectOption(this)">
-                <div class="option-icon"><i class="fa-solid fa-check"></i></div>
-                <div class="option-info">
-                    <span class="option-title" data-i18n="opt2_title">أجزاء محددة</span>
-                    <span class="option-subtitle" data-i18n="opt2_sub">مثل جزء عم أو تبارك</span>
+                <div class="goal-card" onclick="selectGoal(this)">
+                    <i class="fa-solid fa-brain"></i>
+                    <span data-i18n="goal_memorize">حفظ</span>
                 </div>
-                <i class="fa-solid fa-bookmark" style="color: #ccc; font-size: 18px;"></i>
-            </div>
-
-            <div class="option-item" onclick="selectOption(this)">
-                <div class="option-icon"><i class="fa-solid fa-check"></i></div>
-                <div class="option-info">
-                    <span class="option-title" data-i18n="opt3_title">سور مختارة</span>
-                    <span class="option-subtitle" data-i18n="opt3_sub">سورة البقرة، الكهف، إلخ</span>
+                <div class="goal-card active" onclick="selectGoal(this)">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span data-i18n="goal_recite">تلاوة</span>
                 </div>
-                <i class="fa-regular fa-bookmark" style="color: #ccc; font-size: 18px;"></i>
             </div>
 
-        </div>
+            <div class="section-title" data-i18n="sec2_title">كم ترغب في حفظ القرآن؟</div>
+            <div class="options-list">
+                
+                <div class="option-item active" onclick="selectOption(this)">
+                    <div class="option-icon"><i class="fa-solid fa-check"></i></div>
+                    <div class="option-info">
+                        <span class="option-title" data-i18n="opt1_title">المصحف كاملاً</span>
+                        <span class="option-subtitle" data-i18n="opt1_sub">حفظ 30 جزءاً من القرآن</span>
+                    </div>
+                    <i class="fa-solid fa-book" style="color: #13EC6A; font-size: 18px;"></i>
+                </div>
 
-        <div class="section-title" data-i18n="sec3_title">الالتزام اليومي</div>
-        <div class="time-selector">
-            <div class="time-pill" onclick="selectTime(this)" data-i18n="time_45">45 دقائق</div>
-            <div class="time-pill active" onclick="selectTime(this)" data-i18n="time_20">20 دقيقة</div>
-            <div class="time-pill" onclick="selectTime(this)" data-i18n="time_10">10 دقائق</div>
-            <div class="time-pill" onclick="selectTime(this)" data-i18n="time_60">ساعة فأكثر</div>
-        </div>
-        <p class="helper-text" data-i18n="helper_txt">سنرسل لك تنبيهات لمساعدتك على الالتزام بهدفك.</p>
+                <div class="option-item" onclick="selectOption(this)">
+                    <div class="option-icon"><i class="fa-solid fa-check"></i></div>
+                    <div class="option-info">
+                        <span class="option-title" data-i18n="opt2_title">أجزاء محددة</span>
+                        <span class="option-subtitle" data-i18n="opt2_sub">مثل جزء عم أو تبارك</span>
+                    </div>
+                    <i class="fa-solid fa-bookmark" style="color: #ccc; font-size: 18px;"></i>
+                </div>
 
-        <div class="tip-card">
-            <i class="fa-solid fa-wand-magic-sparkles tip-icon"></i>
-            <div class="tip-header" data-i18n="tip_header">نصيحة اليوم</div>
-            <div class="tip-content" data-i18n="tip_content">قليل دائم خير من كثير منقطع</div>
-        </div>
+                <div class="option-item" onclick="selectOption(this)">
+                    <div class="option-icon"><i class="fa-solid fa-check"></i></div>
+                    <div class="option-info">
+                        <span class="option-title" data-i18n="opt3_title">سور مختارة</span>
+                        <span class="option-subtitle" data-i18n="opt3_sub">سورة البقرة، الكهف، إلخ</span>
+                    </div>
+                    <i class="fa-regular fa-bookmark" style="color: #ccc; font-size: 18px;"></i>
+                </div>
 
-        <button class="btn-start" onclick="goToMain()" data-i18n="btn_start">ابدأ رحلتك <i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+
+            <div class="section-title" data-i18n="sec3_title">الالتزام اليومي</div>
+            <div class="time-selector">
+                <div class="time-pill" onclick="selectTime(this)" data-i18n="time_45">45 دقائق</div>
+                <div class="time-pill active" onclick="selectTime(this)" data-i18n="time_20">20 دقيقة</div>
+                <div class="time-pill" onclick="selectTime(this)" data-i18n="time_10">10 دقائق</div>
+                <div class="time-pill" onclick="selectTime(this)" data-i18n="time_60">ساعة فأكثر</div>
+            </div>
+            <p class="helper-text" data-i18n="helper_txt">سنرسل لك تنبيهات لمساعدتك على الالتزام بهدفك.</p>
+
+            <div class="tip-card">
+                <i class="fa-solid fa-wand-magic-sparkles tip-icon"></i>
+                <div class="tip-header" data-i18n="tip_header">نصيحة اليوم</div>
+                <div class="tip-content" data-i18n="tip_content">قليل دائم خير من كثير منقطع</div>
+            </div>
+
+            <button class="btn-start" onclick="goToMain()" data-i18n="btn_start">ابدأ رحلتك <i class="fa-solid fa-arrow-left"></i></button>
+
+        </div>
 
     </div>
 
     <script>
-        // --- دوال التفاعل البسيطة (لجعل الـ Prototype حقيقي) ---
         
         function selectGoal(element) {
-            // إزالة التفعيل من الجميع
             document.querySelectorAll('.goal-card').forEach(el => el.classList.remove('active'));
-            // تفعيل العنصر المختار
             element.classList.add('active');
         }
 
@@ -248,9 +260,8 @@
             document.querySelectorAll('.option-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
             
-            // تغيير لون الأيقونة الجانبية لمحاكاة التحديد
             document.querySelectorAll('.option-item i:last-child').forEach(i => i.style.color = '#ccc');
-            element.querySelector('i:last-child').style.color = '#2ECC71';
+            element.querySelector('i:last-child').style.color = '#13EC6A';
         }
 
         function selectTime(element) {
@@ -259,16 +270,14 @@
         }
 
         function goToMain() {
-            // الانتقال للصفحة الرئيسية
             window.location.href = 'main.html';
         }
 
-        // --- الترجمة ---
         const translations = {
             ar: {
                 dir: "rtl",
                 nav_title: "تحديد الأهداف",
-                step_info: "الخطوة 2 من 4",
+                step_info: "الخطوة 2 من 2",
                 sec1_title: "ما هو هدفك؟",
                 goal_revision: "مراجعة",
                 goal_memorize: "حفظ",
@@ -293,7 +302,7 @@
             en: {
                 dir: "ltr",
                 nav_title: "Set Goals",
-                step_info: "Step 2 of 4",
+                step_info: "Step 2 of 2",
                 sec1_title: "What is your goal?",
                 goal_revision: "Revision",
                 goal_memorize: "Memorize",
@@ -324,11 +333,9 @@
             document.documentElement.setAttribute('dir', data.dir);
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                if (data[key]) element.childNodes[0].nodeValue = data[key]; // تغيير النص فقط والحفاظ على الأيقونات
-                // ملاحظة: للأزرار التي تحتوي أيقونات، قد تحتاجين لضبط بسيط للنص
+                if (data[key]) element.childNodes[0].nodeValue = data[key];
             });
             
-            // تعديل بسيط للزر عند تغيير اللغة للحفاظ على السهم
             const btn = document.querySelector('.btn-start');
             if(lang === 'en') {
                  btn.innerHTML = `Start Journey <i class="fa-solid fa-arrow-right"></i>`;
@@ -340,6 +347,13 @@
         }
 
         langSelector.addEventListener('change', (e) => setLanguage(e.target.value));
+        
+  
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('atqanLanguage') || 'ar';
+            langSelector.value = savedLang;
+            setLanguage(savedLang);
+        });
     </script>
 
 </body>
