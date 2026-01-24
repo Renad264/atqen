@@ -17,7 +17,6 @@
 
         .mobile-container {
             width: 375px; height: 700px;
-            
             background-image: url('IMG_2605.PNG'); 
             background-size: cover; background-position: center;
             border-radius: 30px;
@@ -28,7 +27,7 @@
 
         .mobile-container::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(248, 249, 250, 0.92); 
+            background: rgba(248, 249, 250, 0.92);
             z-index: 0; pointer-events: none;
         }
 
@@ -39,7 +38,7 @@
         }
         .content-scroll::-webkit-scrollbar { display: none; }
 
-       
+        /* --- الهيدر --- */
         .home-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 0; margin-bottom: 20px;
@@ -66,12 +65,15 @@
             background-color: #e74c3c; border-radius: 50%; border: 1px solid white;
         }
 
+        /* --- الإحصائيات السريعة --- */
         .stats-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
         .stat-card {
             background: white; flex: 1; border-radius: 16px; padding: 12px 5px;
             text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             display: flex; flex-direction: column; align-items: center; gap: 6px;
+            transition: 0.2s;
         }
+        .stat-card:active { transform: scale(0.97); }
         .stat-icon { font-size: 18px; color: #13EC6A; margin-bottom: 2px; }
         .stat-title { font-size: 10px; color: #95a5a6; font-weight: 600; }
         .stat-value { font-size: 14px; color: #2c3e50; font-weight: 800; }
@@ -80,7 +82,7 @@
         .section-title { font-size: 15px; font-weight: 800; color: #2c3e50; }
         .edit-link { font-size: 12px; color: #13EC6A; font-weight: 700; text-decoration: none; cursor: pointer; }
 
-        
+        /* --- بطاقة الخطة --- */
         .plan-card {
             width: 100%; height: 160px; border-radius: 20px;
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
@@ -100,7 +102,7 @@
         .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
         .progress-bar { width: 65%; height: 100%; background-color: #13EC6A; border-radius: 10px; }
 
-     
+        /* --- بطاقة ملاحظة المعلم --- */
         .teacher-note-main {
             background: white; border-left: 4px solid #F39C12;
             border-radius: 16px; padding: 15px; margin-bottom: 25px;
@@ -114,7 +116,7 @@
         .tn-content h4 { font-size: 13px; font-weight: 800; color: #2c3e50; margin: 0 0 4px 0; }
         .tn-content p { font-size: 11px; color: #555; line-height: 1.4; margin: 0; }
 
-   
+        /* --- بطاقة المهمة اليومية --- */
         .task-card {
             width: 100%; border-radius: 20px; overflow: hidden;
             position: relative; height: 200px;
@@ -122,7 +124,6 @@
         }
         .task-bg {
             width: 100%; height: 100%; object-fit: cover;
-        
             background-image: url('Screenshot 1447-08-02 at 4.07.40 AM.png'); 
             background-size: cover; background-position: center;
         }
@@ -140,7 +141,7 @@
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
-  
+        /* --- البار السفلي --- */
         .bottom-nav {
             position: absolute; bottom: 0; left: 0; width: 100%;
             background: white; padding: 15px 25px 25px 25px;
@@ -168,7 +169,7 @@
         }
         .fab-btn:active { transform: scale(0.95); }
 
-   
+        /* --- المودالات --- */
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 50;
@@ -247,6 +248,32 @@
             cursor: pointer; margin-top: 10px; flex-shrink: 0;
         }
 
+        /* --- تصميم الأوسمة --- */
+        .badges-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 20px;
+        }
+        .badge-card {
+            background: white; border-radius: 16px; padding: 15px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .badge-card:hover { transform: translateY(-3px); }
+        
+        /* أوسمة مفتوحة */
+        .badge-earned { border-color: #FFD54F; background: #FFFDE7; }
+        .badge-earned .badge-icon { 
+            color: #FFC107; font-size: 40px; margin-bottom: 10px; 
+            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
+        }
+        
+        /* أوسمة مغلقة */
+        .badge-locked { opacity: 0.6; filter: grayscale(1); background: #f9f9f9; }
+        .badge-locked .badge-icon { color: #ccc; font-size: 40px; margin-bottom: 10px; }
+
+        .badge-title { font-size: 13px; font-weight: 800; color: #2c3e50; margin-bottom: 5px; }
+        .badge-desc { font-size: 10px; color: #7f8c8d; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -280,9 +307,9 @@
                     <span class="stat-value">143</span>
                     <span class="stat-title">آيات تمت</span>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="openModal('badges')" style="cursor: pointer;">
                     <i class="fa-solid fa-medal stat-icon" style="color: #f1c40f;"></i>
-                    <span class="stat-value">4</span>
+                    <span class="stat-value">3</span>
                     <span class="stat-title">الأوسمة</span>
                 </div>
             </div>
@@ -372,15 +399,61 @@
                     <h3>تعديل الخطة</h3>
                     <i class="fa-solid fa-xmark close-btn" onclick="closeModal('edit')"></i>
                 </div>
-
                 <div class="goal-toggle">
                     <div class="toggle-btn" onclick="setGoal(this, 'memorize')">حفظ السورة</div>
                     <div class="toggle-btn active" onclick="setGoal(this, 'recite')">إتقان التلاوة</div>
                 </div>
-
                 <div class="edit-scroll-area" id="surahContainer"></div>
-
                 <button class="btn-save-edit" onclick="closeModal('edit')">حفظ التغييرات</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="badgesModal" style="align-items: flex-end;">
+            <div class="edit-box" style="height: 85%;">
+                <div class="modal-header">
+                    <h3>لوحة الإنجازات (3/20)</h3>
+                    <i class="fa-solid fa-xmark close-btn" onclick="closeModal('badges')"></i>
+                </div>
+                
+                <div class="edit-scroll-area">
+                    <div class="badges-grid">
+                        
+                        <div class="badge-card badge-earned">
+                            <i class="fa-solid fa-star badge-icon"></i>
+                            <span class="badge-title">وسام التألق</span>
+                            <span class="badge-desc">أتممت تلاوة 3 سور كاملة بإتقان تام</span>
+                        </div>
+
+                        <div class="badge-card badge-earned">
+                            <i class="fa-solid fa-lightbulb badge-icon"></i>
+                            <span class="badge-title">وسام النور</span>
+                            <span class="badge-desc">أتممت حفظ 3 أجزاء من القرآن الكريم</span>
+                        </div>
+
+                        <div class="badge-card badge-earned">
+                            <i class="fa-solid fa-rocket badge-icon"></i>
+                            <span class="badge-title">وسام الانطلاق</span>
+                            <span class="badge-desc">استمررت في التعلم لمدة 7 أيام متواصلة</span>
+                        </div>
+
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-book-quran badge-icon"></i><span class="badge-title">حافظ الجزء</span><span class="badge-desc">أكمل حفظ جزء عمّ كاملاً</span></div>
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-microphone-lines badge-icon"></i><span class="badge-title">الصوت الذهبي</span><span class="badge-desc">حصلت على تقييم 100% في 5 تلاوات</span></div>
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-user-group badge-icon"></i><span class="badge-title">صديق الحلقة</span><span class="badge-desc">شاركت في 10 حلقات تحفيظ جماعية</span></div>
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-crown badge-icon"></i><span class="badge-title">ملك التجويد</span><span class="badge-desc">أتقنت أحكام النون الساكنة والتنوين</span></div>
+
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-kaaba badge-icon"></i><span class="badge-title">ختمة رمضان</span><span class="badge-desc">أتممت تلاوة القرآن كاملاً في رمضان</span></div>
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-bullseye badge-icon"></i><span class="badge-title">دقة التلاوة</span><span class="badge-desc">تلوت صفحة كاملة دون أي خطأ</span></div>
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-heart badge-icon"></i><span class="badge-title">محب القرآن</span><span class="badge-desc">استخدمت التطبيق لمدة 30 يوماً متواصلة</span></div>
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-hand-holding-heart badge-icon"></i><span class="badge-title">سفير الأخلاق</span><span class="badge-desc">ارتفع تقييمك خلال مدة قصيرة </span></div>
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-medal badge-icon"></i><span class="badge-title">الحافظ المتقن</span><span class="badge-desc">أتممت حفظ جزئي عمّ وتبارك</span></div>
+
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-rotate-right badge-icon"></i><span class="badge-title">المراجع المثابر</span><span class="badge-desc">راجعت 5 أجزاء سابقة بنجاح</span></div>
+
+     
+                        <div class="badge-card badge-locked"><i class="fa-solid fa-hourglass-half badge-icon"></i><span class="badge-title">وسام الصبر</span><span class="badge-desc">قضيت 100 ساعة في تعلم القرآن</span></div>
+
+                    </div>
+                </div>
             </div>
         </div>
 
