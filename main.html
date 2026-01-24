@@ -17,7 +17,7 @@
 
         .mobile-container {
             width: 375px; height: 700px;
-            /* خلفية التطبيق */
+            
             background-image: url('IMG_2605.PNG'); 
             background-size: cover; background-position: center;
             border-radius: 30px;
@@ -28,7 +28,7 @@
 
         .mobile-container::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(248, 249, 250, 0.92); /* شفافية خفيفة للخلفية */
+            background: rgba(248, 249, 250, 0.92); 
             z-index: 0; pointer-events: none;
         }
 
@@ -39,7 +39,7 @@
         }
         .content-scroll::-webkit-scrollbar { display: none; }
 
-        /* --- الهيدر --- */
+       
         .home-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 0; margin-bottom: 20px;
@@ -66,7 +66,6 @@
             background-color: #e74c3c; border-radius: 50%; border: 1px solid white;
         }
 
-        /* --- الإحصائيات السريعة --- */
         .stats-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 30px; }
         .stat-card {
             background: white; flex: 1; border-radius: 16px; padding: 12px 5px;
@@ -81,7 +80,7 @@
         .section-title { font-size: 15px; font-weight: 800; color: #2c3e50; }
         .edit-link { font-size: 12px; color: #13EC6A; font-weight: 700; text-decoration: none; cursor: pointer; }
 
-        /* --- بطاقة الخطة --- */
+        
         .plan-card {
             width: 100%; height: 160px; border-radius: 20px;
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
@@ -101,7 +100,7 @@
         .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
         .progress-bar { width: 65%; height: 100%; background-color: #13EC6A; border-radius: 10px; }
 
-        /* --- بطاقة ملاحظة المعلم (الجديدة) --- */
+     
         .teacher-note-main {
             background: white; border-left: 4px solid #F39C12;
             border-radius: 16px; padding: 15px; margin-bottom: 25px;
@@ -115,7 +114,7 @@
         .tn-content h4 { font-size: 13px; font-weight: 800; color: #2c3e50; margin: 0 0 4px 0; }
         .tn-content p { font-size: 11px; color: #555; line-height: 1.4; margin: 0; }
 
-        /* --- بطاقة المهمة اليومية --- */
+   
         .task-card {
             width: 100%; border-radius: 20px; overflow: hidden;
             position: relative; height: 200px;
@@ -123,7 +122,7 @@
         }
         .task-bg {
             width: 100%; height: 100%; object-fit: cover;
-            /* صورة المصحف الخلفية */
+        
             background-image: url('Screenshot 1447-08-02 at 4.07.40 AM.png'); 
             background-size: cover; background-position: center;
         }
@@ -141,7 +140,7 @@
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
-        /* --- البار السفلي --- */
+  
         .bottom-nav {
             position: absolute; bottom: 0; left: 0; width: 100%;
             background: white; padding: 15px 25px 25px 25px;
@@ -169,7 +168,7 @@
         }
         .fab-btn:active { transform: scale(0.95); }
 
-        /* --- المودال --- */
+   
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 50;
