@@ -18,22 +18,53 @@
 
         .mobile-container {
             width: 375px; height: 700px;
-            background-color: #fff;
+            background: linear-gradient(180deg, #4FC3F7 0%, #81D4FA 30%, #A5D6A7 70%, #66BB6A 100%);
             border-radius: 30px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.15); 
             overflow: hidden; position: relative;
             display: flex; flex-direction: column;
         }
 
-    
+     
+        .top-bar {
+            position: absolute; top: 20px; left: 0; width: 100%;
+            padding: 0 20px; z-index: 40;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .balance-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 15px; border-radius: 20px;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #FFD54F;
+            transition: transform 0.2s;
+        }
+        .balance-box.pulse { animation: coinPulse 0.5s; }
+        .coin-icon { color: #FFC107; font-size: 18px; animation: spinSlow 5s infinite linear; }
+        .balance-text { font-weight: 800; color: #2c3e50; font-size: 15px; }
+
+        .store-btn {
+            width: 48px; height: 48px; background: white;
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer;
+            color: #E91E63; font-size: 22px; transition: 0.2s; border: 2px solid white;
+        }
+        .store-btn:active { transform: scale(0.9); }
+
+        .header-title-center {
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(5px);
+            padding: 6px 20px; border-radius: 20px;
+            font-size: 15px; font-weight: 800; color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+      
         .game-map-container {
             flex: 1; overflow-y: auto; position: relative; z-index: 1;
-            scrollbar-width: none;
-            background: linear-gradient(180deg, #4FC3F7 0%, #81D4FA 10%, #E8F5E9 40%, #66BB6A 100%);
+            scrollbar-width: none; margin-top: 0;
         }
         .game-map-container::-webkit-scrollbar { display: none; }
 
-    
         .game-track {
             padding: 100px 20px 150px 20px; 
             display: flex; flex-direction: column;
@@ -42,21 +73,14 @@
             min-height: 2500px;
         }
 
-      
-        .sky-deco {
-            position: absolute; top: 0; left: 0; width: 100%; height: 400px;
-            pointer-events: none; z-index: 0;
-        }
+        .sky-deco { position: absolute; top: 0; left: 0; width: 100%; height: 400px; pointer-events: none; z-index: 0; }
         .cloud { position: absolute; color: rgba(255,255,255,0.8); animation: floatCloud 25s infinite linear; }
         .c1 { top: 40px; left: 20px; font-size: 50px; }
         .c2 { top: 100px; right: -20px; font-size: 35px; animation-delay: 5s; }
         .sun { position: absolute; top: 30px; left: 30px; font-size: 60px; color: #FFD54F; animation: spinSun 20s infinite linear; }
         .bird { position: absolute; color: white; font-size: 20px; animation: flyBird 15s infinite linear; top: 150px; left: -30px; }
 
-        .ground-deco {
-            position: absolute; top: 400px; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
-        }
+        .ground-deco { position: absolute; top: 400px; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .tree { position: absolute; font-size: 80px; color: #2E7D32; opacity: 0.6; }
         .flower { position: absolute; font-size: 24px; animation: bounceFlower 3s infinite; }
         
@@ -68,64 +92,114 @@
         .f-3 { top: 800px; right: 80px; color: #9C27B0; } .f-4 { top: 1100px; left: 20px; color: #FF9800; }
         .f-5 { top: 1400px; right: 30px; color: #03A9F4; }
 
-      
-        .header-title {
-            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-            text-align: center; z-index: 20;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 25px; border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .header-title h2 { font-size: 16px; color: #2c3e50; font-weight: 800; margin: 0; }
+        .svg-path { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .path-stroke { fill: none; stroke: white; stroke-width: 5; stroke-dasharray: 15, 15; stroke-linecap: round; opacity: 0.7; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); }
 
-      
-        .svg-path {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: none;
-        }
-        .path-stroke {
-            fill: none; stroke: white; stroke-width: 5;
-            stroke-dasharray: 15, 15; stroke-linecap: round;
-            opacity: 0.7; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
-        }
-
-      
         .level-node {
-            width: 75px; height: 75px; border-radius: 50%;
+            width: 70px; height: 70px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             position: relative; transition: 0.3s;
-            box-shadow: 0 8px 0 rgba(0,0,0,0.1); border: 4px solid white;
-            z-index: 2; 
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1); border: 4px solid white;
+            z-index: 2; margin-bottom: 60px;
         }
         .level-node:active { transform: translateY(4px); box-shadow: none; }
 
-        .level-content { font-size: 26px; color: white; }
+        .level-content { font-size: 24px; color: white; }
         .level-label {
-            position: absolute; top: -30px; background: white; 
-            padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;
+            position: absolute; top: -25px; background: white; 
+            padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 700;
             color: #555; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .lvl-start { background: #29B6F6; }
+        .lvl-start { background: #4FC3F7; }
         .lvl-done { background: #66BB6A; }
         .lvl-current { background: linear-gradient(135deg, #FFCA28 0%, #FF6F00 100%); animation: pulse-glow 2s infinite; }
         .lvl-locked { background: #CFD8DC; filter: grayscale(1); }
         .lvl-quiz { background: linear-gradient(135deg, #AB47BC 0%, #7B1FA2 100%); }
-        .lvl-boss { background: linear-gradient(135deg, #ef5350 0%, #c62828 100%); }
 
         .pos-center { margin-left: 0; }
-        .pos-left { margin-right: 140px; }
-        .pos-right { margin-left: 140px; }
+        .pos-left { margin-right: 120px; }
+        .pos-right { margin-left: 120px; }
 
-    
+      
         .avatar-container {
-            position: absolute; width: 70px; height: 70px; z-index: 10;
-            top: -25px; right: -25px;
+            position: absolute; width: 65px; height: 65px; z-index: 10;
+            top: -20px; right: -25px;
             animation: bounceAvatar 2s infinite ease-in-out;
         }
-        .avatar-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,0.2)); }
+        .avatar-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
 
-     
+      
+        .store-overlay-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 90; display: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .store-overlay-bg.show { display: block; opacity: 1; }
+
+        .store-sheet {
+            background: #F4F7F6; width: 100%; height: 75%;
+            position: absolute; bottom: 0; left: 0; z-index: 100;
+            border-radius: 30px 30px 0 0; padding: 25px 20px;
+            display: flex; flex-direction: column; 
+            transform: translateY(110%); 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+        }
+        .store-sheet.show { transform: translateY(0); }
+
+        .store-header { 
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;
+        }
+        .store-title h3 { font-size: 20px; font-weight: 800; color: #2c3e50; margin: 0; display: flex; align-items: center; gap: 8px; }
+        .store-title p { font-size: 11px; color: #7f8c8d; margin: 2px 0 0 0; }
+        
+        .user-coins-display {
+            background: #FFF8E1; color: #FFB300; padding: 5px 12px; border-radius: 12px;
+            font-weight: 800; font-size: 14px; border: 1px solid #FFECB3;
+            box-shadow: 0 4px 0 #FFECB3;
+        }
+
+        .store-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            overflow-y: auto; padding-bottom: 30px; padding-top: 5px;
+        }
+
+       
+        .char-card {
+            background: white; border-radius: 20px; padding: 15px;
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.05); border: 2px solid transparent;
+            transition: 0.2s; position: relative;
+        }
+        .char-card.equipped { border-color: #13EC6A; background: #F1F8E9; box-shadow: 0 5px 0 #DCEDC8; }
+        .char-card.locked { opacity: 0.7; background: #f9f9f9; }
+
+        .char-img-box {
+            width: 80px; height: 80px; margin-bottom: 10px;
+            background: #f0f0f0; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .char-img-box img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        
+        .char-name { font-size: 13px; font-weight: 800; color: #2c3e50; margin-bottom: 8px; }
+
+        
+        .btn-store {
+            width: 100%; padding: 8px; border-radius: 12px; font-size: 12px; font-weight: 800;
+            border: none; cursor: pointer; transition: 0.2s;
+        }
+        
+        .btn-buy { 
+            background: #FFC107; color: #5D4037; box-shadow: 0 4px 0 #FFA000; 
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .btn-buy:active { transform: translateY(4px); box-shadow: none; }
+        
+        .btn-equip { background: white; border: 2px solid #13EC6A; color: #13EC6A; box-shadow: 0 4px 0 #E0E0E0; }
+        .btn-equipped { background: #13EC6A; color: white; cursor: default; box-shadow: none; transform: translateY(4px); }
+        .btn-locked { background: #CFD8DC; color: #fff; cursor: not-allowed; }
+
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 50; display: none; justify-content: center; align-items: center;
@@ -134,12 +208,7 @@
         .modal-overlay.show { display: flex; opacity: 1; }
         
         .task-modal { background: rgba(0,0,0,0.7); }
-       
-        .success-modal { 
-            background: rgba(255,255,255,0.98); 
-            z-index: 60; flex-direction: column; text-align: center; 
-            overflow: hidden; 
-        }
+        .success-modal { background: rgba(255,255,255,0.98); z-index: 60; flex-direction: column; text-align: center; }
 
         .card-box {
             background: white; width: 85%; border-radius: 25px; padding: 25px;
@@ -175,49 +244,30 @@
         .quiz-opt.correct { background: #E9F7EF; border-color: #13EC6A; color: #13EC6A; }
         .quiz-opt.wrong { background: #ffebee; border-color: #e74c3c; color: #e74c3c; }
 
-       
-     
-        .win-icon-container {
-            position: relative; width: 150px; height: 150px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px;
-        }
-        .win-rays {
-            position: absolute; width: 100%; height: 100%;
-            background: repeating-conic-gradient(from 0deg, #FFECB3 0deg 20deg, transparent 20deg 40deg);
-            animation: spinSlow 10s linear infinite; opacity: 0.6;
-        }
         .win-icon {
             width: 100px; height: 100px; border-radius: 50%; background: #FFF8E1; border: 6px solid #FFECB3;
-            display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 0 30px rgba(255, 215, 64, 0.6); z-index: 2; animation: popIn 0.5s;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 64, 0.4); animation: popIn 0.5s;
         }
         .win-star { font-size: 50px; color: #FFC107; }
+        .win-img { width: 120px; margin-bottom: 25px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+        .success-title { font-size: 24px; font-weight: 800; color: #2c3e50; margin-bottom: 5px; }
+        .success-sub { font-size: 14px; color: #7f8c8d; margin-bottom: 25px; }
 
-      
-        .success-title { font-size: 26px; font-weight: 800; color: #2c3e50; margin-bottom: 10px; }
-        .success-sub { font-size: 14px; color: #7f8c8d; margin-bottom: 20px; padding: 0 20px; line-height: 1.6; }
-        
-       
+        .btn-green {
+            background: #13EC6A; color: white; padding: 12px 40px; border-radius: 30px;
+            font-size: 14px; font-weight: 800; border: none; cursor: pointer;
+            box-shadow: 0 8px 15px rgba(19, 236, 106, 0.3); width: 80%; margin-bottom: 10px;
+        }
+        .btn-outline {
+            background: white; color: #2c3e50; padding: 12px 40px; border-radius: 30px;
+            font-size: 16px; font-weight: 800; border: 2px solid #eee; cursor: pointer; width: 80%;
+        }
+
         .reward-points {
             background: #FFF8E1; color: #FFC107; padding: 5px 15px; border-radius: 15px;
             font-weight: 700; font-size: 14px; margin-bottom: 20px; display: inline-block;
             border: 2px solid #FFECB3; animation: pulse-glow 1.5s infinite;
-        }
-
-        .win-img { width: 120px; margin-bottom: 25px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
-
-    
-        .btn-gradient {
-            background: linear-gradient(135deg, #13EC6A 0%, #00C853 100%); color: white; 
-            padding: 12px 40px; border-radius: 30px; font-size: 16px; font-weight: 800; border: none; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(19, 236, 106, 0.4); width: 85%; margin-bottom: 12px;
-            transition: transform 0.2s;
-        }
-        .btn-gradient:active { transform: scale(0.98); }
-        .btn-outline {
-            background: white; color: #2c3e50; padding: 12px 40px; border-radius: 30px;
-            font-size: 16px; font-weight: 800; border: 2px solid #eee; cursor: pointer; width: 85%;
         }
 
         .confetti {
@@ -253,6 +303,8 @@
         @keyframes bounceFlower { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes bounceAvatar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes fall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(800px) rotate(360deg); opacity: 0; } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes coinPulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
     </style>
 </head>
@@ -260,12 +312,18 @@
 
     <div class="mobile-container">
         
-        <div class="header-title">
-            <h2>رحلة جزء عمّ</h2>
+        <div class="top-bar">
+            <div class="balance-box" id="balanceBox">
+                <i class="fa-solid fa-coins coin-icon"></i>
+                <span class="balance-text" id="coinBalance">120</span>
+            </div>
+            <div class="header-title-center">رحلة جزء عمّ</div>
+            <div class="store-btn" onclick="openStore()">
+                <i class="fa-solid fa-store"></i>
+            </div>
         </div>
 
         <div class="game-map-container">
-            
             <div class="game-track">
                 
                 <div class="sky-deco">
@@ -295,7 +353,9 @@
                 <div class="level-node lvl-current pos-center" onclick="openTask('recite')">
                     <div class="level-content"><i class="fa-solid fa-play"></i></div>
                     <div class="level-label">سورة الإخلاص</div>
-                    <div class="avatar-container"><img src="145867.png" class="avatar-img" alt="My Avatar"></div>
+                    <div class="avatar-container">
+                        <img src="145867.png" id="gameAvatar" class="avatar-img" alt="My Character">
+                    </div>
                 </div>
 
                 <div class="level-node lvl-locked lvl-quiz pos-right" id="level5"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">اختبار تجويد</div></div>
@@ -311,6 +371,62 @@
                 <div class="level-node lvl-locked pos-left" id="level15"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة الهمزة</div></div>
                 <div class="level-node lvl-locked pos-center" id="level16"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة العصر</div></div>
                 <div class="level-node lvl-locked pos-right" id="level17"><div class="level-content"><i class="fa-solid fa-lock"></i></div><div class="level-label">سورة التكاثر</div></div>
+
+            </div>
+        </div>
+
+        <div class="store-overlay-bg" id="storeOverlay" onclick="closeStore()"></div>
+        <div class="store-sheet" id="storeSheet">
+            <div class="store-header">
+                <div class="store-title">
+                    <h3><i class="fa-solid fa-store" style="color:#E91E63;"></i> متجر الأبطال</h3>
+                    <p>استبدل مكافآتك بشخصيات رائعة!</p>
+                </div>
+                <div class="user-coins-display" id="storeBalanceDisplay">120 <i class="fa-solid fa-coins"></i></div>
+            </div>
+
+            <div class="store-grid">
+                
+                <div class="char-card equipped" id="char1">
+                    <div class="char-img-box"><img src="145867.png" class="product-img"></div>
+                    <span class="char-name">البطل</span>
+                    <button class="btn-store btn-equipped" onclick="equipChar(1, '145867.png')">مستخدم حالياً</button>
+                </div>
+
+                <div class="char-card" id="char2">
+                    <div class="char-img-box"><img src="girl1.png" class="product-img"></div>
+                    <span class="char-name">أميرة النور </span>
+                    <button class="btn-store btn-buy" onclick="buyChar(2, مجاني, 'https://cdn-icons-png.flaticon.com/512/2922/2922510.png')">
+                        50 <i class="fa-solid fa-coins"></i> شراء
+                    </button>
+                </div>
+
+                <div class="char-card" id="char3">
+                    <div class="char-img-box"><img src="boy2.png" class="product-img"></div>
+                    <span class="char-name">القارئ الذكي</span>
+                    <button class="btn-store btn-buy" onclick="buyChar(3, 50, 'https://cdn-icons-png.flaticon.com/512/3001/3001758.png')">
+                        100 <i class="fa-solid fa-coins"></i> شراء
+                    </button>
+                </div>
+
+                <div class="char-card" id="char4">
+                    <div class="char-img-box"><img src="girl2.png" class="product-img"></div>
+                    <span class="char-name">فراشة المعرفة</span>
+                    <button class="btn-store btn-buy" onclick="buyChar(4, 50, 'https://cdn-icons-png.flaticon.com/512/4140/4140048.png')">
+                        150 <i class="fa-solid fa-coins"></i> شراء
+                    </button>
+                </div>
+
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-user-secret" style="font-size:35px; color:#cfd8dc;"></i></div><span class="char-name">مجهول</span><button class="btn-store btn-locked">افتح مستوى 5</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-user-secret" style="font-size:35px; color:#cfd8dc;"></i></div><span class="char-name">مجهول</span><button class="btn-store btn-locked">افتح مستوى 8</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 10</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 12</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 15</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 18</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 20</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 22</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 25</button></div>
+                <div class="char-card locked"><div class="char-img-box"><i class="fa-solid fa-lock" style="color:#bdc3c7; font-size:24px;"></i></div><span class="char-name">مغلق</span><button class="btn-store btn-locked">مستوى 30</button></div>
 
             </div>
         </div>
@@ -351,11 +467,11 @@
             <h2 class="success-title">إنجاز أسطوري يا بطل! 🌟👑</h2>
             <p class="success-sub">ما شاء الله! لقد أتقنت سورة الإخلاص ببراعة. استمر في التألق، القمة بانتظارك! 🚀</p>
             
-            
+            <div class="reward-points">+50 نقطة ذهبية ✨</div>
 
-            <img src="145867.png" class="win-img" alt="Happy Kid">
+            <img src="145867.png" id="winAvatar" class="win-img" alt="Happy Kid">
             
-            <button class="btn-gradient" onclick="closeSuccess()">العودة للخريطة <i class="fa-solid fa-arrow-right"></i></button>
+            <button class="btn-green" onclick="closeSuccess()">العودة للخريطة <i class="fa-solid fa-arrow-right"></i></button>
             <button class="btn-outline"><i class="fa-solid fa-share-nodes"></i> مشاركة الإنجاز</button>
         </div>
 
@@ -373,7 +489,76 @@
         const ikhlasText = "قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ";
         let currentTaskType = '';
         let confettiInterval;
+        let userBalance = 120; 
 
+      
+        function openStore() {
+            document.getElementById('storeOverlay').classList.add('show');
+            document.getElementById('storeSheet').classList.add('show');
+            updateBalanceUI();
+        }
+        function closeStore() {
+            document.getElementById('storeOverlay').classList.remove('show');
+            document.getElementById('storeSheet').classList.remove('show');
+        }
+
+        function buyChar(id, price, imgSrc) {
+            if (userBalance >= price) {
+          
+                userBalance -= price;
+                updateBalanceUI();
+                
+             
+                const card = document.getElementById('char' + id);
+                card.classList.add('owned'); 
+                
+            
+                const btn = card.querySelector('.btn-store');
+                const priceLabel = card.querySelector('.price-label');
+                if(priceLabel) priceLabel.style.display = 'none';
+                
+                
+                
+        
+                alert("تم الشراء بنجاح! 🎉");
+            } else {
+                alert("عذراً، نقاطك غير كافية! 😢 أكمل المزيد من التحديات.");
+                document.querySelector('.balance-box').classList.add('pulse');
+                setTimeout(() => document.querySelector('.balance-box').classList.remove('pulse'), 500);
+            }
+        }
+
+        function equipChar(id, imgSrc) {
+         
+            document.querySelectorAll('.char-card').forEach(c => {
+                c.classList.remove('equipped');
+                const btn = c.querySelector('.btn-store');
+                if (btn && btn.innerText === 'مستخدم حالياً') {
+                    btn.className = 'btn-store btn-equip';
+                    btn.innerText = 'استخدام';
+                }
+            });
+
+    
+            const card = document.getElementById('char' + id);
+            card.classList.add('equipped');
+            const btn = card.querySelector('.btn-store');
+            btn.className = 'btn-store btn-equipped';
+            btn.innerText = 'مستخدم حالياً';
+
+         
+            document.getElementById('gameAvatar').src = imgSrc;
+            document.getElementById('winAvatar').src = imgSrc;
+            
+            closeStore();
+        }
+
+        function updateBalanceUI() {
+            document.getElementById('coinBalance').innerText = userBalance;
+            document.getElementById('storeBalanceDisplay').innerHTML = `${userBalance} <i class="fa-solid fa-coins"></i>`;
+        }
+
+       
         function openTask(type) {
             document.getElementById('taskModal').classList.add('show');
             document.getElementById('reciteCard').style.display = 'none';
@@ -436,7 +621,11 @@
 
         function closeSuccess() {
             document.getElementById('successModal').classList.remove('show');
-            stopConfetti(); 
+            stopConfetti();
+            
+        
+            userBalance += 50;
+            updateBalanceUI();
             
             if(currentTaskType === 'recite') {
                 const lvl5 = document.getElementById('level5');
@@ -452,7 +641,7 @@
             }
         }
 
-        
+      
         function startConfetti() {
             const modal = document.getElementById('successModal');
             confettiInterval = setInterval(() => {
@@ -465,11 +654,7 @@
                 confetti.classList.add(colors[Math.floor(Math.random() * colors.length)]);
                 
                 modal.appendChild(confetti);
-
-               
-                setTimeout(() => {
-                    confetti.remove();
-                }, 3500);
+                setTimeout(() => { confetti.remove(); }, 3500);
             }, 150); 
         }
 
